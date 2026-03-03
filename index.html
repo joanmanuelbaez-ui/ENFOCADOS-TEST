@@ -8,7 +8,7 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{--Y:rgb(250,250,0);--D:#2c3e50;--B:#e2e8f0;--G:#64748b}
-        body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;display:flex;justify-content:center;align-items:center}
+        body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
         .card{background:#fff;border-radius:18px;padding:2.5rem;box-shadow:0 10px 30px rgba(0,0,0,0.1);border:2px solid var(--Y);width:100%;max-width:450px;text-align:center}
         h1{font-family:'Montserrat',sans-serif;font-size:2.2rem;margin-bottom:0.5rem;color:var(--D)}
         .sub{color:var(--G);font-size:0.9rem;text-transform:uppercase;margin-bottom:2rem;letter-spacing:1px}
@@ -24,8 +24,8 @@
     <h1>ENFOCADOS</h1>
     <div class="sub">Entorno de Test</div>
     <div class="field">
-        <label>Email del Alumno (Columna B)</label>
-        <input type="email" id="inEmail" placeholder="ejemplo@correo.com">
+        <label>Introduce tu Email</label>
+        <input type="email" id="inEmail" placeholder="tu@email.com">
     </div>
     <button id="btnLogin" class="btn" onclick="doLogin()">Entrar al Test</button>
 </div>
@@ -36,7 +36,7 @@ const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDU
 function doLogin() {
     const email = document.getElementById('inEmail').value.trim().toLowerCase();
     const btn = document.getElementById('btnLogin');
-    if(!email) { alert("Introduce tu email"); return; }
+    if(!email) { alert("Por favor, introduce tu email."); return; }
 
     btn.textContent = "Verificando...";
     btn.disabled = true;
@@ -46,21 +46,19 @@ function doLogin() {
         delete window[callbackName];
         
         if(res.error) {
-            alert("Error del servidor: " + res.message);
+            alert("Error: " + res.message);
         } else {
             // Buscamos en row[1] porque el correo está en la Columna B
             const users = res.users.rows.map(row => ({ correo: String(row[1]).toLowerCase().trim() }));
             const user = users.find(u => u.correo === email);
 
             if(user) {
-                alert("✅ ACCESO CORRECTO. Cargando base de preguntas...");
-                console.log("Preguntas cargadas exitosamente:", res.questions.rows);
-                // Aquí podrías redirigir a la pantalla de preguntas
+                alert("✅ ACCESO CORRECTO. Se han cargado las preguntas de la base de datos.");
+                console.log("Datos de preguntas listos:", res.questions.rows);
             } else {
-                alert("❌ El email '" + email + "' no se encuentra en la columna B de la hoja USUARIOS.");
+                alert("❌ El email '" + email + "' no está registrado en la hoja de TEST.");
             }
         }
-        
         btn.textContent = "Entrar al Test";
         btn.disabled = false;
     };
