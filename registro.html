@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        :root { --enfocados: #FAFA00; }
+        body { font-family: sans-serif; background: #222; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; width: 100%; max-width: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .header { background: var(--enfocados); padding: 20px; text-align: center; font-weight: bold; border-bottom: 2px solid #000; font-size: 1.1rem; }
+        .content { padding: 20px; }
+        .step { display: none; }
+        .step.active { display: block; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #000; color: white; margin-top: 10px; }
+        #card-element { padding:12px; border:1px solid #ccc; border-radius:8px; margin-top:5px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">REGISTRO DE ALUMNOS A ENFOCADOS</div>
+    <div class="content">
+        <div id="step1" class="step active">
+            <input type="text" id="nombre" placeholder="Nombre">
+            <input type="text" id="apellidos" placeholder="Apellidos">
+            <input type="email" id="email" placeholder="Correo electrónico">
+            <button onclick="irAPaso2()">CONTINUAR AL PAGO</button>
+        </div>
+        <div id="step2" class="step">
+            <div id="card-element"></div>
+            <button onclick="procesar()">PAGAR Y ACTIVAR</button>
+        </div>
+        <div id="step3" class="step" style="text-align:center;">
+            <h2>✅ REGISTRO REALIZADO</h2>
+            <p>Datos guardados en la hoja de Preproducción.</p>
+        </div>
+    </div>
+</div>
+<script>
+    // --- PEGA AQUÍ LA MISMA URL QUE EN EL PASO 1 ---
+    const URL_SCRIPT = 'TU_URL_DE_APPS_SCRIPT_AQUI';
+    
+    // Clave de TEST para probar sin dinero real
+    const stripe = Stripe('pk_test_51T2tn60VeufI11bbQ0lZKG3pbYL3mSR8YxF2cKxVS9dNYvVtGafmLKrk4hhl3T0G5GJdwhwZrxaoe4Lwm4ILH83M00j5f9E5iv');
+    const elements = stripe.elements();
+    const card = elements.create('card', { style: { base: { fontSize: '16px' } } });
+
+    function irAPaso2() {
+        document.getElementById('step1').classList.remove('active');
+        document.getElementById('step2').classList.add('active');
+        card.mount('#card-element');
+    }
+
+    async function procesar() {
+        const payload = {
+            nombre: document.getElementById('nombre').value,
+            apellidos: document.getElementById('apellidos').value,
+            email: document.getElementById('email').value,
+            plan: 'preproduccion_test',
+            codigo: ''
+        };
+        // Envío a Google Sheets
+        await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('step3').classList.add('active');
+    }
+</script>
+</body>
+</html>
