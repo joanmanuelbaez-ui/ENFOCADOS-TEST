@@ -2,69 +2,83 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - ENFOCADOS TEST</title>
     <script src="https://js.stripe.com/v3/"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --enfocados: #FAFA00; }
-        body { font-family: sans-serif; background: #222; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .card { background: white; width: 100%; max-width: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .header { background: var(--enfocados); padding: 20px; text-align: center; font-weight: bold; border-bottom: 2px solid #000; font-size: 1.1rem; color: #000; }
-        .content { padding: 20px; }
-        .step { display: none; }
-        .step.active { display: block; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #000; color: white; margin-top: 10px; }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#222;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+        .card{background:#fff;border-radius:15px;width:100%;max-width:400px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+        .header{background:#FAFA00;padding:20px;text-align:center;font-family:'Montserrat',sans-serif;font-weight:700;border-bottom:2px solid #000}
+        .content{padding:25px}
+        .step{display:none}
+        .step.active{display:block}
+        input{width:100%;padding:12px;margin:10px 0;border:1px solid #ccc;border-radius:8px;font-size:1rem}
+        button{width:100%;padding:15px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#000;color:#fff;margin-top:10px;transition:0.3s}
+        button:hover{background:#333}
+        button:disabled{background:#666}
+        #card-element{padding:12px;border:1px solid #ccc;border-radius:8px;background:#f9f9f9;margin:10px 0}
     </style>
 </head>
 <body>
+
 <div class="card">
-    <div class="header">REGISTRO DE ALUMNOS - ENFOCADOS TEST</div>
+    <div class="header">REGISTRO ALUMNOS (TEST)</div>
     <div class="content">
+        
         <div id="step1" class="step active">
             <input type="text" id="nombre" placeholder="Nombre completo">
             <input type="email" id="email" placeholder="Correo electrónico">
             <button onclick="irAPaso2()">CONTINUAR AL PAGO</button>
         </div>
+
         <div id="step2" class="step">
-            <div id="card-element" style="padding:12px; border:1px solid #ccc; border-radius:8px; margin-bottom:10px;"></div>
-            <button id="btnPagar" onclick="procesar()">PAGAR Y ACTIVAR (TEST)</button>
+            <p style="font-size:0.9rem; margin-bottom:10px">Tarjeta de prueba (Stripe): 4242...</p>
+            <div id="card-element"></div>
+            <button id="btnPagar" onclick="procesarPago()">PAGAR Y ACTIVAR</button>
         </div>
-        <div id="step3" class="step" style="text-align:center;">
-            <h2>✅ REGISTRO OK</h2>
-            <p>Ya puedes acceder con tu email.</p>
-            <button onclick="window.location.href='index.html'">IR AL ACCESO</button>
+
+        <div id="step3" class="step" style="text-align:center">
+            <h2 style="color:#2ecc71">✅ ¡REGISTRO OK!</h2>
+            <p style="margin:15px 0">Tus datos se han guardado en la hoja de Google.</p>
+            <button onclick="window.location.href='index.html'" style="background:#FAFA00;color:#000">IR AL ACCESO</button>
         </div>
+
     </div>
 </div>
+
 <script>
-    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+    // TU URL ACTUALIZADA
+    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiObQwjLCdwDsX_Hubru-8S/exec';
+    
+    // Configuración de Stripe Test
     const stripe = Stripe('pk_test_51T2tn60VeufI11bbQ0lZKG3pbYL3mSR8YxF2cKxVS9dNYvVtGafmLKrk4hhl3T0G5GJdwhwZrxaoe4Lwm4ILH83M00j5f9E5iv');
     const elements = stripe.elements();
     const card = elements.create('card');
 
     function irAPaso2() {
-        if(!document.getElementById('email').value) return alert("Pon tu email");
+        const n = document.getElementById('nombre').value;
+        const e = document.getElementById('email').value;
+        if(!n || !e) return alert("Rellena todos los campos");
+        
         document.getElementById('step1').classList.remove('active');
         document.getElementById('step2').classList.add('active');
         card.mount('#card-element');
     }
 
-    async function procesar() {
+    async function procesarPago() {
         const btn = document.getElementById('btnPagar');
-        btn.disabled = true; btn.textContent = "REGISTRANDO...";
-        
-        const payload = {
+        btn.disabled = true;
+        btn.textContent = "PROCESANDO...";
+
+        const datos = {
             nombre: document.getElementById('nombre').value,
-            email: document.getElementById('email').value,
-            plan: 'PLAN_TEST'
+            email: document.getElementById('email').value.trim().toLowerCase(),
+            plan: 'TEST_SISTEMA'
         };
 
-        // Guardar en Google Sheets
-        await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-        
-        document.getElementById('step2').classList.remove('active');
-        document.getElementById('step3').classList.add('active');
-    }
-</script>
-</body>
-</html>
+        try {
+            // Enviamos los datos al Apps Script (doPost)
+            await fetch(URL_SCRIPT, {
+                method:
