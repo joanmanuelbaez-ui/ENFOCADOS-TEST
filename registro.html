@@ -12,49 +12,38 @@
         .content { padding: 20px; }
         .step { display: none; }
         .step.active { display: block; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-        button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #000; color: white; margin-top: 10px; font-size: 1rem; }
-        #card-element { padding:12px; border:1px solid #ccc; border-radius:8px; margin-bottom:10px; background: #f9f9f9; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #000; color: white; margin-top: 10px; }
     </style>
 </head>
 <body>
-
 <div class="card">
     <div class="header">REGISTRO DE ALUMNOS - ENFOCADOS TEST</div>
     <div class="content">
         <div id="step1" class="step active">
-            <input type="text" id="nombre" placeholder="Nombre">
-            <input type="text" id="apellidos" placeholder="Apellidos">
+            <input type="text" id="nombre" placeholder="Nombre completo">
             <input type="email" id="email" placeholder="Correo electrónico">
             <button onclick="irAPaso2()">CONTINUAR AL PAGO</button>
         </div>
-
         <div id="step2" class="step">
-            <p style="margin-bottom:10px; font-size:0.9rem;">Introduce tarjeta de prueba (Stripe Test):</p>
-            <div id="card-element"></div>
+            <div id="card-element" style="padding:12px; border:1px solid #ccc; border-radius:8px; margin-bottom:10px;"></div>
             <button id="btnPagar" onclick="procesar()">PAGAR Y ACTIVAR (TEST)</button>
         </div>
-
         <div id="step3" class="step" style="text-align:center;">
-            <h2 style="color: #2c3e50;">✅ ¡REGISTRO OK!</h2>
-            <p>Datos guardados en la columna B de la hoja de TEST.</p>
-            <button onclick="window.location.href='index.html'" style="background: var(--enfocados); color: #000;">IR AL ACCESO</button>
+            <h2>✅ REGISTRO OK</h2>
+            <p>Ya puedes acceder con tu email.</p>
+            <button onclick="window.location.href='index.html'">IR AL ACCESO</button>
         </div>
     </div>
 </div>
-
 <script>
-    // URL DE TU SCRIPT DE TEST (LA MISMA QUE EN EL INDEX)
     const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-    
-    // Clave de prueba de Stripe
     const stripe = Stripe('pk_test_51T2tn60VeufI11bbQ0lZKG3pbYL3mSR8YxF2cKxVS9dNYvVtGafmLKrk4hhl3T0G5GJdwhwZrxaoe4Lwm4ILH83M00j5f9E5iv');
     const elements = stripe.elements();
     const card = elements.create('card');
 
     function irAPaso2() {
-        const email = document.getElementById('email').value;
-        if(!email) { alert("Escribe tu email"); return; }
+        if(!document.getElementById('email').value) return alert("Pon tu email");
         document.getElementById('step1').classList.remove('active');
         document.getElementById('step2').classList.add('active');
         card.mount('#card-element');
@@ -62,23 +51,20 @@
 
     async function procesar() {
         const btn = document.getElementById('btnPagar');
-        btn.disabled = true;
-        btn.textContent = "REGISTRANDO...";
+        btn.disabled = true; btn.textContent = "REGISTRANDO...";
         
         const payload = {
-            nombre: document.getElementById('nombre').value + " " + document.getElementById('apellidos').value,
+            nombre: document.getElementById('nombre').value,
             email: document.getElementById('email').value,
-            plan: 'TEST_PREPROD'
+            plan: 'PLAN_TEST'
         };
 
-        try {
-            // Enviamos los datos a la hoja de TEST
-            await fetch(URL_SCRIPT, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(payload)
-            });
-
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
-        } catch (e) {
+        // Guardar en Google Sheets
+        await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+        
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('step3').classList.add('active');
+    }
+</script>
+</body>
+</html>
