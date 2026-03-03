@@ -1,55 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENFOCADOS - Preproducción</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
-body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b}
-.wrap{max-width:860px;margin:0 auto;padding:1.8rem 1.2rem}
-header{text-align:center;margin-bottom:1.6rem}
-h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:var(--D);letter-spacing:-1px}
-.sub{color:var(--G);font-size:1rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
-.card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:2px solid var(--Y)}
-.field{margin-bottom:1.1rem}
-.field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
-.field input{width:100%;padding:.82rem 1rem;border:2px solid var(--B);border-radius:10px;font-size:1rem}
-.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;width:100%}
-.hidden{display:none!important}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENFOCADOS TEST - Acceso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- FORMATO ORIGINAL MANTENIDO --- */
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
+        body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
+        .wrap{max-width:860px;margin:0 auto;padding:1.8rem 1.2rem}
+        header{text-align:center;margin-bottom:1.6rem}
+        h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:var(--D);letter-spacing:-1px}
+        .sub{color:var(--G);font-size:1rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
+        .card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:2px solid var(--Y);margin-bottom:1.4rem}
+        .field{margin-bottom:1.1rem;text-align:left}
+        .field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
+        .field input{width:100%;padding:.82rem 1rem;border:2px solid var(--B);border-radius:10px;font-size:1rem}
+        .btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;width:100%}
+    </style>
 </head>
 <body>
+
 <div class="wrap">
-    <header><h1>ENFOCADOS</h1><div class="sub">Acceso Alumnos (Preproducción)</div></header>
+    <header>
+        <h1>ENFOCADOS</h1>
+        <div class="sub">ENTORNO TEST</div>
+    </header>
+
     <div id="secLogin" class="card">
-        <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
+        <h2 style="text-align:center;margin-bottom:1.5rem">Acceso Alumnos</h2>
+        <div class="field">
+            <label>Introduce tu Email de TEST</label>
+            <input type="email" id="inEmail" placeholder="ejemplo@test.com">
+        </div>
         <button id="btnLogin" class="btn" onclick="doLogin()">Entrar</button>
     </div>
 </div>
+
 <script>
-// --- PEGA AQUÍ LA URL QUE COPIASTE EN EL PASO 1 ---
-const apiUrl = 'TU_URL_DE_APPS_SCRIPT_AQUI';
+// URL DE TU IMPLEMENTACIÓN DE TEST (ACTUALIZADA)
+const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
 
 function doLogin() {
-    const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    if(!email) return;
-    document.getElementById('btnLogin').textContent = "Verificando...";
-    const name = 'jsonp_' + Date.now();
-    window[name] = (res) => {
-        delete window[name];
-        const users = res.rows.map(row => ({ correo: row[2] })); 
-        const user = users.find(u => u.correo && u.correo.toLowerCase().trim() === email);
-        if(user) { alert("Acceso correcto a PREPRODUCCIÓN"); }
-        else { alert("Usuario no encontrado en la hoja de PRUEBAS"); }
-        document.getElementById('btnLogin').textContent = "Entrar";
-    };
-    const s = document.createElement('script');
-    s.src = apiUrl + '?type=users&callback=' + name;
-    document.body.appendChild(s);
-}
-</script>
-</body>
-</html>
+    const emailInput = document.getElementById('inEmail');
+    const email = emailInput.value.trim().toLowerCase();
+    const btn = document.getElementById('btnLogin');
+
+    if(!email) {
+        alert("Por favor, introduce un email.");
+        return;
+    }
+
+    btn.textContent = "Verificando...";
+    btn.disabled = true;
+
+    // Usamos JSONP para evitar bloqueos de seguridad (CORS)
+    const callbackName = 'jsonp_' + Date.now();
+    window[callbackName] = (res) => {
+        delete window[callbackName];
+        
+        if (res.error) {
+            alert("Error en la hoja de TEST: " + res.message);
+        } else {
+            // Buscamos el email en la columna 3 de tu hoja (índice 2)
+            const users = res.rows.map(row => ({ correo: String(row[2]).toLowerCase().trim() }));
+            const user = users.find(u => u.correo === email);
+
+            if(user) {
+                alert("✅ Acceso Correcto (Entorno TEST)");
+                // Aquí podrías redirigir al alumno al examen si lo deseas
+            } else {
+                alert("❌ El email '" + email
