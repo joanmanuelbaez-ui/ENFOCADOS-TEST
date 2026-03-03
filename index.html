@@ -4,67 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENFOCADOS TEST - Acceso</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--Y:rgb(250,250,0);--D:#2c3e50;--B:#e2e8f0;--G:#64748b}
-        body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
-        .card{background:#fff;border-radius:18px;padding:2.5rem;box-shadow:0 10px 30px rgba(0,0,0,0.1);border:2px solid var(--Y);width:100%;max-width:450px;text-align:center}
-        h1{font-family:'Montserrat',sans-serif;font-size:2.2rem;margin-bottom:0.5rem;color:var(--D)}
-        .sub{color:var(--G);font-size:0.9rem;text-transform:uppercase;margin-bottom:2rem;letter-spacing:1px}
-        .field{margin-bottom:1.5rem;text-align:left}
-        .field label{display:block;margin-bottom:0.5rem;font-weight:600;font-size:0.9rem}
-        .field input{width:100%;padding:1rem;border:2px solid var(--B);border-radius:12px;font-size:1rem}
-        .btn{padding:1rem;background:var(--Y);color:var(--D);border:none;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:pointer;width:100%;transition:0.3s}
-        .btn:hover{background:#e6e600}
+        body{font-family:'Inter',sans-serif;background:#f8f9fa;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+        .card{background:#fff;padding:2rem;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.1);width:100%;max-width:400px;text-align:center;border:2px solid #FAFA00}
+        h1{font-family:'Montserrat',sans-serif;margin-bottom:1.5rem;color:#2c3e50}
+        input{width:100%;padding:12px;margin-bottom:1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem}
+        button{width:100%;padding:12px;background:#FAFA00;border:none;border-radius:8px;font-weight:700;cursor:pointer;transition:0.3s;font-size:1rem;color:#000}
+        button:hover{background:#e6e600}
+        button:disabled{background:#ccc;cursor:not-allowed}
     </style>
 </head>
 <body>
+
 <div class="card">
     <h1>ENFOCADOS</h1>
-    <div class="sub">Entorno de Test</div>
-    <div class="field">
-        <label>Introduce tu Email</label>
-        <input type="email" id="inEmail" placeholder="tu@email.com">
+    <p style="margin-bottom:1.5rem;color:#666;font-weight:600">ENTORNO DE PRUEBAS</p>
+    <div style="text-align:left;margin-bottom:0.5rem">
+        <label style="font-size:0.8rem;font-weight:600;color:#333">Email del alumno (Columna B)</label>
     </div>
-    <button id="btnLogin" class="btn" onclick="doLogin()">Entrar al Test</button>
+    <input type="email" id="emailInput" placeholder="ejemplo@correo.com">
+    <button id="btnEntrar" onclick="validar()">Entrar al Test</button>
 </div>
 
 <script>
-const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+// URL ACTUALIZADA CON TU NUEVA VERSIÓN
+const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiObQwjLCdwDsX_Hubru-8S/exec';
 
-function doLogin() {
-    const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    const btn = document.getElementById('btnLogin');
-    if(!email) { alert("Por favor, introduce tu email."); return; }
+function validar() {
+    const email = document.getElementById('emailInput').value.trim().toLowerCase();
+    const btn = document.getElementById('btnEntrar');
+    
+    if(!email) {
+        alert("Por favor, introduce tu email.");
+        return;
+    }
 
-    btn.textContent = "Verificando...";
     btn.disabled = true;
+    btn.textContent = "Verificando en base de datos...";
 
+    // Usamos JSONP para evitar bloqueos de seguridad (CORS)
     const callbackName = 'jsonp_' + Date.now();
     window[callbackName] = (res) => {
         delete window[callbackName];
+        document.body.removeChild(script);
         
         if(res.error) {
-            alert("Error: " + res.message);
+            alert("Error del servidor: " + res.message);
         } else {
-            // Buscamos en row[1] porque el correo está en la Columna B
-            const users = res.users.rows.map(row => ({ correo: String(row[1]).toLowerCase().trim() }));
-            const user = users.find(u => u.correo === email);
+            // Buscamos el email en la fila, posición 1 (Columna B)
+            const user = res.users.rows.find(row => String(row[1]).toLowerCase().trim() === email);
 
             if(user) {
-                alert("✅ ACCESO CORRECTO. Se han cargado las preguntas de la base de datos.");
-                console.log("Datos de preguntas listos:", res.questions.rows);
+                alert("✅ ACCESO CORRECTO.\n\nHola " + (user[0] || "Alumno") + ", hemos cargado " + res.questions.rows.length + " preguntas con éxito.");
+                console.log("PREGUNTAS CARGADAS:", res.questions.rows);
+                // Aquí ya podrías redirigir a la zona de examen
             } else {
-                alert("❌ El email '" + email + "' no está registrado en la hoja de TEST.");
+                alert("❌ ACCESO DENEGADO.\n\nEl email '" + email + "' no está en la Columna B de la hoja USUARIOS.");
             }
         }
-        btn.textContent = "Entrar al Test";
         btn.disabled = false;
+        btn.textContent = "Entrar al Test";
     };
 
     const script = document.createElement('script');
-    script.src = apiUrl + '?type=all&callback=' + callbackName;
+    script.src = URL_SCRIPT + '?type=all&callback=' + callbackName;
     document.body.appendChild(script);
 }
 </script>
