@@ -12,40 +12,24 @@
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
 .wrap{max-width:860px;margin:0 auto;padding:1.8rem 1.2rem}
 header{text-align:center;margin-bottom:1.6rem}
-header svg{display:block;margin:0 auto .4rem}
 h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:var(--D);letter-spacing:-1px}
 .sub{color:var(--G);font-size:1rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
 .card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:2px solid var(--Y);margin-bottom:1.4rem}
 .field{margin-bottom:1.1rem;text-align:left}
 .field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
-.field input, .field select{width:100%;padding:.82rem 1rem;border:2px solid var(--B);border-radius:10px;font-size:1rem;font-family:inherit}
-.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;box-shadow:0 3px 8px rgba(250,250,0,0.3)}
-.btn:hover:not(:disabled){background:var(--Yd);transform:translateY(-1px)}
-.btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed;box-shadow:none}
-.btn-alt{background:#fff;border:2px solid var(--Y);color:var(--D)}
-.btn-outline{border: 2px solid var(--D); color: var(--D); margin-top: 15px}
-.btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); box-shadow: 0 3px 8px rgba(0,0,0,0.1); margin-top: 10px}
-.btn-danger:hover{background:var(--Yd)}
-.ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
+.field input, .field select{width:100%;padding:.82rem 1rem;border:2px solid var(--B);border-radius:10px;font-size:1rem}
+.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;width:100%}
+.btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed}
+.ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;margin-bottom:1.4rem;font-weight:600}
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
-.m-item{display:flex;align-items:center;padding:8px;gap:10px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem}
-.m-item input{width:18px;height:18px;cursor:pointer}
-.qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid var(--Y);padding-bottom:5px}
+.m-item{display:flex;align-items:center;padding:8px;gap:10px;border-bottom:1px solid #edf2f7}
 .pbar-bg{background:var(--B);border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
 .pbar{background:var(--Y);height:100%;transition:width .4s ease}
 .opt{display:flex;align-items:center;gap:.85rem;padding:1rem;border:2px solid var(--B);border-radius:11px;cursor:pointer;background:#fff;margin-bottom:10px}
-.opt.dis{cursor:default}
 .opt.ok{border-color:var(--V);background:#f0fdf4}
 .opt.ko{border-color:var(--R);background:#fef2f2}
-.oltr{width:30px;height:30px;border-radius:50%;background:var(--B);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:0.9rem;color:var(--D)}
-.opt.ok .oltr{background:var(--V);color:#fff}
-.opt.ko .oltr{background:var(--R);color:#fff}
-.fb{margin-top:1.3rem;padding:1.2rem;border-radius:10px}
-.fb.ok{background:#f0fdf4;border-left:4px solid var(--V)}
-.fb.ko{background:#fef2f2;border-left:4px solid var(--R)}
-.fb.wa{background:#fffbeb;border-left:4px solid var(--W)}
-.fb-t{font-weight:700;margin-bottom:8px}
-.fb-body{font-size:0.95rem;color:var(--D2);white-space:pre-wrap}
+.oltr{width:30px;height:30px;border-radius:50%;background:var(--B);display:flex;align-items:center;justify-content:center;font-weight:700}
+.fb{margin-top:1.3rem;padding:1.2rem;border-radius:10px;border-left:4px solid var(--V)}
 .hidden{display:none!important}
 </style>
 </head>
@@ -53,67 +37,53 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 
 <div class="wrap">
     <header>
-        <svg width="60" height="60" viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" fill="rgb(250,250,0)" stroke="#2c3e50" stroke-width="3"/><path d="M22 34L30 42L46 26" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h1>ENFOCADOS</h1>
-        <div class="sub">Plataforma de Preparación Profesional</div>
+        <div class="sub">Plataforma de Oposiciones</div>
     </header>
 
     <div id="secLogin" class="card">
-      <h2 style="text-align:center;margin-bottom:1.5rem">Acceso (TEST)</h2>
+        <h2 style="text-align:center;margin-bottom:1.5rem">Acceso de Test</h2>
         <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
-        <button id="btnLogin" class="btn" style="width:100%" onclick="doLogin()">Entrar</button>
+        <button id="btnLogin" class="btn" onclick="doLogin()">Entrar</button>
     </div>
 
     <div id="secConfig" class="card hidden">
-        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="resetApp(true)">SALIR</span></div>
+        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-            <div class="field">
-                <label>Nº Preguntas (10-100)</label>
-                <input type="number" id="inNum" value="10" min="10" max="100">
-            </div>
-            <div class="field">
-                <label>Modo Feedback</label>
-                <select id="inFeedback">
-                    <option value="con">Con explicación</option>
-                    <option value="sin">Sin explicación</option>
-                </select>
-            </div>
+            <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10"></div>
+            <div class="field"><label>Feedback</label><select id="inFeedback"><option value="con">Con explicación</option><option value="sin">Sin</option></select></div>
         </div>
-      <div class="field">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
-                <label style="font-weight:600; font-size:0.9rem">Materias</label>
-                <button class="btn-sm" style="border:none; cursor:pointer" onclick="toggleAll()">Todas/Ninguna</button>
-            </div>
-            <div id="multiMat" class="multi-box"></div>
+        <div class="field">
+            <label>Materias</label>
+            <div id="multiMat" class="multi-box">Cargando materias...</div>
         </div>
-        <button id="btnStart" class="btn" style="width:100%" onclick="startExam()" disabled>Selecciona una materia</button>
+        <button id="btnStart" class="btn" onclick="startExam()">COMENZAR EXAMEN</button>
     </div>
 
     <div id="secQ" class="card hidden">
-        <div class="qhdr"><span id="qNum" style="font-weight:800"></span><span id="qProg"></span></div>
+        <div id="qNum" style="font-weight:800"></div>
         <div class="pbar-bg"><div id="pBar" class="pbar"></div></div>
-        <div id="qTxt" style="font-size:1.1rem;font-weight:600;margin-bottom:1.5rem;white-space:pre-wrap"></div>
-      <div id="optsWrap"></div>
+        <div id="qTxt" style="font-size:1.1rem;margin-bottom:1.5rem;white-space:pre-wrap"></div>
+        <div id="optsWrap"></div>
         <div id="fbWrap"></div>
         <div style="display:flex; gap:10px; margin-top:1.5rem">
-            <button id="btnPrev" class="btn btn-alt" style="flex:1" onclick="prevQ()">Anterior</button>
-            <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
+            <button class="btn" style="background:#fff;border:2px solid var(--Y)" onclick="prevQ()">Anterior</button>
+            <button class="btn" onclick="nextQ()">Siguiente / Terminar</button>
         </div>
-        <button id="btnFinishNow" class="btn btn-danger" style="width:100%" onclick="forceFinish()">Terminar Intento</button>
     </div>
 
     <div id="secRes" class="card hidden" style="text-align:center">
         <h2>Resultado</h2>
         <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
-        <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
+        <button class="btn" onclick="location.reload()">Nueva Evaluación</button>
     </div>
 </div>
 
 <script>
 const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+let allQuestions = [], exam = [], idx = 0, userAnswers = [];
 
-let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
-
+// Función para conectar con Google Sheets
 function fetchJSONP(url, callback) {
     const name = 'jsonp_' + Date.now();
     window[name] = (data) => { delete window[name]; callback(data); };
@@ -122,32 +92,35 @@ function fetchJSONP(url, callback) {
     document.body.appendChild(s);
 }
 
-// CORRECCIÓN CLAVE: Esta función ahora mapea los datos por POSICIÓN DE COLUMNA
-// para evitar errores si los nombres de los encabezados cambian ligeramente.
 function doLogin() {
     const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    if(!email) return;
-    document.getElementById('btnLogin').textContent = "Verificando...";
+    if(!email) return alert("Escribe tu email");
+    
+    document.getElementById('btnLogin').textContent = "Cargando...";
 
-    fetchJSONP(apiUrl + '?type=all', (res) => {
-        // Buscamos usuario en la hoja "users" (Columna B es el email, índice [1])
-        const userRow = res.users.rows.find(row => row[1]?.toString().toLowerCase().trim() === email);
-
+    // Pedimos datos de usuarios y preguntas a la vez
+    fetchJSONP(apiUrl + '?type=users', (uRes) => {
+        const users = uRes.rows;
+        // Buscamos el email en la segunda columna (índice 1)
+        const userRow = users.find(row => row[1] && row[1].toLowerCase().trim() === email);
+        
         if(userRow) {
-            // Mapeamos preguntas (Columna I es Materia [8], B es Pregunta [1], C Opciones [2]...)
-            allQuestions = res.questions.rows.slice(1).map(q => ({
-                materia: String(q[8] || "General").trim(),
-                pregunta: q[1],
-                opciones: q[2],
-                respuesta: String(q[3] || "").trim().toUpperCase(),
-                saber: q[4]
-            })).filter(q => q.pregunta);
+            fetchJSONP(apiUrl + '?type=questions', (qRes) => {
+                // Mapeamos las preguntas (ajustado a tu nueva estructura de columnas)
+                allQuestions = qRes.rows.slice(1).map(r => ({
+                    pregunta: r[1],
+                    opciones: r[2],
+                    respuesta: String(r[3] || "").trim().toUpperCase(),
+                    saber: r[4] || "",
+                    materia: r[8] || "General"
+                })).filter(q => q.pregunta);
 
-            document.getElementById('cfgUser').textContent = "Hola, " + userRow[0];
-            setupMats();
-            showScreen('secConfig');
+                document.getElementById('cfgUser').textContent = "Hola, " + userRow[0];
+                setupMats();
+                showScreen('secConfig');
+            });
         } else {
-            alert("Email no encontrado en la base de datos.");
+            alert("Acceso denegado: Email no encontrado.");
             document.getElementById('btnLogin').textContent = "Entrar";
         }
     });
@@ -158,24 +131,17 @@ function setupMats() {
     const container = document.getElementById('multiMat');
     container.innerHTML = mats.map(m => `
         <label class="m-item">
-            <input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()">
-            <span>${m}</span>
+            <input type="checkbox" name="materia" value="${m}" checked> <span>${m}</span>
         </label>
     `).join('');
 }
 
-function updateStartButton() {
-    const sel = document.querySelectorAll('input[name="materia"]:checked').length;
-    const btn = document.getElementById('btnStart');
-    btn.disabled = sel === 0;
-    btn.textContent = sel > 0 ? "COMENZAR EXAMEN" : "Selecciona una materia";
-}
-
 function startExam() {
-    const selected = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
-    const num = parseInt(document.getElementById('inNum').value) || 10;
+    const sel = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
+    if(sel.length === 0) return alert("Selecciona al menos una materia");
     
-    exam = allQuestions.filter(q => selected.includes(q.materia))
+    const num = parseInt(document.getElementById('inNum').value) || 10;
+    exam = allQuestions.filter(q => sel.includes(q.materia))
             .sort(() => 0.5 - Math.random()).slice(0, num);
     
     idx = 0; userAnswers = new Array(exam.length).fill(null);
@@ -184,16 +150,15 @@ function startExam() {
 }
 
 function showQ() {
-    const q = exam[idx], ans = userAnswers[idx];
-    document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
-    document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
+    const q = exam[idx];
+    document.getElementById('qNum').textContent = "Pregunta " + (idx + 1) + "/" + exam.length;
     document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
     document.getElementById('qTxt').textContent = q.pregunta;
 
     const wrap = document.getElementById('optsWrap');
     wrap.innerHTML = "";
+    document.getElementById('fbWrap').innerHTML = "";
     
-    // Split de opciones respetando saltos de línea del Excel
     const opts = q.opciones.split('\n').filter(o => o.trim());
     const letters = ['A', 'B', 'C', 'D'];
 
@@ -201,27 +166,22 @@ function showQ() {
         const L = letters[i];
         const div = document.createElement('div');
         div.className = 'opt';
-        
-        // Si ya ha respondido, mostramos feedback instantáneo
-        if(ans !== null) {
-            div.classList.add('dis');
-            if(L === q.respuesta) div.classList.add('ok');
-            if(ans === L && ans !== q.respuesta) div.classList.add('ko');
+        if(userAnswers[idx] === L) {
+            div.classList.add(L === q.respuesta ? 'ok' : 'ko');
+        } else if(userAnswers[idx] !== null && L === q.respuesta) {
+            div.classList.add('ok');
         }
-
+        
         div.innerHTML = `<div class="oltr">${L}</div><div style="flex:1">${txt}</div>`;
         div.onclick = () => { if(userAnswers[idx] === null) { userAnswers[idx] = L; showQ(); } };
         wrap.appendChild(div);
     });
 
-    // Cuadro de feedback
-    const fb = document.getElementById('fbWrap');
-    fb.innerHTML = "";
-    if(ans !== null) {
-        fb.innerHTML = `<div class="fb ${ans === q.respuesta ? 'ok' : 'ko'}">
-            <div class="fb-t">${ans === q.respuesta ? '✓ CORRECTO' : '✗ INCORRECTO'}</div>
-            <div class="fb-body"><b>Respuesta: ${q.respuesta}</b><br><br>${q.saber || ""}</div>
-        </div>`;
+    if(userAnswers[idx] !== null && document.getElementById('inFeedback').value === 'con') {
+        document.getElementById('fbWrap').innerHTML = `
+            <div class="fb">
+                <b>Respuesta: ${q.respuesta}</b><br>${q.saber}
+            </div>`;
     }
 }
 
@@ -234,7 +194,6 @@ function prevQ() { if(idx > 0) { idx--; showQ(); } }
 function finishExam() {
     const oks = userAnswers.filter((a, i) => a === exam[i].respuesta).length;
     document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
-    document.getElementById('resButtons').innerHTML = `<button class="btn" onclick="location.reload()">Nueva Evaluación</button>`;
     showScreen('secRes');
 }
 
@@ -242,8 +201,6 @@ function showScreen(id) {
     document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
 }
-
-function resetApp(logout) { location.reload(); }
 </script>
 </body>
 </html>
