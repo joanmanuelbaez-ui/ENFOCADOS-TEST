@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENFOCADOS - Plataforma de Oposiciones (TEST)</title>
+<title>ENFOCADOS - PLATAFORMA PROFESIONAL DE PREPARACIÓN DE TEST</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS DE PRODUCCIÓN --- */
+/* --- ESTILOS MANTENIDOS --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -14,7 +14,7 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%
 header{text-align:center;margin-bottom:1.6rem}
 header svg{display:block;margin:0 auto .4rem}
 h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:var(--D);letter-spacing:-1px}
-.sub{color:var(--G);font-size:1rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
+.sub{color:var(--G);font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:1px}
 .card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:2px solid var(--Y);margin-bottom:1.4rem}
 .field{margin-bottom:1.1rem;text-align:left}
 .field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
@@ -22,10 +22,6 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;box-shadow:0 3px 8px rgba(250,250,0,0.3)}
 .btn:hover:not(:disabled){background:var(--Yd);transform:translateY(-1px)}
 .btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed;box-shadow:none}
-.btn-alt{background:#fff;border:2px solid var(--Y);color:var(--D)}
-.btn-outline{border: 2px solid var(--D); color: var(--D); margin-top: 15px}
-.btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); box-shadow: 0 3px 8px rgba(0,0,0,0.1); margin-top: 10px}
-.btn-danger:hover{background:var(--Yd)}
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
 .m-item{display:flex;align-items:center;padding:8px;gap:10px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem}
@@ -56,11 +52,11 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     <header>
         <svg width="60" height="60" viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" fill="rgb(250,250,0)" stroke="#2c3e50" stroke-width="3"/><path d="M22 34L30 42L46 26" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h1>ENFOCADOS</h1>
-        <div class="sub">Entorno de Pruebas (TEST)</div>
+        <div class="sub">PLATAFORMA PROFESIONAL DE PREPARACIÓN DE TEST</div>
     </header>
 
     <div id="secLogin" class="card">
-      <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
+        <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
         <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
         <button id="btnLogin" class="btn" style="width:100%" onclick="doLogin()">Entrar</button>
     </div>
@@ -80,7 +76,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
                 </select>
             </div>
         </div>
-      <div class="field">
+        <div class="field">
             <div style="display:flex; justify-content:space-between; margin-bottom:8px">
                 <label style="font-weight:600; font-size:0.9rem">Materias</label>
                 <button class="btn-sm" style="border:none; cursor:pointer" onclick="toggleAll()">Todas/Ninguna</button>
@@ -94,14 +90,14 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
         <div class="qhdr"><span id="qNum" style="font-weight:800"></span><span id="qProg"></span></div>
         <div class="pbar-bg"><div id="pBar" class="pbar"></div></div>
         <div id="qTxt" style="font-size:1.1rem;font-weight:600;margin-bottom:1.5rem;white-space:pre-wrap"></div>
-      <div id="optsWrap"></div>
+        <div id="optsWrap"></div>
         <div id="fbWrap"></div>
         <div style="display:flex; gap:10px; margin-top:1.5rem">
             <button id="btnPrev" class="btn btn-alt" style="flex:1" onclick="prevQ()">Anterior</button>
             <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
         </div>
-        <button id="btnFinishNow" class="btn btn-danger" style="width:100%" onclick="forceFinish()">Terminar Intento</button>
-        <button id="btnBackRes" class="btn btn-outline hidden" style="width:100%" onclick="showScreen('secRes')">← Volver a Resultados</button>
+        <button id="btnFinishNow" class="btn btn-danger" style="width:100%; background: #FAFA00; color: #2c3e50; border: 2px solid #2c3e50; font-weight: 700; margin-top: 15px; padding: 10px; border-radius: 10px; cursor: pointer" onclick="forceFinish()">Terminar Intento</button>
+        <button id="btnBackRes" class="btn btn-outline hidden" style="width:100%; margin-top: 15px" onclick="showScreen('secRes')">← Volver a Resultados</button>
     </div>
 
     <div id="secRes" class="card hidden" style="text-align:center">
@@ -117,9 +113,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 </div>
 
 <script>
-// URL DEL ENTORNO TEST CONFIRMADA
 const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-
 let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
 let questionsWithMistakes = [], showInstantFeedback = true;
 
@@ -129,28 +123,11 @@ function showScreen(id) {
 }
 
 function fetchJSONP(url, callback) {
-    const name = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000);
-    window[name] = (data) => { 
-        delete window[name]; 
-        const script = document.getElementById(name);
-        if(script) script.remove();
-        callback(data); 
-    };
+    const name = 'jsonp_' + Date.now();
+    window[name] = (data) => { delete window[name]; callback(data); };
     const s = document.createElement('script');
-    s.id = name;
     s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
     document.body.appendChild(s);
-}
-
-// Adaptación para el nuevo motor que devuelve objetos con .rows
-function parseRows(rows) {
-    if(!rows || rows.length < 1) return [];
-    // En el motor de TEST, los encabezados son la fila 0 del Excel original, 
-    // pero el script de TEST ya devuelve los datos limpios si se configuró así.
-    // Vamos a mapear manualmente según tu estructura estándar:
-    // Usuarios: [0]Nombre, [1]Correo, [2]Plan...
-    // Preguntas: [0]Materia, [1]Pregunta, [2]Opciones, [3]Respuesta, [4]Saber...
-    return rows; 
 }
 
 function doLogin() {
@@ -160,40 +137,41 @@ function doLogin() {
     btn.textContent = "Verificando...";
     
     fetchJSONP(apiUrl + '?type=all', (res) => {
-        if(res.error) {
-            alert("Error: " + res.message);
-            btn.textContent = "Entrar";
-            return;
-        }
-
-        // Mapeo de Usuarios (Fila B es índice 1)
-        const userFound = res.users.rows.find(u => u[1] && u[1].toLowerCase().trim() === email);
+        // En el sistema de TEST, los datos vienen en res.users.rows y res.questions.rows
+        const user = res.users.rows.find(row => String(row[1]).toLowerCase().trim() === email);
         
-        if(userFound) {
-            // Mapeo de Preguntas
+        if(user) {
+            // Mapeamos las preguntas detectando las columnas por posición
             allQuestions = res.questions.rows.map(q => ({
-                materia: q[0],
-                pregunta: q[1],
-                opciones: q[2],
-                respuesta: q[3],
-                saber: q[4]
+                materia: String(q[0]),
+                pregunta: String(q[1]),
+                opciones: String(q[2]),
+                respuesta: String(q[3]),
+                saber: String(q[4])
             }));
 
-            document.getElementById('cfgUser').textContent = userFound[0] || "ALUMNO";
+            document.getElementById('cfgUser').textContent = user[0] || "ALUMNO";
             setupMats();
             showScreen('secConfig');
             btn.textContent = "Entrar";
         } else {
-            alert("Email no autorizado en el entorno de TEST");
+            alert("No autorizado");
             btn.textContent = "Entrar";
         }
     });
 }
 
 function setupMats() {
-    const mats = [...new Set(allQuestions.map(q => q.materia).filter(m => m))].sort();
+    // Obtenemos materias únicas
+    const mats = [...new Set(allQuestions.map(q => q.materia).filter(m => m !== "" && m !== "undefined"))].sort();
     const container = document.getElementById('multiMat');
     container.innerHTML = "";
+    
+    if(mats.length === 0) {
+        container.innerHTML = "<p style='padding:10px; font-size:0.8rem; color:red'>Error: No se han detectado materias en el Excel.</p>";
+        return;
+    }
+
     mats.forEach(m => {
         container.innerHTML += `<label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>`;
     });
@@ -210,22 +188,20 @@ function updateStartButton() {
     const sel = Array.from(document.querySelectorAll('input[name="materia"]:checked'));
     const btn = document.getElementById('btnStart');
     btn.disabled = sel.length === 0;
-    btn.textContent = sel.length === 1 ? "EXAMEN SINGULAR" : (sel.length > 1 ? "EXAMEN ÓMNIBUS" : "Selecciona una materia");
+    btn.textContent = sel.length >= 1 ? "COMENZAR EXAMEN" : "Selecciona una materia";
 }
 
 function startExam() {
     let numInput = document.getElementById('inNum');
     let num = parseInt(numInput.value);
-    if (isNaN(num) || num < 10) { num = 10; numInput.value = 10; }
-    else if (num > 100) { num = 100; numInput.value = 100; }
     showInstantFeedback = document.getElementById('inFeedback').value === "con";
     const selectedMats = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
+    
     let pool = allQuestions.filter(q => selectedMats.includes(q.materia));
     exam = pool.sort(() => 0.5 - Math.random()).slice(0, num);
+    
     idx = 0; isReviewing = false;
     userAnswers = new Array(exam.length).fill(null);
-    document.getElementById('btnBackRes').classList.add('hidden');
-    document.getElementById('btnFinishNow').classList.remove('hidden');
     showQ();
     showScreen('secQ');
 }
@@ -238,51 +214,45 @@ function showQ() {
     document.getElementById('qTxt').textContent = q.pregunta;
     document.getElementById('btnPrev').disabled = (idx === 0);
     document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
+    
     const wrap = document.getElementById('optsWrap');
     wrap.innerHTML = "";
     document.getElementById('fbWrap').innerHTML = "";
+    
     const letters = ['A', 'B', 'C', 'D'];
     const correcta = (q.respuesta || "").toString().trim().toUpperCase();
-    let raw = (q.opciones || "").toString();
-    let opts = raw.split('\n').map(o => o.trim()).filter(o => o.length > 0);
-    if(opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
-    opts = opts.map(o => o.replace(/^[a-d][\)\.]\s*/i, '').trim());
+    
+    // Procesar opciones
+    let opts = (q.opciones || "").split('\n').map(o => o.trim()).filter(o => o.length > 0);
+    
     opts.forEach((txt, i) => {
         const letter = letters[i];
         const div = document.createElement('div');
         div.className = 'opt';
+        
         if(savedAns !== null && (isReviewing || showInstantFeedback)) {
             div.classList.add('dis');
             if(letter === correcta) div.classList.add('ok');
             if(letter === savedAns && letter !== correcta) div.classList.add('ko');
         } 
-        else if(savedAns === null && isReviewing) {
-            div.classList.add('dis');
-            if(letter === correcta) div.classList.add('ok');
-        }
         else if (savedAns !== null && !showInstantFeedback && !isReviewing) {
             if (letter === savedAns) div.classList.add('selected-no-fb');
         }
+
         div.innerHTML = `<div class="oltr">${letter}</div><div style="flex:1">${txt}</div>`;
         div.onclick = () => { 
-            if(!isReviewing) {
-                if(!showInstantFeedback) {
-                    userAnswers[idx] = (userAnswers[idx] === letter) ? null : letter;
-                    showQ();
-                } else if(savedAns === null || savedAns === letter) {
-                    userAnswers[idx] = (userAnswers[idx] === letter) ? null : letter;
-                    showQ();
-                }
+            if(!isReviewing && (savedAns === null || !showInstantFeedback)) {
+                userAnswers[idx] = letter;
+                showQ();
             }
         };
         wrap.appendChild(div);
     });
+
     if(isReviewing || (savedAns !== null && showInstantFeedback)) {
         const isOk = (savedAns === correcta);
-        const isBlank = (savedAns === null);
-        let fbType = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
-        let fbTitle = isOk ? '✓ CORRECTO' : (isBlank ? '⚠ EN BLANCO' : '✗ INCORRECTO');
-        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${correcta}</b><br><br>${q.saber || "Sin detalles."}</div></div>`;
+        const fbType = isOk ? 'ok' : (savedAns === null ? 'wa' : 'ko');
+        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${isOk ? '✓ CORRECTO' : '✗ INCORRECTO'}</div><div class="fb-body"><b>Respuesta: ${correcta}</b><br><br>${q.saber || "Sin explicación adicional."}</div></div>`;
     }
 }
 
@@ -291,9 +261,7 @@ function nextQ() {
     else if(!isReviewing) finishExam();
     else showScreen('secRes');
 }
-
 function prevQ() { if(idx > 0) { idx--; showQ(); } }
-
 function forceFinish() { finishExam(); }
 
 function finishExam() {
@@ -301,39 +269,25 @@ function finishExam() {
     questionsWithMistakes = [];
     userAnswers.forEach((ans, i) => {
         const cor = (exam[i].respuesta || "").toString().trim().toUpperCase();
-        if(ans === cor) { oks++; } 
-        else if (ans === null) { was++; questionsWithMistakes.push({ q: exam[i], a: ans }); } 
-        else { kos++; questionsWithMistakes.push({ q: exam[i], a: ans }); }
+        if(ans === cor) oks++; 
+        else if (ans === null) was++; 
+        else kos++;
     });
     document.getElementById('rOk').textContent = oks;
     document.getElementById('rKo').textContent = kos;
     document.getElementById('rWa').textContent = was;
     document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
-    document.getElementById('btnFinishNow').classList.add('hidden');
+    
     const btnArea = document.getElementById('resButtons');
-    btnArea.innerHTML = `<button class="btn" onclick="resetApp(false)">Nueva Evaluación</button><button class="btn btn-alt" onclick="reviewFull()">Revisar Todo (${exam.length})</button>`;
-    if(questionsWithMistakes.length > 0) { 
-        btnArea.innerHTML += `<button class="btn btn-outline" onclick="reviewOnlyMistakes()">Revisar errores/blancos (${questionsWithMistakes.length})</button>`;
-    }
+    btnArea.innerHTML = `<button class="btn" onclick="resetApp(false)">Nueva Evaluación</button><button class="btn btn-alt" onclick="reviewFull()">Revisar Todo</button>`;
     showScreen('secRes');
 }
 
-function reviewFull() { isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); }
-
-function reviewOnlyMistakes() {
-    exam = questionsWithMistakes.map(m => m.q);
-    userAnswers = questionsWithMistakes.map(m => m.a);
-    isReviewing = true;
-    idx = 0;
-    document.getElementById('btnBackRes').classList.remove('hidden');
-    document.getElementById('btnFinishNow').classList.add('hidden');
-    showQ(); showScreen('secQ');
-}
+function reviewFull() { isReviewing = true; idx = 0; showQ(); showScreen('secQ'); }
 
 function resetApp(logout) {
     if(logout) location.reload();
-    else { exam=[]; userAnswers=[]; isReviewing=false;
-    showScreen('secConfig'); updateStartButton(); }
+    else { showScreen('secConfig'); }
 }
 </script>
 </body>
