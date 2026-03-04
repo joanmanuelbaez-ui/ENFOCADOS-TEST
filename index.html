@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENFOCADOS - PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</title>
+<title>ENFOCADOS · PLATAFORMA PROFESIONAL (PROD-LINK)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS ORIGINALES DE PRODUCCIÓN --- */
+/* --- TUS ESTILOS DE PRODUCCIÓN --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -40,169 +40,9 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 <div class="wrap">
     <header>
         <h1>ENFOCADOS</h1>
-        <div class="sub">PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</div>
+        <div class="sub">ACCESO PROFESIONAL (TEST DATABASE)</div>
     </header>
 
     <div id="secLogin" class="card">
         <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
-        <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
-        <button id="btnLogin" class="btn" onclick="doLogin()">Entrar</button>
-    </div>
-
-    <div id="secConfig" class="card hidden">
-        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-            <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10" min="5"></div>
-            <div class="field">
-                <label>Feedback</label>
-                <select id="inFeedback"><option value="con">Con explicación</option><option value="sin">Sin explicación</option></select>
-            </div>
-        </div>
-        <div class="field">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
-                <label style="font-weight:600">Materias</label>
-                <button onclick="toggleAll()" style="background:none; border:none; color:var(--G); cursor:pointer; font-size:0.8rem">Todas/Ninguna</button>
-            </div>
-            <div id="multiMat" class="multi-box"></div>
-        </div>
-        <button id="btnStart" class="btn" onclick="startExam()" disabled>Selecciona una materia</button>
-    </div>
-
-    <div id="secQ" class="card hidden">
-        <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:10px">
-            <span id="qIdx"></span><span id="qTotal"></span>
-        </div>
-        <div id="qTxt" style="font-size:1.1rem; font-weight:600; margin-bottom:1.5rem; white-space:pre-wrap"></div>
-        <div id="optsWrap"></div>
-        <div id="fbWrap" class="hidden"></div>
-        <div style="display:flex; gap:10px; margin-top:20px">
-            <button id="btnPrev" class="btn" style="background:var(--B); color:var(--D)" onclick="prevQ()">Anterior</button>
-            <button id="btnNext" class="btn" onclick="nextQ()">Siguiente</button>
-        </div>
-    </div>
-</div>
-
-<script>
-const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-let allQuestions = [], exam = [], idx = 0, answers = [];
-
-function fetchJSONP(url, cb) {
-    const name = 'jsonp_' + Date.now();
-    window[name] = (d) => { delete window[name]; cb(d); };
-    const s = document.createElement('script');
-    s.src = `${url}${url.includes('?') ? '&' : '?'}callback=${name}`;
-    document.body.appendChild(s);
-}
-
-function doLogin() {
-    const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    if(!email) return;
-    document.getElementById('btnLogin').textContent = "Verificando...";
-    
-    fetchJSONP(apiUrl + '?type=all', (res) => {
-        const user = res.users.rows.find(u => u[1]?.toLowerCase().trim() === email);
-        if(user) {
-            // AJUSTE CLAVE: Columna I (8) para Materia, Columna B (1) para Pregunta
-            allQuestions = res.questions.rows.slice(1).map(q => ({
-                materia: String(q[8] || "Sin Materia").trim(),
-                pregunta: q[1],
-                opciones: q[2],
-                respuesta: String(q[3] || "").trim().toLowerCase(),
-                saber: q[4]
-            })).filter(q => q.materia && q.pregunta);
-
-            document.getElementById('cfgUser').textContent = user[0];
-            renderMats();
-            document.getElementById('secLogin').classList.add('hidden');
-            document.getElementById('secConfig').classList.remove('hidden');
-        } else {
-            alert("Acceso denegado");
-            document.getElementById('btnLogin').textContent = "Entrar";
-        }
-    });
-}
-
-function renderMats() {
-    const container = document.getElementById('multiMat');
-    const temas = [...new Set(allQuestions.map(q => q.materia))].sort();
-    container.innerHTML = temas.map(t => `
-        <label class="m-item">
-            <input type="checkbox" name="mat" value="${t}" onchange="checkBtn()">
-            <span>${t}</span>
-        </label>
-    `).join('');
-}
-
-function checkBtn() {
-    const sel = document.querySelectorAll('input[name="mat"]:checked').length;
-    document.getElementById('btnStart').disabled = (sel === 0);
-}
-
-function toggleAll() {
-    const checks = document.querySelectorAll('input[name="mat"]');
-    const anyUnchecked = Array.from(checks).some(c => !c.checked);
-    checks.forEach(c => c.checked = anyUnchecked);
-    checkBtn();
-}
-
-function startExam() {
-    const selected = Array.from(document.querySelectorAll('input[name="mat"]:checked')).map(c => c.value);
-    const num = parseInt(document.getElementById('inNum').value);
-    let pool = allQuestions.filter(q => selected.includes(q.materia));
-    exam = pool.sort(() => 0.5 - Math.random()).slice(0, num);
-    idx = 0; answers = new Array(exam.length).fill(null);
-    showQ();
-    document.getElementById('secConfig').classList.add('hidden');
-    document.getElementById('secQ').classList.remove('hidden');
-}
-
-function showQ() {
-    const q = exam[idx];
-    const ans = answers[idx];
-    const modeFB = document.getElementById('inFeedback').value === 'con';
-    
-    document.getElementById('qIdx').textContent = `Pregunta ${idx + 1}`;
-    document.getElementById('qTotal').textContent = `${idx + 1} / ${exam.length}`;
-    document.getElementById('qTxt').textContent = q.pregunta;
-    
-    const wrap = document.getElementById('optsWrap');
-    wrap.innerHTML = "";
-    document.getElementById('fbWrap').classList.add('hidden');
-
-    const opts = q.opciones.split('\n').filter(o => o.trim());
-    const letters = ['a','b','c','d'];
-
-    opts.forEach((text, i) => {
-        const L = letters[i];
-        const div = document.createElement('div');
-        div.className = 'opt';
-        
-        if(ans) {
-            if(L === q.respuesta) div.classList.add('ok');
-            if(ans === L && L !== q.respuesta) div.classList.add('ko');
-        }
-
-        div.innerHTML = `<div class="oltr">${L.toUpperCase()}</div><div style="flex:1">${text}</div>`;
-        div.onclick = () => { if(!answers[idx]) { answers[idx] = L; showQ(); } };
-        wrap.appendChild(div);
-    });
-
-    if(ans && modeFB) {
-        const fb = document.getElementById('fbWrap');
-        fb.classList.remove('hidden');
-        fb.className = `fb ${ans === q.respuesta ? 'fb-ok' : 'fb-ko'}`;
-        fb.innerHTML = `<strong>${ans === q.respuesta ? 'CORRECTO' : 'INCORRECTO'}</strong><br>${q.saber || ""}`;
-    }
-    
-    document.getElementById('btnNext').textContent = (idx === exam.length - 1) ? "Finalizar" : "Siguiente";
-}
-
-function nextQ() {
-    if(idx < exam.length - 1) { idx++; showQ(); } 
-    else { alert("Examen finalizado. Aciertos: " + answers.filter((a,i) => a === exam[i].respuesta).length); location.reload(); }
-}
-
-function prevQ() { if(idx > 0) { idx--; showQ(); } }
-</script>
-</body>
-</html>
+        <div class="field"><label>Email</label><input type="email"
