@@ -6,7 +6,7 @@
 <title>ENFOCADOS · Plataforma de Preparación (TEST)</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS ORIGINALES DE PRODUCCIÓN --- */
+/* --- TUS ESTILOS DE PRODUCCIÓN --- */
 :root {
   --Y: rgb(250,250,0); --Yd: rgb(215,215,0); --D: #2c3e50; --D2: #1a252f;
   --V: #10b981; --R: #ef4444; --G: #64748b; --B: #e2e8f0; --W: #f59e0b;
@@ -23,93 +23,149 @@ body {
   background: rgba(255,255,255,0.95); border-radius: 24px; padding: 2.5rem;
   box-shadow: var(--card-shadow); border: 2px solid var(--Y); margin-bottom: 2rem;
 }
-h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 800; color: var(--D); letter-spacing: -2px; text-align: center; }
-.field { margin-bottom: 1.5rem; }
-.field label { display: block; margin-bottom: 0.5rem; font-weight: 700; font-size: 0.9rem; color: var(--G); text-transform: uppercase; }
-.field input, .field select {
-  width: 100%; padding: 1rem 1.25rem; border: 2px solid var(--B); border-radius: 14px;
-  font-size: 1.05rem; font-family: inherit; transition: all 0.2s;
-}
+.hidden { display: none !important; }
 .btn {
   width: 100%; padding: 1.1rem; background: var(--Y); color: var(--D); border: none;
   border-radius: 14px; font-size: 1.1rem; font-weight: 800; cursor: pointer;
   font-family: 'Space Grotesk', sans-serif; transition: all 0.2s;
 }
 .btn:hover { background: var(--Yd); transform: translateY(-2px); }
-.btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
-.multi-box {
-  border: 2px solid var(--B); border-radius: 14px; padding: 0.75rem;
-  max-height: 250px; overflow-y: auto; background: #fff;
-}
-.m-item {
-  display: flex; align-items: center; padding: 0.85rem; gap: 1rem; cursor: pointer;
-  border-radius: 10px; transition: background 0.2s;
-}
-.m-item:hover { background: #f8fafc; }
-.m-item input { width: 20px; height: 20px; accent-color: var(--D); }
-.hidden { display: none !important; }
-.opt {
-  display: flex; align-items: center; gap: 1rem; padding: 1.25rem; border: 2px solid var(--B);
-  border-radius: 16px; cursor: pointer; background: #fff; margin-bottom: 0.75rem;
-  white-space: pre-wrap; font-weight: 500;
-}
+.btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+.field input { width: 100%; padding: 1rem; border: 2px solid var(--B); border-radius: 14px; font-size: 1rem; }
+.opt { display: flex; align-items: center; gap: 1rem; padding: 1.2rem; border: 2px solid var(--B); border-radius: 16px; cursor: pointer; background: #fff; margin-bottom: 0.7rem; }
 .opt.ok { border-color: var(--V); background: #f0fdf4; }
 .opt.ko { border-color: var(--R); background: #fef2f2; }
-.oltr {
-  width: 32px; height: 32px; border-radius: 50%; background: var(--B);
-  display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0;
-}
-/* Estilos resumen resultados producción */
-.res-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0; }
-.res-box { padding: 1.5rem; border-radius: 20px; text-align: center; }
+.oltr { width: 30px; height: 30px; border-radius: 50%; background: var(--B); display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-    <header style="margin-bottom: 2.5rem;">
-        <h1>ENFOCADOS</h1>
-        <p style="text-align:center; color:var(--G); font-weight:700;">PLATAFORMA DE PREPARACIÓN PROFESIONAL</p>
+    <header style="margin-bottom: 2.5rem; text-align: center;">
+        <h1 style="font-family:'Space Grotesk'; font-size: 3rem; letter-spacing: -2px;">ENFOCADOS</h1>
+        <p style="color:var(--G); font-weight:700;">ENTORNO DE TEST Y REGISTRO</p>
     </header>
 
     <div id="secLogin" class="card">
-        <div class="field">
-            <label>Email de alumno</label>
-            <input type="email" id="inEmail" placeholder="ejemplo@correo.com">
+        <div class="field" style="margin-bottom:1.5rem">
+            <label style="display:block; margin-bottom:.5rem; font-weight:700; font-size:.9rem; color:var(--G)">EMAIL DE ALUMNO</label>
+            <input type="email" id="inEmail" placeholder="tu@email.com">
         </div>
-        <button id="btnLogin" class="btn" onclick="doLogin()">Entrar a la plataforma</button>
+        <button id="btnLogin" class="btn" onclick="doLogin()">Validar y Entrar</button>
+        <p style="text-align:center; margin-top:1.5rem; font-size:.9rem">
+            ¿No tienes cuenta? <a href="registro.html" style="color:var(--D); font-weight:700">Regístrate aquí</a>
+        </p>
     </div>
 
     <div id="secConfig" class="card hidden">
         <h2 id="cfgUser" style="margin-bottom:1.5rem; font-family:'Space Grotesk'"></h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-            <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10"></div>
-            <div class="field">
-                <label>Feedback</label>
-                <select id="inFeedback"><option value="con">Inmediato</option><option value="sin">Al final</option></select>
-            </div>
-        </div>
         <div class="field">
-            <label>Materias</label>
-            <div id="multiMat" class="multi-box"></div>
+            <label style="font-weight:700">MATERIAS DISPONIBLES</label>
+            <div id="multiMat" style="border:2px solid var(--B); border-radius:14px; padding:10px; max-height:200px; overflow-y:auto; background:#fff; margin-top:10px"></div>
         </div>
-        <button id="btnStart" class="btn" onclick="startExam()" disabled>Selecciona una materia</button>
+        <button id="btnStart" class="btn" onclick="startExam()" disabled style="margin-top:20px">Selecciona Materia</button>
     </div>
 
     <div id="secQ" class="card hidden">
-        <div id="qIdx" style="font-weight:800; color:var(--G); margin-bottom:0.5rem"></div>
-        <div id="qTxt" style="font-size:1.3rem; font-weight:700; margin-bottom:2rem; white-space:pre-wrap;"></div>
+        <div id="qTxt" style="font-size:1.2rem; font-weight:700; margin-bottom:2rem; white-space:pre-wrap"></div>
         <div id="optsWrap"></div>
-        <div id="fbWrap" class="hidden" style="margin-top:1.5rem; padding:1.5rem; border-radius:14px; font-weight:500"></div>
         <div style="display:flex; gap:1rem; margin-top:2rem;">
             <button class="btn" style="background:var(--B)" onclick="prevQ()">Anterior</button>
             <button id="btnNext" class="btn" onclick="nextQ()">Siguiente</button>
         </div>
     </div>
+</div>
 
-    <div id="secRes" class="card hidden">
-        <h2 style="text-align:center; font-family:'Space Grotesk'">Resultado Final</h2>
-        <div class="res-grid">
-            <div class="res-box" style="background:#f0fdf4; color:var(--V)"><strong>Aciertos</strong><br><span id="rOk" style="font-size:2rem">0</span></div>
-            <div class="res-box" style="background:#fef2f2; color:var(--R)"><strong>Errores</strong><br><span id="rKo" style="font-size:2rem">0</span></div>
-            <div class="
+<script>
+// URL de tu Script de Google (La que ya tienes)
+const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+
+let allQuestions = [], exam = [], idx = 0, answers = [];
+
+function fetchJSONP(url, callback) {
+    const name = 'jsonp_' + Date.now();
+    window[name] = (data) => { delete window[name]; callback(data); };
+    const s = document.createElement('script');
+    s.src = `${url}${url.includes('?') ? '&' : '?'}callback=${name}`;
+    document.body.appendChild(s);
+}
+
+function doLogin() {
+    const email = document.getElementById('inEmail').value.trim().toLowerCase();
+    if(!email) return;
+    
+    document.getElementById('btnLogin').textContent = "Buscando en base de datos...";
+    
+    fetchJSONP(apiUrl + '?type=all', (res) => {
+        // CORRECCIÓN CLAVE: El Script de Google devuelve un objeto con .users y .questions
+        // Cada uno tiene una propiedad .rows que es el array de datos.
+        const user = res.users.rows.find(u => u[1]?.toLowerCase().trim() === email);
+        
+        if(user) {
+            // Mapeamos las preguntas de la nueva hoja (Columna I es índice 8)
+            allQuestions = res.questions.rows.slice(1).map(q => ({
+                materia: String(q[8] || "General").trim(),
+                pregunta: q[1],
+                opciones: q[2],
+                respuesta: String(q[3] || "").trim().toLowerCase(),
+                saber: q[4]
+            })).filter(q => q.materia && q.pregunta);
+
+            document.getElementById('cfgUser').textContent = "Hola, " + user[0];
+            renderMats();
+            document.getElementById('secLogin').classList.add('hidden');
+            document.getElementById('secConfig').classList.remove('hidden');
+        } else {
+            alert("Acceso denegado. Asegúrate de que el pago se haya procesado correctamente.");
+            document.getElementById('btnLogin').textContent = "Validar y Entrar";
+        }
+    });
+}
+
+function renderMats() {
+    const container = document.getElementById('multiMat');
+    const temas = [...new Set(allQuestions.map(q => q.materia))].sort();
+    container.innerHTML = temas.map(t => `
+        <label style="display:flex; align-items:center; padding:10px; gap:10px; cursor:pointer">
+            <input type="checkbox" name="mat" value="${t}" onchange="document.getElementById('btnStart').disabled = !document.querySelectorAll('input[name=mat]:checked').length">
+            <span style="font-weight:600">${t}</span>
+        </label>
+    `).join('');
+}
+
+function startExam() {
+    const selected = Array.from(document.querySelectorAll('input[name="mat"]:checked')).map(c => c.value);
+    exam = allQuestions.filter(q => selected.includes(q.materia)).sort(() => 0.5 - Math.random()).slice(0, 10);
+    idx = 0; answers = new Array(exam.length).fill(null);
+    showQ();
+    document.getElementById('secConfig').classList.add('hidden');
+    document.getElementById('secQ').classList.remove('hidden');
+}
+
+function showQ() {
+    const q = exam[idx];
+    const ans = answers[idx];
+    document.getElementById('qTxt').textContent = `${idx + 1}. ${q.pregunta}`;
+    const wrap = document.getElementById('optsWrap');
+    wrap.innerHTML = "";
+
+    const opts = q.opciones.split('\n').filter(o => o.trim());
+    const letters = ['a','b','c','d','e'];
+
+    opts.forEach((text, i) => {
+        const L = letters[i];
+        const div = document.createElement('div');
+        div.className = 'opt' + (ans === L ? (L === q.respuesta ? ' ok' : ' ko') : (ans && L === q.respuesta ? ' ok' : ''));
+        div.innerHTML = `<div class="oltr">${L.toUpperCase()}</div><div style="flex:1">${text}</div>`;
+        div.onclick = () => { if(!answers[idx]) { answers[idx] = L; showQ(); } };
+        wrap.appendChild(div);
+    });
+}
+
+function nextQ() {
+    if(idx < exam.length - 1) { idx++; showQ(); } else { alert("Test finalizado"); location.reload(); }
+}
+function prevQ() { if(idx > 0) { idx--; showQ(); } }
+</script>
+</body>
+</html>
