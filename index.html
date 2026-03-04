@@ -23,8 +23,8 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .btn:hover:not(:disabled){background:var(--Yd);transform:translateY(-1px)}
 .btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed;box-shadow:none}
 .btn-alt{background:#fff;border:2px solid var(--Y);color:var(--D);width:auto}
-.btn-outline{border: 2px solid var(--D); color: var(--D); margin-top: 15px}
-.btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); box-shadow: 0 3px 8px rgba(0,0,0,0.1); margin-top: 10px}
+.btn-outline{border: 2px solid var(--D); color: var(--D); margin-top: 15px; background:transparent}
+.btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); margin-top: 10px}
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
 .m-item{display:flex;align-items:center;padding:8px;gap:10px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem}
@@ -41,6 +41,9 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .fb{margin-top:1.3rem;padding:1.2rem;border-radius:10px}
 .fb.ok{background:#f0fdf4;border-left:4px solid var(--V)}
 .fb.ko{background:#fef2f2;border-left:4px solid var(--R)}
+.fb.wa{background:#fffbeb;border-left:4px solid var(--W)}
+.fb-t{font-weight:700;margin-bottom:8px}
+.fb-body{font-size:0.95rem;color:var(--D2);white-space:pre-wrap}
 .hidden{display:none!important}
 </style>
 </head>
@@ -62,7 +65,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     <div id="secConfig" class="card hidden">
         <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-            <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10"></div>
+            <div class="field"><label>Nº Preguntas (10-100)</label><input type="number" id="inNum" value="10" min="10" max="100"></div>
             <div class="field"><label>Modo Feedback</label><select id="inFeedback"><option value="con">Con explicación</option><option value="sin">Sin explicación</option></select></div>
         </div>
         <div class="field">
@@ -86,6 +89,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
             <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
         </div>
         <button id="btnFinishNow" class="btn btn-danger" onclick="finishExam()">Terminar Intento</button>
+        <button id="btnBackRes" class="btn btn-outline hidden" onclick="showScreen('secRes')">← Volver a Resultados</button>
     </div>
 
     <div id="secRes" class="card hidden" style="text-align:center">
@@ -93,7 +97,8 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
         <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
         <div style="margin-bottom:2rem">
             Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
-            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span>
+            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
+            Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
         </div>
         <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
     </div>
@@ -101,7 +106,8 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 
 <script>
 const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-let allQuestions = [], exam = [], idx = 0, userAnswers = [];
+let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
+let questionsWithMistakes = [];
 
 function fetchJSONP(url, callback) {
     const name = 'jsonp_' + Date.now();
@@ -117,16 +123,14 @@ function doLogin() {
     document.getElementById('btnLogin').textContent = "Verificando...";
 
     fetchJSONP(apiUrl + '?type=users', (res) => {
-        // En tu nuevo Excel: Usuario [0], Correo [1]
         const user = res.rows.find(u => u[1] && u[1].toLowerCase().trim() === email);
         if(user) {
             fetchJSONP(apiUrl + '?type=questions', (qRes) => {
-                // RESPETO TOTAL A TU MAPEO: Pregunta [1], Opciones [2], Respuesta [3], Saber [4], Materia [8]
                 allQuestions = qRes.rows.slice(1).map(r => ({
                     pregunta: r[1],
                     opciones: r[2],
                     respuesta: String(r[3] || "").trim().toUpperCase(),
-                    saber: r[4],
+                    saber: r[4] || r[5] || "Sin detalles.",
                     materia: r[8] || "General"
                 })).filter(q => q.pregunta);
 
@@ -143,8 +147,7 @@ function doLogin() {
 
 function setupMats() {
     const mats = [...new Set(allQuestions.map(q => q.materia))].sort();
-    const container = document.getElementById('multiMat');
-    container.innerHTML = mats.map(m => `
+    document.getElementById('multiMat').innerHTML = mats.map(m => `
         <label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>
     `).join('');
 }
@@ -167,62 +170,96 @@ function startExam() {
     const selected = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
     const num = parseInt(document.getElementById('inNum').value) || 10;
     exam = allQuestions.filter(q => selected.includes(q.materia)).sort(() => 0.5 - Math.random()).slice(0, num);
-    idx = 0; userAnswers = new Array(exam.length).fill(null);
+    idx = 0; isReviewing = false;
+    userAnswers = new Array(exam.length).fill(null);
+    document.getElementById('btnBackRes').classList.add('hidden');
+    document.getElementById('btnFinishNow').classList.remove('hidden');
     showQ();
     showScreen('secQ');
 }
 
 function showQ() {
     const q = exam[idx], ans = userAnswers[idx];
-    const isFeedback = document.getElementById('inFeedback').value === "con";
+    const isFeedbackMode = document.getElementById('inFeedback').value === "con";
     
     document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
     document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
     document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
     document.getElementById('qTxt').textContent = q.pregunta;
+    document.getElementById('btnPrev').disabled = (idx === 0);
+    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
 
     const wrap = document.getElementById('optsWrap');
     wrap.innerHTML = "";
     document.getElementById('fbWrap').innerHTML = "";
 
-    // SEPARACIÓN POR LÍNEAS (RESPECTO ORIGINAL)
-    const opts = q.opciones.split('\n').filter(o => o.trim());
-    const letters = ['A', 'B', 'C', 'D'];
+    // SEPARACIÓN QUIRÚRGICA DE OPCIONES (PRODUCCIÓN)
+    let raw = (q.opciones || "").toString();
+    let opts = raw.split('\n').map(o => o.trim()).filter(o => o.length > 0);
+    if(opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
+    opts = opts.map(o => o.replace(/^[a-d][\)\.]\s*/i, '').trim());
 
+    const letters = ['A', 'B', 'C', 'D'];
     opts.forEach((txt, i) => {
         const L = letters[i];
         const div = document.createElement('div');
         div.className = 'opt';
         
-        if(ans !== null) {
+        if(ans !== null && (isReviewing || isFeedbackMode)) {
+            div.classList.add('dis');
             if(L === q.respuesta) div.classList.add('ok');
             if(ans === L && ans !== q.respuesta) div.classList.add('ko');
-            if(!isFeedback && ans === L) div.classList.add('selected-no-fb');
+        } else if(ans !== null && !isFeedbackMode && !isReviewing) {
+            if(ans === L) div.classList.add('selected-no-fb');
         }
 
         div.innerHTML = `<div class="oltr">${L}</div><div style="flex:1">${txt}</div>`;
-        div.onclick = () => { if(userAnswers[idx] === null) { userAnswers[idx] = L; showQ(); } };
+        div.onclick = () => { if(!isReviewing && (userAnswers[idx] === null || !isFeedbackMode)) { userAnswers[idx] = (userAnswers[idx] === L) ? null : L; showQ(); } };
         wrap.appendChild(div);
     });
 
-    if(ans !== null && isFeedback) {
-        document.getElementById('fbWrap').innerHTML = `
-            <div class="fb ${ans === q.respuesta ? 'ok' : 'ko'}">
-                <b>Respuesta: ${q.respuesta}</b><br><br>${q.saber || ""}
-            </div>`;
+    if(isReviewing || (ans !== null && isFeedbackMode)) {
+        const isOk = (ans === q.respuesta);
+        const isBlank = (ans === null);
+        let fbType = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
+        let fbTitle = isOk ? '✓ CORRECTO' : (isBlank ? '⚠ EN BLANCO' : '✗ INCORRECTO');
+        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${q.respuesta}</b><br><br>${q.saber}</div></div>`;
     }
 }
 
-function nextQ() { (idx < exam.length - 1) ? (idx++, showQ()) : finishExam(); }
+function nextQ() { (idx < exam.length - 1) ? (idx++, showQ()) : (!isReviewing ? finishExam() : showScreen('secRes')); }
 function prevQ() { if(idx > 0) { idx--; showQ(); } }
 
 function finishExam() {
-    let oks = userAnswers.filter((a, i) => a === exam[i].respuesta).length;
+    let oks = 0, kos = 0, was = 0;
+    questionsWithMistakes = [];
+    userAnswers.forEach((ans, i) => {
+        if(ans === exam[i].respuesta) oks++;
+        else {
+            if(ans === null) was++; else kos++;
+            questionsWithMistakes.push({q: exam[i], a: ans});
+        }
+    });
+
     document.getElementById('rOk').textContent = oks;
-    document.getElementById('rKo').textContent = exam.length - oks;
+    document.getElementById('rKo').textContent = kos;
+    document.getElementById('rWa').textContent = was;
     document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
-    document.getElementById('resButtons').innerHTML = `<button class="btn" onclick="location.reload()">Nueva Evaluación</button>`;
+    
+    const btnArea = document.getElementById('resButtons');
+    btnArea.innerHTML = `<button class="btn" onclick="location.reload()">Nueva Evaluación</button>
+                         <button class="btn btn-alt" onclick="reviewFull()">Revisar Todo (${exam.length})</button>`;
+    if(questionsWithMistakes.length > 0) {
+        btnArea.innerHTML += `<button class="btn btn-outline" onclick="reviewOnlyMistakes()">Revisar Errores/Blancos (${questionsWithMistakes.length})</button>`;
+    }
     showScreen('secRes');
+}
+
+function reviewFull() { isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); }
+function reviewOnlyMistakes() { 
+    const originalExam = [...exam]; const originalAns = [...userAnswers];
+    exam = questionsWithMistakes.map(m => m.q); userAnswers = questionsWithMistakes.map(m => m.a);
+    isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); 
 }
 
 function showScreen(id) {
