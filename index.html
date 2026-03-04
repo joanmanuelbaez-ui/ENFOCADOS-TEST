@@ -29,8 +29,8 @@
 </div>
 
 <script>
-// URL ACTUALIZADA CON TU NUEVA VERSIÓN
-const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiObQwjLCdwDsX_Hubru-8S/exec';
+// URL VERIFICADA DEL PASO 1
+const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
 
 function validar() {
     const email = document.getElementById('emailInput').value.trim().toLowerCase();
@@ -44,12 +44,19 @@ function validar() {
     btn.disabled = true;
     btn.textContent = "Verificando en base de datos...";
 
-    // Usamos JSONP para evitar bloqueos de seguridad (CORS)
+    // Nombre único para el callback de esta petición
     const callbackName = 'jsonp_' + Date.now();
+    
+    const script = document.createElement('script');
+    
     window[callbackName] = (res) => {
+        // Limpieza: eliminamos el script y la función global
         delete window[callbackName];
-        document.body.removeChild(script);
+        if (script.parentNode) script.parentNode.removeChild(script);
         
+        btn.disabled = false;
+        btn.textContent = "Entrar al Test";
+
         if(res.error) {
             alert("Error del servidor: " + res.message);
         } else {
@@ -59,16 +66,13 @@ function validar() {
             if(user) {
                 alert("✅ ACCESO CORRECTO.\n\nHola " + (user[0] || "Alumno") + ", hemos cargado " + res.questions.rows.length + " preguntas con éxito.");
                 console.log("PREGUNTAS CARGADAS:", res.questions.rows);
-                // Aquí ya podrías redirigir a la zona de examen
             } else {
                 alert("❌ ACCESO DENEGADO.\n\nEl email '" + email + "' no está en la Columna B de la hoja USUARIOS.");
             }
         }
-        btn.disabled = false;
-        btn.textContent = "Entrar al Test";
     };
 
-    const script = document.createElement('script');
+    // Configuramos y lanzamos la petición JSONP
     script.src = URL_SCRIPT + '?type=all&callback=' + callbackName;
     document.body.appendChild(script);
 }
