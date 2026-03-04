@@ -6,7 +6,7 @@
 <title>ENFOCADOS - Plataforma de Oposiciones</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS --- */
+/* --- ESTILOS ORIGINALES MANTENIDOS --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -34,7 +34,6 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .pbar-bg{background:var(--B);border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
 .pbar{background:var(--Y);height:100%;transition:width .4s ease}
 .opt{display:flex;align-items:center;gap:.85rem;padding:1rem;border:2px solid var(--B);border-radius:11px;cursor:pointer;background:#fff;margin-bottom:10px}
-.opt.selected-no-fb{border-color:var(--D);background:var(--B)}
 .opt.dis{cursor:default}
 .opt.ok{border-color:var(--V);background:#f0fdf4}
 .opt.ko{border-color:var(--R);background:#fef2f2}
@@ -51,20 +50,20 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 </style>
 </head>
 <body>
- 
+
 <div class="wrap">
     <header>
         <svg width="60" height="60" viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" fill="rgb(250,250,0)" stroke="#2c3e50" stroke-width="3"/><path d="M22 34L30 42L46 26" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h1>ENFOCADOS</h1>
         <div class="sub">Plataforma de Preparación Profesional</div>
     </header>
- 
+
     <div id="secLogin" class="card">
-      <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
+      <h2 style="text-align:center;margin-bottom:1.5rem">Acceso (TEST)</h2>
         <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
         <button id="btnLogin" class="btn" style="width:100%" onclick="doLogin()">Entrar</button>
     </div>
- 
+
     <div id="secConfig" class="card hidden">
         <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="resetApp(true)">SALIR</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
@@ -89,7 +88,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
         </div>
         <button id="btnStart" class="btn" style="width:100%" onclick="startExam()" disabled>Selecciona una materia</button>
     </div>
- 
+
     <div id="secQ" class="card hidden">
         <div class="qhdr"><span id="qNum" style="font-weight:800"></span><span id="qProg"></span></div>
         <div class="pbar-bg"><div id="pBar" class="pbar"></div></div>
@@ -101,220 +100,150 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
             <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
         </div>
         <button id="btnFinishNow" class="btn btn-danger" style="width:100%" onclick="forceFinish()">Terminar Intento</button>
-        <button id="btnBackRes" class="btn btn-outline hidden" style="width:100%" onclick="showScreen('secRes')">← Volver a Resultados</button>
     </div>
- 
+
     <div id="secRes" class="card hidden" style="text-align:center">
         <h2>Resultado</h2>
         <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
-        <div style="margin-bottom:2rem">
-            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
-            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
-            Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
-        </div>
         <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
     </div>
 </div>
- 
+
 <script>
-// ── ÚNICO CAMBIO RESPECTO A PRODUCCIÓN: URL del entorno TEST ──
 const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
- 
+
 let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
-let questionsWithMistakes = [], showInstantFeedback = true;
- 
-function showScreen(id) {
-    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-}
- 
+
 function fetchJSONP(url, callback) {
-    const name = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000);
+    const name = 'jsonp_' + Date.now();
     window[name] = (data) => { delete window[name]; callback(data); };
     const s = document.createElement('script');
     s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
     document.body.appendChild(s);
 }
- 
-function parseTable(res) {
-    return res.rows.map(row => {
-        let obj = {};
-        res.headers.forEach((h, i) => { if(h) obj[h.toLowerCase().trim()] = row[i]; });
-        return obj;
-    });
-}
- 
+
+// CORRECCIÓN CLAVE: Esta función ahora mapea los datos por POSICIÓN DE COLUMNA
+// para evitar errores si los nombres de los encabezados cambian ligeramente.
 function doLogin() {
     const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    const btn = document.getElementById('btnLogin');
     if(!email) return;
-    btn.textContent = "Verificando...";
-    fetchJSONP(apiUrl + '?type=users', (res) => {
-        const users = parseTable(res);
-        const user = users.find(u => u.correo && u.correo.toLowerCase().trim() === email);
-        if(user) {
-            fetchJSONP(apiUrl + '?type=questions', (qRes) => {
-                allQuestions = parseTable(qRes);
-                document.getElementById('cfgUser').textContent = user.usuario || "ALUMNO";
-                setupMats();
-                showScreen('secConfig');
-                btn.textContent = "Entrar";
-            });
+    document.getElementById('btnLogin').textContent = "Verificando...";
+
+    fetchJSONP(apiUrl + '?type=all', (res) => {
+        // Buscamos usuario en la hoja "users" (Columna B es el email, índice [1])
+        const userRow = res.users.rows.find(row => row[1]?.toString().toLowerCase().trim() === email);
+
+        if(userRow) {
+            // Mapeamos preguntas (Columna I es Materia [8], B es Pregunta [1], C Opciones [2]...)
+            allQuestions = res.questions.rows.slice(1).map(q => ({
+                materia: String(q[8] || "General").trim(),
+                pregunta: q[1],
+                opciones: q[2],
+                respuesta: String(q[3] || "").trim().toUpperCase(),
+                saber: q[4]
+            })).filter(q => q.pregunta);
+
+            document.getElementById('cfgUser').textContent = "Hola, " + userRow[0];
+            setupMats();
+            showScreen('secConfig');
         } else {
-            alert("No autorizado");
-            btn.textContent = "Entrar";
+            alert("Email no encontrado en la base de datos.");
+            document.getElementById('btnLogin').textContent = "Entrar";
         }
     });
 }
- 
+
 function setupMats() {
-    const mats = [...new Set(allQuestions.map(q => q.materia).filter(m => m))].sort();
+    const mats = [...new Set(allQuestions.map(q => q.materia))].sort();
     const container = document.getElementById('multiMat');
-    container.innerHTML = "";
-    mats.forEach(m => {
-        container.innerHTML += `<label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>`;
-    });
+    container.innerHTML = mats.map(m => `
+        <label class="m-item">
+            <input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()">
+            <span>${m}</span>
+        </label>
+    `).join('');
 }
- 
-function toggleAll() {
-    const cbs = document.querySelectorAll('input[name="materia"]');
-    const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
-    cbs.forEach(cb => cb.checked = anyUnchecked);
-    updateStartButton();
-}
- 
+
 function updateStartButton() {
-    const sel = Array.from(document.querySelectorAll('input[name="materia"]:checked'));
+    const sel = document.querySelectorAll('input[name="materia"]:checked').length;
     const btn = document.getElementById('btnStart');
-    btn.disabled = sel.length === 0;
-    btn.textContent = sel.length === 1 ? "EXAMEN SINGULAR" : (sel.length > 1 ? "EXAMEN ÓMNIBUS" : "Selecciona una materia");
+    btn.disabled = sel === 0;
+    btn.textContent = sel > 0 ? "COMENZAR EXAMEN" : "Selecciona una materia";
 }
- 
+
 function startExam() {
-    let numInput = document.getElementById('inNum');
-    let num = parseInt(numInput.value);
-    if (isNaN(num) || num < 10) { num = 10; numInput.value = 10; }
-    else if (num > 100) { num = 100; numInput.value = 100; }
-    showInstantFeedback = document.getElementById('inFeedback').value === "con";
-    const selectedMats = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
-    let pool = allQuestions.filter(q => selectedMats.includes(q.materia));
-    exam = pool.sort(() => 0.5 - Math.random()).slice(0, num);
-    idx = 0; isReviewing = false;
-    userAnswers = new Array(exam.length).fill(null);
-    document.getElementById('btnBackRes').classList.add('hidden');
-    document.getElementById('btnFinishNow').classList.remove('hidden');
+    const selected = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
+    const num = parseInt(document.getElementById('inNum').value) || 10;
+    
+    exam = allQuestions.filter(q => selected.includes(q.materia))
+            .sort(() => 0.5 - Math.random()).slice(0, num);
+    
+    idx = 0; userAnswers = new Array(exam.length).fill(null);
     showQ();
     showScreen('secQ');
 }
- 
+
 function showQ() {
-    const q = exam[idx], savedAns = userAnswers[idx];
+    const q = exam[idx], ans = userAnswers[idx];
     document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
     document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
     document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
     document.getElementById('qTxt').textContent = q.pregunta;
-    document.getElementById('btnPrev').disabled = (idx === 0);
-    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
+
     const wrap = document.getElementById('optsWrap');
     wrap.innerHTML = "";
-    document.getElementById('fbWrap').innerHTML = "";
+    
+    // Split de opciones respetando saltos de línea del Excel
+    const opts = q.opciones.split('\n').filter(o => o.trim());
     const letters = ['A', 'B', 'C', 'D'];
-    const correcta = (q.respuesta || "").toString().trim().toUpperCase();
-    let raw = (q.opciones || "").toString();
-    let opts = raw.split('\n').map(o => o.trim()).filter(o => o.length > 0);
-    if(opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
-    opts = opts.map(o => o.replace(/^[a-d][\)\.]\s*/i, '').trim());
+
     opts.forEach((txt, i) => {
-        const letter = letters[i];
+        const L = letters[i];
         const div = document.createElement('div');
         div.className = 'opt';
-        if(savedAns !== null && (isReviewing || showInstantFeedback)) {
+        
+        // Si ya ha respondido, mostramos feedback instantáneo
+        if(ans !== null) {
             div.classList.add('dis');
-            if(letter === correcta) div.classList.add('ok');
-            if(letter === savedAns && letter !== correcta) div.classList.add('ko');
-        } 
-        else if(savedAns === null && isReviewing) {
-            div.classList.add('dis');
-            if(letter === correcta) div.classList.add('ok');
+            if(L === q.respuesta) div.classList.add('ok');
+            if(ans === L && ans !== q.respuesta) div.classList.add('ko');
         }
-        else if (savedAns !== null && !showInstantFeedback && !isReviewing) {
-            if (letter === savedAns) div.classList.add('selected-no-fb');
-        }
-        div.innerHTML = `<div class="oltr">${letter}</div><div style="flex:1">${txt}</div>`;
-        div.onclick = () => { 
-            if(!isReviewing) {
-                if(!showInstantFeedback) {
-                    userAnswers[idx] = (userAnswers[idx] === letter) ? null : letter;
-                    showQ();
-                } else if(savedAns === null || savedAns === letter) {
-                    userAnswers[idx] = (userAnswers[idx] === letter) ? null : letter;
-                    showQ();
-                }
-            }
-        };
+
+        div.innerHTML = `<div class="oltr">${L}</div><div style="flex:1">${txt}</div>`;
+        div.onclick = () => { if(userAnswers[idx] === null) { userAnswers[idx] = L; showQ(); } };
         wrap.appendChild(div);
     });
-    if(isReviewing || (savedAns !== null && showInstantFeedback)) {
-        const isOk = (savedAns === correcta);
-        const isBlank = (savedAns === null);
-        let fbType = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
-        let fbTitle = isOk ? '✓ CORRECTO' : (isBlank ? '⚠ EN BLANCO' : '✗ INCORRECTO');
-        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${correcta}</b><br><br>${q.saber || q.motivacion || "Sin detalles."}</div></div>`;
+
+    // Cuadro de feedback
+    const fb = document.getElementById('fbWrap');
+    fb.innerHTML = "";
+    if(ans !== null) {
+        fb.innerHTML = `<div class="fb ${ans === q.respuesta ? 'ok' : 'ko'}">
+            <div class="fb-t">${ans === q.respuesta ? '✓ CORRECTO' : '✗ INCORRECTO'}</div>
+            <div class="fb-body"><b>Respuesta: ${q.respuesta}</b><br><br>${q.saber || ""}</div>
+        </div>`;
     }
 }
- 
+
 function nextQ() { 
     if(idx < exam.length - 1) { idx++; showQ(); } 
-    else if(!isReviewing) finishExam();
-    else showScreen('secRes');
+    else { finishExam(); }
 }
- 
 function prevQ() { if(idx > 0) { idx--; showQ(); } }
- 
-function forceFinish() {
-    finishExam();
-}
- 
+
 function finishExam() {
-    let oks = 0, kos = 0, was = 0;
-    questionsWithMistakes = [];
-    userAnswers.forEach((ans, i) => {
-        const cor = (exam[i].respuesta || "").toString().trim().toUpperCase();
-        if(ans === cor) { oks++; } 
-        else if (ans === null) { was++; questionsWithMistakes.push({ q: exam[i], a: ans }); } 
-        else { kos++; questionsWithMistakes.push({ q: exam[i], a: ans }); }
-    });
-    document.getElementById('rOk').textContent = oks;
-    document.getElementById('rKo').textContent = kos;
-    document.getElementById('rWa').textContent = was;
+    const oks = userAnswers.filter((a, i) => a === exam[i].respuesta).length;
     document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
-    document.getElementById('btnFinishNow').classList.add('hidden');
-    const btnArea = document.getElementById('resButtons');
-    btnArea.innerHTML = `<button class="btn" onclick="resetApp(false)">Nueva Evaluación</button><button class="btn btn-alt" onclick="reviewFull()">Revisar Todo (${exam.length})</button>`;
-    if(questionsWithMistakes.length > 0) { 
-        btnArea.innerHTML += `<button class="btn btn-outline" onclick="reviewOnlyMistakes()">Revisar errores/blancos (${questionsWithMistakes.length})</button>`;
-    }
+    document.getElementById('resButtons').innerHTML = `<button class="btn" onclick="location.reload()">Nueva Evaluación</button>`;
     showScreen('secRes');
 }
- 
-function reviewFull() { isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); }
- 
-function reviewOnlyMistakes() {
-    exam = questionsWithMistakes.map(m => m.q);
-    userAnswers = questionsWithMistakes.map(m => m.a);
-    isReviewing = true;
-    idx = 0;
-    document.getElementById('btnBackRes').classList.remove('hidden');
-    document.getElementById('btnFinishNow').classList.add('hidden');
-    showQ(); showScreen('secQ');
+
+function showScreen(id) {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
 }
- 
-function resetApp(logout) {
-    if(logout) location.reload();
-    else { exam=[]; userAnswers=[]; isReviewing=false;
-    showScreen('secConfig'); updateStartButton(); }
-}
+
+function resetApp(logout) { location.reload(); }
 </script>
 </body>
 </html>
- 
