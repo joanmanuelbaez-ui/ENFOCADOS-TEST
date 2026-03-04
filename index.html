@@ -6,7 +6,7 @@
 <title>ENFOCADOS - Plataforma de Oposiciones</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS ORIGINALES --- */
+/* --- ESTILOS --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -19,24 +19,28 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .field{margin-bottom:1.1rem;text-align:left}
 .field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
 .field input, .field select{width:100%;padding:.82rem 1rem;border:2px solid var(--B);border-radius:10px;font-size:1rem;font-family:inherit}
-.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;box-shadow:0 3px 8px rgba(250,250,0,0.3);width:100%}
+.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;box-shadow:0 3px 8px rgba(250,250,0,0.3)}
 .btn:hover:not(:disabled){background:var(--Yd);transform:translateY(-1px)}
 .btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed;box-shadow:none}
-.btn-alt{background:#fff;border:2px solid var(--Y);color:var(--D);width:auto}
-.btn-outline{border: 2px solid var(--D); color: var(--D); margin-top: 15px; background:transparent}
-.btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); margin-top: 10px}
+.btn-alt{background:#fff;border:2px solid var(--Y);color:var(--D)}
+.btn-outline{border: 2px solid var(--D); color: var(--D); margin-top: 15px}
+
+.btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); box-shadow: 0 3px 8px rgba(0,0,0,0.1); margin-top: 10px}
+.btn-danger:hover{background:var(--Yd)}
+
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 
-/* AJUSTE 1: Checkbox a la izquierda */
+/* MODIFICACIÓN: Checkbox a la izquierda */
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
-.m-item{display:flex;align-items:center;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;justify-content:flex-start;text-align:left}
-.m-item input{width:18px;height:18px;cursor:pointer;flex-shrink:0;margin:0}
+.m-item{display:flex;flex-direction:row;align-items:center;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;text-align:left}
+.m-item input{width:18px;height:18px;cursor:pointer;order:-1;margin:0}
 
 .qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid var(--Y);padding-bottom:5px}
 .pbar-bg{background:var(--B);border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
 .pbar{background:var(--Y);height:100%;transition:width .4s ease}
 .opt{display:flex;align-items:center;gap:.85rem;padding:1rem;border:2px solid var(--B);border-radius:11px;cursor:pointer;background:#fff;margin-bottom:10px}
 .opt.selected-no-fb{border-color:var(--D);background:var(--B)}
+.opt.dis{cursor:default}
 .opt.ok{border-color:var(--V);background:#f0fdf4}
 .opt.ko{border-color:var(--R);background:#fef2f2}
 .oltr{width:30px;height:30px;border-radius:50%;background:var(--B);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:0.9rem;color:var(--D)}
@@ -57,217 +61,3 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     <header>
         <svg width="60" height="60" viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" fill="rgb(250,250,0)" stroke="#2c3e50" stroke-width="3"/><path d="M22 34L30 42L46 26" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h1>ENFOCADOS</h1>
-        <div class="sub">Plataforma de Preparación Profesional</div>
-    </header>
-
-    <div id="secLogin" class="card">
-        <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
-        <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
-        <button id="btnLogin" class="btn" onclick="doLogin()">Entrar</button>
-    </div>
-
-    <div id="secConfig" class="card hidden">
-        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-            <div class="field"><label>Nº Preguntas (10-100)</label><input type="number" id="inNum" value="10" min="10" max="100"></div>
-            <div class="field"><label>Modo Feedback</label><select id="inFeedback"><option value="con">Con explicación</option><option value="sin">Sin explicación</option></select></div>
-        </div>
-        <div class="field">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
-                <label>Materias</label>
-                <button style="border:none; background:none; cursor:pointer; color:var(--G)" onclick="toggleAll()">Todas/Ninguna</button>
-            </div>
-            <div id="multiMat" class="multi-box"></div>
-        </div>
-        <button id="btnStart" class="btn" onclick="startExam()" disabled>Selecciona una materia</button>
-    </div>
-
-    <div id="secQ" class="card hidden">
-        <div class="qhdr"><span id="qNum" style="font-weight:800"></span><span id="qProg"></span></div>
-        <div class="pbar-bg"><div id="pBar" class="pbar"></div></div>
-        <div id="qTxt" style="font-size:1.1rem;font-weight:600;margin-bottom:1.5rem;white-space:pre-wrap"></div>
-        <div id="optsWrap"></div>
-        <div id="fbWrap"></div>
-        <div style="display:flex; gap:10px; margin-top:1.5rem">
-            <button id="btnPrev" class="btn btn-alt" style="flex:1" onclick="prevQ()">Anterior</button>
-            <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
-        </div>
-        <button id="btnFinishNow" class="btn btn-danger" onclick="finishExam()">Terminar Intento</button>
-        <button id="btnBackRes" class="btn btn-outline hidden" onclick="showScreen('secRes')">← Volver a Resultados</button>
-    </div>
-
-    <div id="secRes" class="card hidden" style="text-align:center">
-        <h2>Resultado</h2>
-        <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
-        <div style="margin-bottom:2rem">
-            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
-            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
-            Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
-        </div>
-        <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
-    </div>
-</div>
-
-<script>
-const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
-let questionsWithMistakes = [];
-
-function fetchJSONP(url, callback) {
-    const name = 'jsonp_' + Date.now();
-    window[name] = (data) => { delete window[name]; callback(data); };
-    const s = document.createElement('script');
-    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
-    document.body.appendChild(s);
-}
-
-function doLogin() {
-    const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    if(!email) return;
-    document.getElementById('btnLogin').textContent = "Verificando...";
-
-    fetchJSONP(apiUrl + '?type=users', (res) => {
-        const user = res.rows.find(u => u[1] && u[1].toLowerCase().trim() === email);
-        if(user) {
-            fetchJSONP(apiUrl + '?type=questions', (qRes) => {
-                allQuestions = qRes.rows.slice(1).map(r => ({
-                    pregunta: r[1],
-                    opciones: r[2],
-                    respuesta: String(r[3] || "").trim().toUpperCase(),
-                    saber: r[4] || r[5] || "Sin detalles.",
-                    materia: r[8] || "General"
-                })).filter(q => q.pregunta);
-
-                document.getElementById('cfgUser').textContent = user[0];
-                setupMats();
-                showScreen('secConfig');
-            });
-        } else {
-            alert("No autorizado");
-            document.getElementById('btnLogin').textContent = "Entrar";
-        }
-    });
-}
-
-function setupMats() {
-    const mats = [...new Set(allQuestions.map(q => q.materia))].sort();
-    document.getElementById('multiMat').innerHTML = mats.map(m => `
-        <label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>
-    `).join('');
-}
-
-function toggleAll() {
-    const cbs = document.querySelectorAll('input[name="materia"]');
-    const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
-    cbs.forEach(cb => cb.checked = anyUnchecked);
-    updateStartButton();
-}
-
-function updateStartButton() {
-    const sel = document.querySelectorAll('input[name="materia"]:checked').length;
-    const btn = document.getElementById('btnStart');
-    btn.disabled = (sel === 0);
-    btn.textContent = sel === 1 ? "EXAMEN SINGULAR" : (sel > 1 ? "EXAMEN ÓMNIBUS" : "Selecciona una materia");
-}
-
-function startExam() {
-    const selected = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
-    const num = parseInt(document.getElementById('inNum').value) || 10;
-    exam = allQuestions.filter(q => selected.includes(q.materia)).sort(() => 0.5 - Math.random()).slice(0, num);
-    idx = 0; isReviewing = false;
-    userAnswers = new Array(exam.length).fill(null);
-    document.getElementById('btnBackRes').classList.add('hidden');
-    document.getElementById('btnFinishNow').classList.remove('hidden');
-    showQ();
-    showScreen('secQ');
-}
-
-function showQ() {
-    const q = exam[idx], ans = userAnswers[idx];
-    const isFeedbackMode = document.getElementById('inFeedback').value === "con";
-    
-    document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
-    document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
-    document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
-    document.getElementById('qTxt').textContent = q.pregunta;
-    document.getElementById('btnPrev').disabled = (idx === 0);
-    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
-
-    const wrap = document.getElementById('optsWrap');
-    wrap.innerHTML = "";
-    document.getElementById('fbWrap').innerHTML = "";
-
-    let raw = (q.opciones || "").toString();
-    let opts = raw.split('\n').map(o => o.trim()).filter(o => o.length > 0);
-    if(opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
-    opts = opts.map(o => o.replace(/^[a-d][\)\.]\s*/i, '').trim());
-
-    const letters = ['A', 'B', 'C', 'D'];
-    opts.forEach((txt, i) => {
-        const L = letters[i];
-        const div = document.createElement('div');
-        div.className = 'opt';
-        
-        if(ans !== null && (isReviewing || isFeedbackMode)) {
-            if(L === q.respuesta) div.classList.add('ok');
-            if(ans === L && ans !== q.respuesta) div.classList.add('ko');
-        } else if(ans !== null && !isFeedbackMode && !isReviewing) {
-            if(ans === L) div.classList.add('selected-no-fb');
-        }
-
-        div.innerHTML = `<div class="oltr">${L}</div><div style="flex:1">${txt}</div>`;
-        div.onclick = () => { if(!isReviewing && (userAnswers[idx] === null || !isFeedbackMode)) { userAnswers[idx] = (userAnswers[idx] === L) ? null : L; showQ(); } };
-        wrap.appendChild(div);
-    });
-
-    if(isReviewing || (ans !== null && isFeedbackMode)) {
-        const isOk = (ans === q.respuesta);
-        const isBlank = (ans === null);
-        let fbType = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
-        let fbTitle = isOk ? '✓ CORRECTO' : (isBlank ? '⚠ EN BLANCO' : '✗ INCORRECTO');
-        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${q.respuesta}</b><br><br>${q.saber}</div></div>`;
-    }
-}
-
-function nextQ() { (idx < exam.length - 1) ? (idx++, showQ()) : (!isReviewing ? finishExam() : showScreen('secRes')); }
-function prevQ() { if(idx > 0) { idx--; showQ(); } }
-
-function finishExam() {
-    let oks = 0, kos = 0, was = 0;
-    questionsWithMistakes = [];
-    userAnswers.forEach((ans, i) => {
-        if(ans === exam[i].respuesta) oks++;
-        else {
-            if(ans === null) was++; else kos++;
-            questionsWithMistakes.push({q: exam[i], a: ans});
-        }
-    });
-
-    document.getElementById('rOk').textContent = oks;
-    document.getElementById('rKo').textContent = kos;
-    document.getElementById('rWa').textContent = was;
-    document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
-    
-    const btnArea = document.getElementById('resButtons');
-    // CAMBIO: Al pulsar "Nueva Evaluación" no recarga, solo vuelve a la selección
-    btnArea.innerHTML = `<button class="btn" onclick="showScreen('secConfig')">Nueva Evaluación</button>
-                         <button class="btn btn-alt" onclick="reviewFull()">Revisar Todo (${exam.length})</button>`;
-    if(questionsWithMistakes.length > 0) {
-        btnArea.innerHTML += `<button class="btn btn-outline" onclick="reviewOnlyMistakes()">Revisar errores/blancos (${questionsWithMistakes.length})</button>`;
-    }
-    showScreen('secRes');
-}
-
-function reviewFull() { isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); }
-function reviewOnlyMistakes() { 
-    exam = questionsWithMistakes.map(m => m.q); userAnswers = questionsWithMistakes.map(m => m.a);
-    isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); 
-}
-
-function showScreen(id) {
-    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-}
-</script>
-</body>
-</html>
