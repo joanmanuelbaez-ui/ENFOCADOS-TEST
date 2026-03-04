@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENFOCADOS · PLATAFORMA PROFESIONAL (PROD-LINK)</title>
+<title>ENFOCADOS - PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- TUS ESTILOS DE PRODUCCIÓN --- */
+/* --- ESTILOS DE PRODUCCIÓN --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -15,24 +15,26 @@ header{text-align:center;margin-bottom:1.6rem}
 h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:var(--D);letter-spacing:-1px}
 .sub{color:var(--G);font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
 .card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:2px solid var(--Y);margin-bottom:1.4rem}
-.field{margin-bottom:1.1rem;text-align:left}
+.field{margin-bottom:1.1rem}
 .field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
 .field input, .field select{width:100%;padding:.82rem 1rem;border:2px solid var(--B);border-radius:10px;font-size:1rem;font-family:inherit}
-.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;box-shadow:0 3px 8px rgba(250,250,0,0.3);width:100%}
+.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;width:100%}
 .btn:hover:not(:disabled){background:var(--Yd);transform:translateY(-1px)}
 .btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed}
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
 .m-item{display:flex;align-items:center;padding:8px;gap:10px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem}
-.m-item input{width:18px;height:18px}
 .hidden{display:none!important}
-.opt{display:flex;align-items:center;gap:.85rem;padding:1rem;border:2px solid var(--B);border-radius:11px;cursor:pointer;background:#fff;margin-bottom:10px;white-space:pre-wrap}
+/* ESTILOS EXAMEN PRODUCCIÓN */
+.opt{display:flex;align-items:center;gap:.85rem;padding:1rem;border:2px solid var(--B);border-radius:11px;cursor:pointer;background:#fff;margin-bottom:10px;white-space:pre-wrap;text-align:left}
 .opt.ok{border-color:var(--V);background:#f0fdf4}
 .opt.ko{border-color:var(--R);background:#fef2f2}
 .oltr{width:30px;height:30px;border-radius:50%;background:var(--B);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
-.fb{margin-top:1.3rem;padding:1.2rem;border-radius:10px;border-left:4px solid;white-space:pre-wrap}
+.fb{margin-top:1.3rem;padding:1.2rem;border-radius:10px;border-left:4px solid;white-space:pre-wrap;font-size:0.95rem}
 .fb-ok{background:#f0fdf4;border-color:var(--V)}
 .fb-ko{background:#fef2f2;border-color:var(--R)}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1.5rem 0}
+.res-box{padding:1rem;border-radius:12px;text-align:center}
 </style>
 </head>
 <body>
@@ -40,9 +42,152 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 <div class="wrap">
     <header>
         <h1>ENFOCADOS</h1>
-        <div class="sub">ACCESO PROFESIONAL (TEST DATABASE)</div>
+        <div class="sub">PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</div>
     </header>
 
     <div id="secLogin" class="card">
         <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
-        <div class="field"><label>Email</label><input type="email"
+        <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
+        <button id="btnLogin" class="btn" onclick="doLogin()">Entrar</button>
+    </div>
+
+    <div id="secConfig" class="card hidden">
+        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
+            <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10"></div>
+            <div class="field">
+                <label>Feedback</label>
+                <select id="inFeedback"><option value="con">Con explicación</option><option value="sin">Sin explicación</option></select>
+            </div>
+        </div>
+        <div class="field">
+            <label style="font-weight:600">Selecciona Materias</label>
+            <div id="multiMat" class="multi-box"></div>
+        </div>
+        <button id="btnStart" class="btn" onclick="startExam()" disabled>Selecciona una materia</button>
+    </div>
+
+    <div id="secQ" class="card hidden">
+        <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:10px; font-size:0.9rem">
+            <span id="qIdx"></span><span id="qTotal"></span>
+        </div>
+        <div id="qTxt" style="font-size:1.1rem; font-weight:600; margin-bottom:1.5rem; white-space:pre-wrap"></div>
+        <div id="optsWrap"></div>
+        <div id="fbWrap" class="hidden"></div>
+        <div style="display:flex; gap:10px; margin-top:20px">
+            <button id="btnPrev" class="btn" style="background:var(--B)" onclick="prevQ()">Anterior</button>
+            <button id="btnNext" class="btn" onclick="nextQ()">Siguiente</button>
+        </div>
+    </div>
+
+    <div id="secRes" class="card hidden">
+        <h2 style="text-align:center">Resultado Final</h2>
+        <div class="res-grid">
+            <div class="res-box" style="background:#f0fdf4; color:var(--V)"><strong>Aciertos</strong><br><span id="rOk" style="font-size:1.5rem">0</span></div>
+            <div class="res-box" style="background:#fef2f2; color:var(--R)"><strong>Errores</strong><br><span id="rKo" style="font-size:1.5rem">0</span></div>
+            <div class="res-box" style="background:#f8fafc; color:var(--G)"><strong>Blancas</strong><br><span id="rBl" style="font-size:1.5rem">0</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px">
+            <button class="btn" style="background:var(--B)" onclick="reviewAll()">Revisar Todo</button>
+            <button class="btn" style="background:var(--B)" onclick="reviewFails()">Revisar Errores</button>
+        </div>
+        <button class="btn" style="margin-top:10px" onclick="location.reload()">Nuevo Intento</button>
+    </div>
+</div>
+
+<script>
+const SHEET_ID = '19mVUe0lezjxuAW4FqJTbG5UJx649ECUzA9HV6V5L6iM';
+let allQuestions = [], exam = [], idx = 0, answers = [], isReview = false;
+
+function fetchSheet(sheetName) {
+    return new Promise((res) => {
+        const cb = 'cb' + Math.random().toString(36).slice(2);
+        window[cb] = (d) => { delete window[cb]; res(d.table.rows); };
+        const s = document.createElement('script');
+        s.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&callback=${cb}&sheet=${encodeURIComponent(sheetName)}`;
+        document.head.appendChild(s);
+    });
+}
+
+async function doLogin() {
+    const email = document.getElementById('inEmail').value.trim().toLowerCase();
+    if(!email) return;
+    document.getElementById('btnLogin').textContent = "Cargando...";
+    
+    const [uRows, qRows] = await Promise.all([fetchSheet('USUARIOS'), fetchSheet('0 - BD GLOBAL')]);
+    const user = uRows.find(r => r.c[1]?.v?.toLowerCase().trim() === email);
+
+    if(user) {
+        // MAPEO COLUMNA I (índice 8) PARA MATERIAS
+        allQuestions = qRows.slice(1).map(r => ({
+            materia: String(r.c[8]?.v || "Sin Materia").trim(),
+            pregunta: r.c[1]?.v,
+            opciones: r.c[2]?.v,
+            respuesta: String(r.c[3]?.v || "").trim().toLowerCase(),
+            saber: r.c[4]?.v
+        })).filter(q => q.materia && q.pregunta);
+
+        document.getElementById('cfgUser').textContent = user.c[0]?.v;
+        renderMats();
+        document.getElementById('secLogin').classList.add('hidden');
+        document.getElementById('secConfig').classList.remove('hidden');
+    } else { alert("Usuario no encontrado"); location.reload(); }
+}
+
+function renderMats() {
+    const temas = [...new Set(allQuestions.map(q => q.materia))].sort();
+    document.getElementById('multiMat').innerHTML = temas.map(t => `
+        <label class="m-item"><input type="checkbox" name="m" value="${t}" onchange="checkBtn()"><span>${t}</span></label>
+    `).join('');
+}
+
+function checkBtn() {
+    document.getElementById('btnStart').disabled = !document.querySelectorAll('input[name="m"]:checked').length;
+}
+
+function startExam() {
+    const sel = Array.from(document.querySelectorAll('input[name="m"]:checked')).map(c => c.value);
+    const num = parseInt(document.getElementById('inNum').value);
+    exam = allQuestions.filter(q => sel.includes(q.materia)).sort(() => 0.5 - Math.random()).slice(0, num);
+    idx = 0; answers = new Array(exam.length).fill(null); isReview = false;
+    showQ();
+    document.getElementById('secConfig').classList.add('hidden');
+    document.getElementById('secQ').classList.remove('hidden');
+}
+
+function showQ() {
+    const q = exam[idx], ans = answers[idx], modeFB = document.getElementById('inFeedback').value === 'con';
+    document.getElementById('qIdx').textContent = `Pregunta ${idx + 1}`;
+    document.getElementById('qTotal').textContent = `${idx + 1} / ${exam.length}`;
+    document.getElementById('qTxt').textContent = q.pregunta;
+    
+    const wrap = document.getElementById('optsWrap'); wrap.innerHTML = "";
+    document.getElementById('fbWrap').classList.add('hidden');
+
+    // Gestión de saltos de línea (\n)
+    const opts = q.opciones.split('\n').filter(o => o.trim());
+    const letters = ['a','b','c','d','e'];
+
+    opts.forEach((t, i) => {
+        const L = letters[i];
+        const d = document.createElement('div'); d.className = 'opt';
+        if(ans || isReview) {
+            if(L === q.respuesta) d.classList.add('ok');
+            if(ans === L && L !== q.respuesta) d.classList.add('ko');
+        }
+        d.innerHTML = `<div class="oltr">${L.toUpperCase()}</div><div style="flex:1">${t}</div>`;
+        d.onclick = () => { if(!answers[idx] && !isReview) { answers[idx] = L; showQ(); } };
+        wrap.appendChild(d);
+    });
+
+    if((ans || isReview) && (modeFB || isReview)) {
+        const fb = document.getElementById('fbWrap'); fb.classList.remove('hidden');
+        fb.className = `fb ${ans === q.respuesta ? 'fb-ok' : 'fb-ko'}`;
+        fb.innerHTML = `<strong>${ans === q.respuesta ? '✓ CORRECTO' : '✗ INCORRECTO'}</strong><br>${q.saber || ""}`;
+    }
+    document.getElementById('btnNext').textContent = (idx === exam.length - 1) ? (isReview ? "Cerrar" : "Finalizar") : "Siguiente";
+}
+
+function nextQ() {
+    if(idx < exam.length - 1) { idx++; showQ(); } 
+    else { if(isReview)
