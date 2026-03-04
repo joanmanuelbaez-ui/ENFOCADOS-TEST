@@ -49,36 +49,8 @@
 </div>
 
 <script>
-    // TU URL ACTUALIZADA
-    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiObQwjLCdwDsX_Hubru-8S/exec';
+    // URL VERIFICADA DEL PASO 1
+    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
     
-    // Configuración de Stripe Test
-    const stripe = Stripe('pk_test_51T2tn60VeufI11bbQ0lZKG3pbYL3mSR8YxF2cKxVS9dNYvVtGafmLKrk4hhl3T0G5GJdwhwZrxaoe4Lwm4ILH83M00j5f9E5iv');
-    const elements = stripe.elements();
-    const card = elements.create('card');
-
-    function irAPaso2() {
-        const n = document.getElementById('nombre').value;
-        const e = document.getElementById('email').value;
-        if(!n || !e) return alert("Rellena todos los campos");
-        
-        document.getElementById('step1').classList.remove('active');
-        document.getElementById('step2').classList.add('active');
-        card.mount('#card-element');
-    }
-
-    async function procesarPago() {
-        const btn = document.getElementById('btnPagar');
-        btn.disabled = true;
-        btn.textContent = "PROCESANDO...";
-
-        const datos = {
-            nombre: document.getElementById('nombre').value,
-            email: document.getElementById('email').value.trim().toLowerCase(),
-            plan: 'TEST_SISTEMA'
-        };
-
-        try {
-            // Enviamos los datos al Apps Script (doPost)
-            await fetch(URL_SCRIPT, {
-                method:
+    // Configuración de Stripe Test (Clave pública)
+    const stripe = Stripe('pk_test_51T2tn60VeufI
