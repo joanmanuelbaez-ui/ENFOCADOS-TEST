@@ -6,7 +6,7 @@
 <title>ENFOCADOS - Plataforma de Oposiciones</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS --- */
+/* --- ESTILOS ORIGINALES --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -27,10 +27,10 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); margin-top: 10px}
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 
-/* AJUSTE 1: MATERIAS CON CHECK A LA IZQUIERDA */
+/* AJUSTE 1: Checkbox a la izquierda */
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
-.m-item{display:flex;align-items:center;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;justify-content:flex-start}
-.m-item input{width:18px;height:18px;margin:0;cursor:pointer;flex-shrink:0}
+.m-item{display:flex;align-items:center;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;justify-content:flex-start;text-align:left}
+.m-item input{width:18px;height:18px;cursor:pointer;flex-shrink:0;margin:0}
 
 .qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid var(--Y);padding-bottom:5px}
 .pbar-bg{background:var(--B);border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
@@ -113,17 +113,10 @@ const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDU
 let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
 let questionsWithMistakes = [];
 
-// FUNCIÓN DE CONEXIÓN (Crítica para el login)
 function fetchJSONP(url, callback) {
-    const name = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000);
-    window[name] = (data) => {
-        delete window[name];
-        const script = document.getElementById(name);
-        if(script) script.remove();
-        callback(data);
-    };
+    const name = 'jsonp_' + Date.now();
+    window[name] = (data) => { delete window[name]; callback(data); };
     const s = document.createElement('script');
-    s.id = name;
     s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
     document.body.appendChild(s);
 }
@@ -132,7 +125,6 @@ function doLogin() {
     const email = document.getElementById('inEmail').value.trim().toLowerCase();
     if(!email) return;
     document.getElementById('btnLogin').textContent = "Verificando...";
-    document.getElementById('btnLogin').disabled = true;
 
     fetchJSONP(apiUrl + '?type=users', (res) => {
         const user = res.rows.find(u => u[1] && u[1].toLowerCase().trim() === email);
@@ -151,9 +143,8 @@ function doLogin() {
                 showScreen('secConfig');
             });
         } else {
-            alert("No autorizado o email no encontrado.");
+            alert("No autorizado");
             document.getElementById('btnLogin').textContent = "Entrar";
-            document.getElementById('btnLogin').disabled = false;
         }
     });
 }
@@ -258,6 +249,25 @@ function finishExam() {
     document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
     
     const btnArea = document.getElementById('resButtons');
-    // AJUSTE: NUEVA EVALUACIÓN REGRESA A LA SELECCIÓN
+    // CAMBIO: Al pulsar "Nueva Evaluación" no recarga, solo vuelve a la selección
     btnArea.innerHTML = `<button class="btn" onclick="showScreen('secConfig')">Nueva Evaluación</button>
-                         <button class="
+                         <button class="btn btn-alt" onclick="reviewFull()">Revisar Todo (${exam.length})</button>`;
+    if(questionsWithMistakes.length > 0) {
+        btnArea.innerHTML += `<button class="btn btn-outline" onclick="reviewOnlyMistakes()">Revisar errores/blancos (${questionsWithMistakes.length})</button>`;
+    }
+    showScreen('secRes');
+}
+
+function reviewFull() { isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); }
+function reviewOnlyMistakes() { 
+    exam = questionsWithMistakes.map(m => m.q); userAnswers = questionsWithMistakes.map(m => m.a);
+    isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); 
+}
+
+function showScreen(id) {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+}
+</script>
+</body>
+</html>
