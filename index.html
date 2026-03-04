@@ -27,9 +27,9 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); margin-top: 10px}
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 
-/* AJUSTE 1: MATERIAS CON CHECK A LA IZQUIERDA (Estilo corregido) */
+/* AJUSTE 1: MATERIAS CON CHECK A LA IZQUIERDA */
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
-.m-item{display:flex;align-items:center;justify-content:flex-start;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;text-align:left}
+.m-item{display:flex;align-items:center;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;justify-content:flex-start}
 .m-item input{width:18px;height:18px;margin:0;cursor:pointer;flex-shrink:0}
 
 .qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid var(--Y);padding-bottom:5px}
@@ -76,3 +76,20 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
             <div style="display:flex; justify-content:space-between; margin-bottom:8px">
                 <label>Materias</label>
                 <button style="border:none; background:none; cursor:pointer; color:var(--G)" onclick="toggleAll()">Todas/Ninguna</button>
+            </div>
+            <div id="multiMat" class="multi-box"></div>
+        </div>
+        <button id="btnStart" class="btn" onclick="startExam()" disabled>Selecciona una materia</button>
+    </div>
+
+    <div id="secQ" class="card hidden">
+        <div class="qhdr"><span id="qNum" style="font-weight:800"></span><span id="qProg"></span></div>
+        <div class="pbar-bg"><div id="pBar" class="pbar"></div></div>
+        <div id="qTxt" style="font-size:1.1rem;font-weight:600;margin-bottom:1.5rem;white-space:pre-wrap"></div>
+        <div id="optsWrap"></div>
+        <div id="fbWrap"></div>
+        <div style="display:flex; gap:10px; margin-top:1.5rem">
+            <button id="btnPrev" class="btn btn-alt" style="flex:1" onclick="prevQ()">Anterior</button>
+            <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
+        </div>
+        <button id="btnFinishNow" class
