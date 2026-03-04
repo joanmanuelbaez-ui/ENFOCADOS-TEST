@@ -29,7 +29,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 
-/* AJUSTE QUIRÚRGICO: Casilla a la izquierda */
+/* AJUSTE: Casilla a la IZQUIERDA del texto */
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
 .m-item{display:flex;align-items:center;justify-content:flex-start;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;text-align:left}
 .m-item input{width:auto;margin:0;cursor:pointer}
@@ -68,7 +68,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     </div>
 
     <div id="secConfig" class="card hidden">
-        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="resetApp(true)">SALIR</span></div>
+        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
             <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10" min="5" max="100"></div>
             <div class="field"><label>Modo Feedback</label><select id="inFeedback"><option value="con">Con explicación</option><option value="sin">Sin explicación</option></select></div>
@@ -100,158 +100,4 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     <div id="secRes" class="card hidden" style="text-align:center">
         <h2>Resultado</h2>
         <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
-        <div style="margin-bottom:2rem">
-            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
-            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
-            Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
-        </div>
-        <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
-    </div>
-</div>
-
-<script>
-// URL de validación según la hoja indicada
-const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-let allQuestions = [], exam = [], originalExam = [], idx = 0, userAnswers = [], isReviewing = false;
-let questionsWithMistakes = [];
-
-function fetchJSONP(url, callback) {
-    const name = 'jsonp_' + Date.now();
-    window[name] = (data) => { delete window[name]; callback(data); };
-    const s = document.createElement('script');
-    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
-    document.body.appendChild(s);
-}
-
-function doLogin() {
-    const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    if(!email) return;
-    document.getElementById('btnLogin').textContent = "Cargando...";
-
-    fetchJSONP(apiUrl + '?type=users', (res) => {
-        const user = res.rows.find(u => u[1] && u[1].toLowerCase().trim() === email);
-        if(user) {
-            fetchJSONP(apiUrl + '?type=questions', (qRes) => {
-                allQuestions = qRes.rows.slice(1).map(r => ({
-                    pregunta: r[1],
-                    opciones: r[2],
-                    respuesta: String(r[3] || "").trim().toUpperCase(),
-                    saber: r[4] || "Sin explicación disponible.",
-                    materia: r[8] || "General"
-                })).filter(q => q.pregunta);
-
-                document.getElementById('cfgUser').textContent = user[0];
-                setupMats();
-                showScreen('secConfig');
-            });
-        } else {
-            alert("Acceso denegado.");
-            document.getElementById('btnLogin').textContent = "Entrar";
-        }
-    });
-}
-
-function setupMats() {
-    const mats = [...new Set(allQuestions.map(q => q.materia))].sort();
-    document.getElementById('multiMat').innerHTML = mats.map(m => `
-        <label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>
-    `).join('');
-    updateStartButton();
-}
-
-function toggleAll() {
-    const cbs = document.querySelectorAll('input[name="materia"]');
-    const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
-    cbs.forEach(cb => cb.checked = anyUnchecked);
-    updateStartButton();
-}
-
-function updateStartButton() {
-    const sel = document.querySelectorAll('input[name="materia"]:checked').length;
-    const btn = document.getElementById('btnStart');
-    btn.disabled = (sel === 0);
-    btn.textContent = sel === 0 ? "Selecciona una materia" : (sel === 1 ? "EXAMEN SINGULAR" : "EXAMEN ÓMNIBUS");
-}
-
-function startExam() {
-    const selected = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
-    const num = parseInt(document.getElementById('inNum').value) || 10;
-    exam = allQuestions.filter(q => selected.includes(q.materia)).sort(() => 0.5 - Math.random()).slice(0, num);
-    originalExam = [...exam]; 
-    idx = 0; isReviewing = false;
-    userAnswers = new Array(exam.length).fill(null);
-    document.getElementById('btnBackRes').classList.add('hidden');
-    document.getElementById('btnFinishNow').classList.remove('hidden');
-    showQ();
-    showScreen('secQ');
-}
-
-function showQ() {
-    const q = exam[idx], ans = userAnswers[idx];
-    const isFeedbackMode = document.getElementById('inFeedback').value === "con";
-    
-    document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
-    document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
-    document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
-    document.getElementById('qTxt').textContent = q.pregunta;
-    document.getElementById('btnPrev').disabled = (idx === 0);
-    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
-
-    const wrap = document.getElementById('optsWrap');
-    wrap.innerHTML = "";
-    document.getElementById('fbWrap').innerHTML = "";
-
-    // SEPARACIÓN DE OPCIONES MULTILÍNEA
-    let raw = (q.opciones || "").toString();
-    let opts = raw.split('\n').map(o => o.trim()).filter(o => o.length > 0);
-    if(opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
-    opts = opts.map(o => o.replace(/^[a-d][\)\.]\s*/i, '').trim());
-
-    const letters = ['A', 'B', 'C', 'D'];
-    opts.forEach((txt, i) => {
-        const L = letters[i];
-        const div = document.createElement('div');
-        div.className = 'opt';
-        
-        if(ans !== null && (isReviewing || isFeedbackMode)) {
-            if(L === q.respuesta) div.classList.add('ok');
-            if(ans === L && ans !== q.respuesta) div.classList.add('ko');
-        } else if(ans === L && !isReviewing && !isFeedbackMode) {
-            div.style.borderColor = 'var(--D)';
-            div.style.background = 'var(--B)';
-        }
-
-        div.innerHTML = `<div class="oltr">${L}</div><div style="flex:1">${txt}</div>`;
-        div.onclick = () => { if(!isReviewing && (userAnswers[idx] === null || !isFeedbackMode)) { userAnswers[idx] = (userAnswers[idx] === L) ? null : L; showQ(); } };
-        wrap.appendChild(div);
-    });
-
-    if(isReviewing || (ans !== null && isFeedbackMode)) {
-        const isOk = (ans === q.respuesta);
-        const isBlank = (ans === null);
-        let fbType = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
-        let fbTitle = isOk ? '✓ CORRECTO' : (isBlank ? '⚠ EN BLANCO' : '✗ INCORRECTO');
-        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${q.respuesta}</b><br><br>${q.saber}</div></div>`;
-    }
-}
-
-function nextQ() { (idx < exam.length - 1) ? (idx++, showQ()) : (!isReviewing ? finishExam() : showScreen('secRes')); }
-function prevQ() { if(idx > 0) { idx--; showQ(); } }
-
-function finishExam() {
-    let oks = 0, kos = 0, was = 0;
-    questionsWithMistakes = [];
-    userAnswers.forEach((ans, i) => {
-        if(ans === exam[i].respuesta) oks++;
-        else {
-            if(ans === null) was++; else kos++;
-            questionsWithMistakes.push({q: exam[i], a: ans});
-        }
-    });
-
-    document.getElementById('rOk').textContent = oks;
-    document.getElementById('rKo').textContent = kos;
-    document.getElementById('rWa').textContent = was;
-    document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
-    
-    const btnArea = document.getElementById('resButtons');
+        <div style="
