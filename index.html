@@ -29,10 +29,10 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
 
-/* AJUSTE: Casilla a la IZQUIERDA del texto */
+/* AJUSTE 1: Casilla de selección a la IZQUIERDA */
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
-.m-item{display:flex;align-items:center;justify-content:flex-start;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;text-align:left}
-.m-item input{width:auto;margin:0;cursor:pointer}
+.m-item{display:flex;align-items:center;justify-content:flex-start;padding:10px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;text-align:left}
+.m-item input{width:18px;height:18px;margin:0;cursor:pointer;flex-shrink:0}
 
 .qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid var(--Y);padding-bottom:5px}
 .pbar-bg{background:var(--B);border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
@@ -70,7 +70,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     <div id="secConfig" class="card hidden">
         <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
-            <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10" min="5" max="100"></div>
+            <div class="field"><label>Nº Preguntas</label><input type="number" id="inNum" value="10" min="5"></div>
             <div class="field"><label>Modo Feedback</label><select id="inFeedback"><option value="con">Con explicación</option><option value="sin">Sin explicación</option></select></div>
         </div>
         <div class="field">
@@ -100,4 +100,27 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     <div id="secRes" class="card hidden" style="text-align:center">
         <h2>Resultado</h2>
         <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
-        <div style="
+        <div style="margin-bottom:2rem">
+            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
+            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
+            Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
+        </div>
+        <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
+    </div>
+</div>
+
+<script>
+const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+let allQuestions = [], exam = [], originalExam = [], idx = 0, userAnswers = [], questionsWithMistakes = [], isReviewing = false;
+
+function fetchJSONP(url, callback) {
+    const name = 'jsonp_' + Date.now();
+    window[name] = (data) => { delete window[name]; callback(data); };
+    const s = document.createElement('script');
+    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
+    document.body.appendChild(s);
+}
+
+function doLogin() {
+    const email = document.getElementById('inEmail').value.trim().toLowerCase();
+    if(!email) return;
