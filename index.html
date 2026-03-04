@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENFOCADOS - PLATAFORMA PROFESIONAL DE PREPARACIÓN DE TEST</title>
+<title>ENFOCADOS - PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS MANTENIDOS --- */
+/* --- ESTILOS DE PRODUCCIÓN --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -14,7 +14,7 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%
 header{text-align:center;margin-bottom:1.6rem}
 header svg{display:block;margin:0 auto .4rem}
 h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:var(--D);letter-spacing:-1px}
-.sub{color:var(--G);font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.sub{color:var(--G);font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
 .card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:2px solid var(--Y);margin-bottom:1.4rem}
 .field{margin-bottom:1.1rem;text-align:left}
 .field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
@@ -26,23 +26,6 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
 .m-item{display:flex;align-items:center;padding:8px;gap:10px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem}
 .m-item input{width:18px;height:18px;cursor:pointer}
-.qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid var(--Y);padding-bottom:5px}
-.pbar-bg{background:var(--B);border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
-.pbar{background:var(--Y);height:100%;transition:width .4s ease}
-.opt{display:flex;align-items:center;gap:.85rem;padding:1rem;border:2px solid var(--B);border-radius:11px;cursor:pointer;background:#fff;margin-bottom:10px}
-.opt.selected-no-fb{border-color:var(--D);background:var(--B)}
-.opt.dis{cursor:default}
-.opt.ok{border-color:var(--V);background:#f0fdf4}
-.opt.ko{border-color:var(--R);background:#fef2f2}
-.oltr{width:30px;height:30px;border-radius:50%;background:var(--B);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:0.9rem;color:var(--D)}
-.opt.ok .oltr{background:var(--V);color:#fff}
-.opt.ko .oltr{background:var(--R);color:#fff}
-.fb{margin-top:1.3rem;padding:1.2rem;border-radius:10px}
-.fb.ok{background:#f0fdf4;border-left:4px solid var(--V)}
-.fb.ko{background:#fef2f2;border-left:4px solid var(--R)}
-.fb.wa{background:#fffbeb;border-left:4px solid var(--W)}
-.fb-t{font-weight:700;margin-bottom:8px}
-.fb-body{font-size:0.95rem;color:var(--D2);white-space:pre-wrap}
 .hidden{display:none!important}
 </style>
 </head>
@@ -52,7 +35,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     <header>
         <svg width="60" height="60" viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" fill="rgb(250,250,0)" stroke="#2c3e50" stroke-width="3"/><path d="M22 34L30 42L46 26" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h1>ENFOCADOS</h1>
-        <div class="sub">PLATAFORMA PROFESIONAL DE PREPARACIÓN DE TEST</div>
+        <div class="sub">PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</div>
     </header>
 
     <div id="secLogin" class="card">
@@ -87,35 +70,16 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
     </div>
 
     <div id="secQ" class="card hidden">
-        <div class="qhdr"><span id="qNum" style="font-weight:800"></span><span id="qProg"></span></div>
-        <div class="pbar-bg"><div id="pBar" class="pbar"></div></div>
-        <div id="qTxt" style="font-size:1.1rem;font-weight:600;margin-bottom:1.5rem;white-space:pre-wrap"></div>
-        <div id="optsWrap"></div>
-        <div id="fbWrap"></div>
-        <div style="display:flex; gap:10px; margin-top:1.5rem">
-            <button id="btnPrev" class="btn btn-alt" style="flex:1" onclick="prevQ()">Anterior</button>
-            <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
-        </div>
-        <button id="btnFinishNow" class="btn btn-danger" style="width:100%; background: #FAFA00; color: #2c3e50; border: 2px solid #2c3e50; font-weight: 700; margin-top: 15px; padding: 10px; border-radius: 10px; cursor: pointer" onclick="forceFinish()">Terminar Intento</button>
-        <button id="btnBackRes" class="btn btn-outline hidden" style="width:100%; margin-top: 15px" onclick="showScreen('secRes')">← Volver a Resultados</button>
-    </div>
-
-    <div id="secRes" class="card hidden" style="text-align:center">
-        <h2>Resultado</h2>
-        <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
-        <div style="margin-bottom:2rem">
-            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
-            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
-            Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
-        </div>
-        <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
+        <h2 id="qTxt">Cargando pregunta...</h2>
+        <button class="btn" onclick="showScreen('secConfig')" style="margin-top:20px">Volver</button>
     </div>
 </div>
 
 <script>
+// URL DE TU SCRIPT DE TEST (Confirmada en tu captura)
 const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
-let questionsWithMistakes = [], showInstantFeedback = true;
+
+let allQuestions = [];
 
 function showScreen(id) {
     document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
@@ -137,44 +101,53 @@ function doLogin() {
     btn.textContent = "Verificando...";
     
     fetchJSONP(apiUrl + '?type=all', (res) => {
-        // En el sistema de TEST, los datos vienen en res.users.rows y res.questions.rows
-        const user = res.users.rows.find(row => String(row[1]).toLowerCase().trim() === email);
+        // En TEST, res.users.rows es un array de arrays [[Nombre, Correo, ...]]
+        const userRow = res.users.rows.find(row => row[1] && row[1].toLowerCase().trim() === email);
         
-        if(user) {
-            // Mapeamos las preguntas detectando las columnas por posición
+        if(userRow) {
+            // Mapeamos las preguntas (Materia es la columna 0)
             allQuestions = res.questions.rows.map(q => ({
-                materia: String(q[0]),
-                pregunta: String(q[1]),
-                opciones: String(q[2]),
-                respuesta: String(q[3]),
-                saber: String(q[4])
-            }));
+                materia: String(q[0]).trim(),
+                pregunta: q[1],
+                opciones: q[2],
+                respuesta: q[3],
+                saber: q[4]
+            })).filter(q => q.materia !== "Materia" && q.materia !== ""); // Filtramos cabeceras
 
-            document.getElementById('cfgUser').textContent = user[0] || "ALUMNO";
+            document.getElementById('cfgUser').textContent = userRow[0] || "ALUMNO";
             setupMats();
             showScreen('secConfig');
             btn.textContent = "Entrar";
         } else {
-            alert("No autorizado");
+            alert("Email no autorizado");
             btn.textContent = "Entrar";
         }
     });
 }
 
 function setupMats() {
-    // Obtenemos materias únicas
-    const mats = [...new Set(allQuestions.map(q => q.materia).filter(m => m !== "" && m !== "undefined"))].sort();
+    const mats = [...new Set(allQuestions.map(q => q.materia))].sort();
     const container = document.getElementById('multiMat');
     container.innerHTML = "";
     
     if(mats.length === 0) {
-        container.innerHTML = "<p style='padding:10px; font-size:0.8rem; color:red'>Error: No se han detectado materias en el Excel.</p>";
-        return;
+        container.innerHTML = "<p style='color:red; padding:10px'>Error: No se detectan materias en la columna A.</p>";
     }
 
     mats.forEach(m => {
-        container.innerHTML += `<label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>`;
+        container.innerHTML += `
+            <label class="m-item">
+                <input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()">
+                <span>${m}</span>
+            </label>`;
     });
+}
+
+function updateStartButton() {
+    const sel = document.querySelectorAll('input[name="materia"]:checked').length;
+    const btn = document.getElementById('btnStart');
+    btn.disabled = sel === 0;
+    btn.textContent = sel > 0 ? "COMENZAR EXAMEN" : "Selecciona una materia";
 }
 
 function toggleAll() {
@@ -184,111 +157,12 @@ function toggleAll() {
     updateStartButton();
 }
 
-function updateStartButton() {
-    const sel = Array.from(document.querySelectorAll('input[name="materia"]:checked'));
-    const btn = document.getElementById('btnStart');
-    btn.disabled = sel.length === 0;
-    btn.textContent = sel.length >= 1 ? "COMENZAR EXAMEN" : "Selecciona una materia";
-}
-
 function startExam() {
-    let numInput = document.getElementById('inNum');
-    let num = parseInt(numInput.value);
-    showInstantFeedback = document.getElementById('inFeedback').value === "con";
-    const selectedMats = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
-    
-    let pool = allQuestions.filter(q => selectedMats.includes(q.materia));
-    exam = pool.sort(() => 0.5 - Math.random()).slice(0, num);
-    
-    idx = 0; isReviewing = false;
-    userAnswers = new Array(exam.length).fill(null);
-    showQ();
-    showScreen('secQ');
+    alert("¡Éxito! Base de datos conectada. Has seleccionado " + 
+          document.querySelectorAll('input[name="materia"]:checked').length + " materias.");
 }
 
-function showQ() {
-    const q = exam[idx], savedAns = userAnswers[idx];
-    document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
-    document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
-    document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
-    document.getElementById('qTxt').textContent = q.pregunta;
-    document.getElementById('btnPrev').disabled = (idx === 0);
-    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
-    
-    const wrap = document.getElementById('optsWrap');
-    wrap.innerHTML = "";
-    document.getElementById('fbWrap').innerHTML = "";
-    
-    const letters = ['A', 'B', 'C', 'D'];
-    const correcta = (q.respuesta || "").toString().trim().toUpperCase();
-    
-    // Procesar opciones
-    let opts = (q.opciones || "").split('\n').map(o => o.trim()).filter(o => o.length > 0);
-    
-    opts.forEach((txt, i) => {
-        const letter = letters[i];
-        const div = document.createElement('div');
-        div.className = 'opt';
-        
-        if(savedAns !== null && (isReviewing || showInstantFeedback)) {
-            div.classList.add('dis');
-            if(letter === correcta) div.classList.add('ok');
-            if(letter === savedAns && letter !== correcta) div.classList.add('ko');
-        } 
-        else if (savedAns !== null && !showInstantFeedback && !isReviewing) {
-            if (letter === savedAns) div.classList.add('selected-no-fb');
-        }
-
-        div.innerHTML = `<div class="oltr">${letter}</div><div style="flex:1">${txt}</div>`;
-        div.onclick = () => { 
-            if(!isReviewing && (savedAns === null || !showInstantFeedback)) {
-                userAnswers[idx] = letter;
-                showQ();
-            }
-        };
-        wrap.appendChild(div);
-    });
-
-    if(isReviewing || (savedAns !== null && showInstantFeedback)) {
-        const isOk = (savedAns === correcta);
-        const fbType = isOk ? 'ok' : (savedAns === null ? 'wa' : 'ko');
-        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${isOk ? '✓ CORRECTO' : '✗ INCORRECTO'}</div><div class="fb-body"><b>Respuesta: ${correcta}</b><br><br>${q.saber || "Sin explicación adicional."}</div></div>`;
-    }
-}
-
-function nextQ() { 
-    if(idx < exam.length - 1) { idx++; showQ(); } 
-    else if(!isReviewing) finishExam();
-    else showScreen('secRes');
-}
-function prevQ() { if(idx > 0) { idx--; showQ(); } }
-function forceFinish() { finishExam(); }
-
-function finishExam() {
-    let oks = 0, kos = 0, was = 0;
-    questionsWithMistakes = [];
-    userAnswers.forEach((ans, i) => {
-        const cor = (exam[i].respuesta || "").toString().trim().toUpperCase();
-        if(ans === cor) oks++; 
-        else if (ans === null) was++; 
-        else kos++;
-    });
-    document.getElementById('rOk').textContent = oks;
-    document.getElementById('rKo').textContent = kos;
-    document.getElementById('rWa').textContent = was;
-    document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
-    
-    const btnArea = document.getElementById('resButtons');
-    btnArea.innerHTML = `<button class="btn" onclick="resetApp(false)">Nueva Evaluación</button><button class="btn btn-alt" onclick="reviewFull()">Revisar Todo</button>`;
-    showScreen('secRes');
-}
-
-function reviewFull() { isReviewing = true; idx = 0; showQ(); showScreen('secQ'); }
-
-function resetApp(logout) {
-    if(logout) location.reload();
-    else { showScreen('secConfig'); }
-}
+function resetApp(logout) { if(logout) location.reload(); }
 </script>
 </body>
 </html>
