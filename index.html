@@ -3,80 +3,298 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENFOCADOS - PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<title>ENFOCADOS · Plataforma de Preparación (TEST)</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS DE PRODUCCIÓN --- */
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
-body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
-.wrap{max-width:860px;margin:0 auto;padding:1.8rem 1.2rem}
-header{text-align:center;margin-bottom:1.6rem}
-h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:var(--D);letter-spacing:-1px}
-.sub{color:var(--G);font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
-.card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:2px solid var(--Y);margin-bottom:1.4rem}
-.field{margin-bottom:1.1rem;text-align:left}
-.field label{display:block;margin-bottom:.3rem;color:var(--D);font-weight:600;font-size:.9rem}
-.field input, .field select{width:100%;padding:.82rem 1rem;border:2px solid var(--B);border-radius:10px;font-size:1rem;font-family:inherit}
-.btn{padding:.88rem 1.5rem;background:var(--Y);color:var(--D);border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;width:100%}
-.btn:hover:not(:disabled){background:var(--Yd);transform:translateY(-1px)}
-.btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed}
-.ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
-.multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
-.m-item{display:flex;align-items:center;padding:8px;gap:10px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem}
-.hidden{display:none!important}
+:root {
+  --Y: rgb(250,250,0);
+  --Yd: rgb(215,215,0);
+  --D: #2c3e50;
+  --D2: #1a252f;
+  --V: #10b981;
+  --R: #ef4444;
+  --G: #64748b;
+  --B: #e2e8f0;
+  --W: #f59e0b;
+  --card-shadow: 0 8px 32px rgba(44,62,80,.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: linear-gradient(160deg, #fffef0 0%, #fff9c4 60%, #f0f9ff 100%);
+  min-height: 100vh;
+  color: var(--D);
+}
+.wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+header { text-align: center; margin-bottom: 2.5rem; }
+h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 800; color: var(--D2); letter-spacing: -2px; }
+.sub { color: var(--G); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+.card { background: #fff; border-radius: 24px; padding: 2.5rem; box-shadow: var(--card-shadow); border: 2px solid var(--Y); margin-bottom: 1.5rem; transition: transform 0.3s ease; }
+.hidden { display: none !important; }
+.btn { padding: 1rem 1.5rem; background: var(--Y); color: var(--D); border: none; border-radius: 14px; font-weight: 800; cursor: pointer; font-family: 'Space Grotesk', sans-serif; transition: all 0.2s; width: 100%; font-size: 1.1rem; }
+.btn:hover:not(:disabled) { background: var(--Yd); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(250,250,0,0.4); }
+.btn:disabled { background: var(--B); color: var(--G); cursor: not-allowed; }
+.input-group { margin-bottom: 1.5rem; text-align: left; }
+.input-group label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--D2); }
+.input-group input, .input-group select { width: 100%; padding: 1rem; border: 2px solid var(--B); border-radius: 12px; font-size: 1rem; font-family: inherit; transition: border-color 0.2s; }
+.input-group input:focus { border-color: var(--Y); outline: none; }
+.multi-box { border: 2px solid var(--B); border-radius: 14px; padding: 10px; max-height: 250px; overflow-y: auto; background: #fcfcfc; }
+.m-item { display: flex; align-items: center; padding: 12px; gap: 12px; cursor: pointer; border-bottom: 1px solid var(--B); }
+.m-item:last-child { border-bottom: none; }
+.m-item input { width: 20px; height: 20px; accent-color: var(--D); }
+.ubar { background: var(--Y); padding: 1rem 1.5rem; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-weight: 700; }
+/* Estilos Examen */
+.q-header { display: flex; justify-content: space-between; margin-bottom: 1rem; font-weight: 700; font-size: 0.9rem; }
+.progress-container { background: var(--B); height: 8px; border-radius: 10px; margin-bottom: 2rem; overflow: hidden; }
+.progress-bar { background: var(--Y); height: 100%; width: 0%; transition: width 0.3s ease; }
+.option { display: flex; align-items: center; gap: 1rem; padding: 1.2rem; border: 2px solid var(--B); border-radius: 16px; cursor: pointer; margin-bottom: 12px; transition: all 0.2s; font-weight: 500; }
+.option:hover:not(.disabled) { border-color: var(--Y); background: #fffdf0; }
+.option.selected { border-color: var(--D); background: var(--B); }
+.option.correct { border-color: var(--V); background: #f0fdf4; }
+.option.incorrect { border-color: var(--R); background: #fef2f2; }
+.letter { width: 32px; height: 32px; border-radius: 50%; background: var(--B); display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+.correct .letter { background: var(--V); color: white; }
+.incorrect .letter { background: var(--R); color: white; }
+.feedback-box { margin-top: 1.5rem; padding: 1.5rem; border-radius: 16px; border-left: 5px solid; display: none; }
+.fb-correct { background: #f0fdf4; border-color: var(--V); }
+.fb-incorrect { background: #fef2f2; border-color: var(--R); }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-    <header>
-        <h1>ENFOCADOS</h1>
-        <div class="sub">PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</div>
-    </header>
+  <header>
+    <h1>ENFOCADOS</h1>
+    <div class="sub">PLATAFORMA PROFESIONAL DE PREPARACIÓN (TEST)</div>
+  </header>
 
-    <div id="secLogin" class="card">
-        <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
-        <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
-        <button id="btnLogin" class="btn" onclick="doLogin()">Entrar</button>
+  <section id="screen-login" class="card">
+    <h2 style="margin-bottom:1.5rem; text-align:center">Acceso Alumno</h2>
+    <div class="input-group">
+      <label>Correo Electrónico</label>
+      <input type="email" id="login-email" placeholder="tu@email.com">
     </div>
+    <button id="btn-login" class="btn" onclick="handleLogin()">Entrar al Sistema</button>
+  </section>
 
-    <div id="secConfig" class="card hidden">
-        <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="location.reload()">SALIR</span></div>
-        <div class="field">
-            <label>Materias detectadas (Columna I)</label>
-            <div id="multiMat" class="multi-box"></div>
-        </div>
-        <button id="btnStart" class="btn" onclick="alert('¡Conexión total con éxito!')" disabled>Selecciona una materia</button>
+  <section id="screen-config" class="card hidden">
+    <div class="ubar">
+      <span id="user-name">...</span>
+      <span style="cursor:pointer; font-size:0.8rem; text-decoration:underline" onclick="location.reload()">SALIR</span>
     </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem">
+      <div class="input-group">
+        <label>Preguntas</label>
+        <input type="number" id="num-q" value="10" min="5" max="100">
+      </div>
+      <div class="input-group">
+        <label>Modo</label>
+        <select id="mode-fb">
+          <option value="con">Corregir al momento</option>
+          <option value="sin">Examen real</option>
+        </select>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Selecciona Materias</label>
+      <div id="materia-list" class="multi-box"></div>
+    </div>
+    <button id="btn-start" class="btn" onclick="startExam()" disabled>Elige materia para empezar</button>
+  </section>
+
+  <section id="screen-quiz" class="card hidden">
+    <div class="q-header">
+      <span id="q-index">Pregunta 1</span>
+      <span id="q-counter">0/0</span>
+    </div>
+    <div class="progress-container"><div id="q-progress" class="progress-bar"></div></div>
+    <h3 id="q-text" style="margin-bottom:2rem; font-size:1.2rem"></h3>
+    <div id="options-container"></div>
+    <div id="feedback-area" class="feedback-box"></div>
+    <div style="display:flex; gap:1rem; margin-top:2rem">
+      <button id="btn-prev" class="btn btn-alt" style="background:white; border:2px solid var(--B)" onclick="prevQ()">Anterior</button>
+      <button id="btn-next" class="btn" onclick="nextQ()">Siguiente</button>
+    </div>
+  </section>
+
+  <section id="screen-results" class="card hidden" style="text-align:center">
+    <h2 id="result-grade" style="font-size:3rem; margin-bottom:1rem"></h2>
+    <p id="result-sub" style="margin-bottom:2rem; font-weight:600"></p>
+    <div id="review-list" style="text-align:left; margin-bottom:2rem"></div>
+    <button class="btn" onclick="location.reload()">Nuevo Test</button>
+  </section>
 </div>
 
 <script>
-const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
-let allQuestions = [];
+// CONFIGURACIÓN API
+const API_URL = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
 
-function fetchJSONP(url, callback) {
-    const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
-    window[callbackName] = function(data) {
-        delete window[callbackName];
-        document.body.removeChild(script);
-        callback(data);
-    };
-    const script = document.createElement('script');
-    script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
-    document.body.appendChild(script);
+let allQuestions = [];
+let examQuestions = [];
+let userAnswers = [];
+let currentIndex = 0;
+let isReviewing = false;
+
+function showScreen(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
 }
 
-function doLogin() {
-    const emailInput = document.getElementById('inEmail');
-    const email = emailInput.value.trim().toLowerCase();
-    const btn = document.getElementById('btnLogin');
+function fetchJSONP(url, callback) {
+  const name = 'jsonp_' + Date.now();
+  window[name] = (data) => { delete window[name]; callback(data); };
+  const s = document.createElement('script');
+  s.src = `${url}${url.includes('?') ? '&' : '?'}callback=${name}`;
+  document.body.appendChild(s);
+}
+
+function handleLogin() {
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  if (!email) return alert("Introduce tu correo");
+  
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true;
+  btn.textContent = "Verificando...";
+
+  fetchJSONP(`${API_URL}?type=all`, (res) => {
+    const user = res.users.rows.find(u => u[1]?.toLowerCase().trim() === email);
+    if (!user) {
+      btn.disabled = false;
+      btn.textContent = "Entrar al Sistema";
+      return alert("Acceso no autorizado");
+    }
+
+    // MAPEO COLUMNAS TEST: 8=Materia, 1=Pregunta, 2=Opciones, 3=Respuesta, 4=Saber
+    allQuestions = res.questions.rows.slice(1).map(row => ({
+      materia: String(row[8] || 'Sin Tema').trim(),
+      pregunta: row[1],
+      opciones: row[2],
+      respuesta: String(row[3]).trim().toLowerCase(),
+      explicacion: row[4]
+    })).filter(q => q.materia && q.pregunta);
+
+    document.getElementById('user-name').textContent = `Hola, ${user[0]}`;
+    buildMaterias();
+    showScreen('screen-config');
+  });
+}
+
+function buildMaterias() {
+  const container = document.getElementById('materia-list');
+  const temas = [...new Set(allQuestions.map(q => q.materia))].sort();
+  container.innerHTML = temas.map(t => `
+    <label class="m-item">
+      <input type="checkbox" name="mats" value="${t}" onchange="checkSelection()">
+      <span>${t}</span>
+    </label>
+  `).join('');
+}
+
+function checkSelection() {
+  const sel = document.querySelectorAll('input[name="mats"]:checked').length;
+  const btn = document.getElementById('btn-start');
+  btn.disabled = sel === 0;
+  btn.textContent = sel > 0 ? `Comenzar (${sel} materias)` : "Elige materia para empezar";
+}
+
+function startExam() {
+  const selected = Array.from(document.querySelectorAll('input[name="mats"]:checked')).map(i => i.value);
+  const limit = parseInt(document.getElementById('num-q').value);
+  
+  let pool = allQuestions.filter(q => selected.includes(q.materia));
+  examQuestions = pool.sort(() => 0.5 - Math.random()).slice(0, limit);
+  userAnswers = new Array(examQuestions.length).fill(null);
+  currentIndex = 0;
+  isReviewing = false;
+  
+  renderQuestion();
+  showScreen('screen-quiz');
+}
+
+function renderQuestion() {
+  const q = examQuestions[currentIndex];
+  const ans = userAnswers[currentIndex];
+  const modeFB = document.getElementById('mode-fb').value === 'con';
+
+  document.getElementById('q-index').textContent = `Pregunta ${currentIndex + 1}`;
+  document.getElementById('q-counter').textContent = `${currentIndex + 1} / ${examQuestions.length}`;
+  document.getElementById('q-progress').style.width = `${((currentIndex + 1) / examQuestions.length) * 100}%`;
+  document.getElementById('q-text').textContent = q.pregunta;
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  
+  const options = q.opciones.split('\n').filter(o => o.trim());
+  const letters = ['a','b','c','d'];
+
+  options.forEach((opt, i) => {
+    const letter = letters[i];
+    const div = document.createElement('div');
+    div.className = 'option';
     
-    if(!email) { alert("Por favor, introduce tu email"); return; }
-    
-    btn.textContent = "Verificando...";
-    btn.disabled = true;
-    
-    fetchJSONP(apiUrl + '?type=all', function(res) {
-        // 1. Verificar usuario (Columna B de la hoja USUARIOS)
-        const userRow = res.users.rows.find(row => row
+    // Lógica visual de corrección
+    if (ans) {
+      div.classList.add('disabled');
+      if (letter === q.respuesta) div.classList.add('correct');
+      if (ans.selected === letter && letter !== q.respuesta) div.classList.add('incorrect');
+      if (ans.selected === letter && !modeFB && !isReviewing) div.classList.add('selected');
+    }
+
+    div.innerHTML = `<div class="letter">${letter.toUpperCase()}</div><span>${opt}</span>`;
+    div.onclick = () => selectOption(letter);
+    container.appendChild(div);
+  });
+
+  const fb = document.getElementById('feedback-area');
+  if (ans && (modeFB || isReviewing)) {
+    fb.style.display = 'block';
+    fb.className = `feedback-box ${ans.correct ? 'fb-correct' : 'fb-incorrect'}`;
+    fb.innerHTML = `<strong>${ans.correct ? '✓ Correcto' : '✗ Incorrecto'}</strong><br><small>${q.explicacion || ''}</small>`;
+  } else {
+    fb.style.display = 'none';
+  }
+
+  document.getElementById('btn-next').textContent = (currentIndex === examQuestions.length - 1) ? 'Finalizar' : 'Siguiente';
+}
+
+function selectOption(letter) {
+  if (userAnswers[currentIndex] && !isReviewing) return;
+  const q = examQuestions[currentIndex];
+  userAnswers[currentIndex] = { selected: letter, correct: letter === q.respuesta };
+  renderQuestion();
+}
+
+function nextQ() {
+  if (currentIndex < examQuestions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  } else {
+    finishExam();
+  }
+}
+
+function prevQ() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+}
+
+function finishExam() {
+  const correct = userAnswers.filter(a => a?.correct).length;
+  const total = examQuestions.length;
+  const pct = (correct / total) * 100;
+  
+  let grade, sub;
+  if (pct === 100)  { grade = '🔥 ¡Perfecto!';     sub = 'Dominas esta materia al 100%'; }
+  else if (pct >= 80) { grade = '⭐ Excelente';      sub = 'Casi lo tienes, sigue practicando'; }
+  else if (pct >= 50) { grade = '📈 Aprobado';      sub = 'Repasa los temas fallidos'; }
+  else                { grade = '📚 A estudiar';     sub = 'Necesitas reforzar estos temas'; }
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-sub').textContent = `${correct} de ${total} correctas (${Math.round(pct)}%)`;
+  showScreen('screen-results');
+}
+</script>
+</body>
+</html>
