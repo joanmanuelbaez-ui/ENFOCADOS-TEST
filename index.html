@@ -6,7 +6,7 @@
 <title>ENFOCADOS - Plataforma de Oposiciones</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* --- ESTILOS ORIGINALES DE PRODUCCIÓN --- */
+/* --- ESTILOS --- */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:rgb(250,250,0);--Yd:rgb(215,215,0);--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;--W:#f59e0b}
 body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#fffef0 0%,#fff9c4 100%);min-height:100vh;color:#1e293b;line-height:1.6}
@@ -92,4 +92,172 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
             <button id="btnPrev" class="btn btn-alt" style="flex:1" onclick="prevQ()">Anterior</button>
             <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
         </div>
-        <button id="btnFinishNow" class
+        <button id="btnFinishNow" class="btn btn-danger" onclick="finishExam()">Terminar Intento</button>
+        <button id="btnBackRes" class="btn btn-outline hidden" onclick="showScreen('secRes')">← Volver a Resultados</button>
+    </div>
+
+    <div id="secRes" class="card hidden" style="text-align:center">
+        <h2>Resultado</h2>
+        <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
+        <div style="margin-bottom:2rem">
+            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
+            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
+            Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
+        </div>
+        <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
+    </div>
+</div>
+
+<script>
+const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
+let questionsWithMistakes = [];
+
+// FUNCIÓN DE CONEXIÓN (Crítica para el login)
+function fetchJSONP(url, callback) {
+    const name = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000);
+    window[name] = (data) => {
+        delete window[name];
+        const script = document.getElementById(name);
+        if(script) script.remove();
+        callback(data);
+    };
+    const s = document.createElement('script');
+    s.id = name;
+    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
+    document.body.appendChild(s);
+}
+
+function doLogin() {
+    const email = document.getElementById('inEmail').value.trim().toLowerCase();
+    if(!email) return;
+    document.getElementById('btnLogin').textContent = "Verificando...";
+    document.getElementById('btnLogin').disabled = true;
+
+    fetchJSONP(apiUrl + '?type=users', (res) => {
+        const user = res.rows.find(u => u[1] && u[1].toLowerCase().trim() === email);
+        if(user) {
+            fetchJSONP(apiUrl + '?type=questions', (qRes) => {
+                allQuestions = qRes.rows.slice(1).map(r => ({
+                    pregunta: r[1],
+                    opciones: r[2],
+                    respuesta: String(r[3] || "").trim().toUpperCase(),
+                    saber: r[4] || r[5] || "Sin detalles.",
+                    materia: r[8] || "General"
+                })).filter(q => q.pregunta);
+
+                document.getElementById('cfgUser').textContent = user[0];
+                setupMats();
+                showScreen('secConfig');
+            });
+        } else {
+            alert("No autorizado o email no encontrado.");
+            document.getElementById('btnLogin').textContent = "Entrar";
+            document.getElementById('btnLogin').disabled = false;
+        }
+    });
+}
+
+function setupMats() {
+    const mats = [...new Set(allQuestions.map(q => q.materia))].sort();
+    document.getElementById('multiMat').innerHTML = mats.map(m => `
+        <label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>
+    `).join('');
+}
+
+function toggleAll() {
+    const cbs = document.querySelectorAll('input[name="materia"]');
+    const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
+    cbs.forEach(cb => cb.checked = anyUnchecked);
+    updateStartButton();
+}
+
+function updateStartButton() {
+    const sel = document.querySelectorAll('input[name="materia"]:checked').length;
+    const btn = document.getElementById('btnStart');
+    btn.disabled = (sel === 0);
+    btn.textContent = sel === 1 ? "EXAMEN SINGULAR" : (sel > 1 ? "EXAMEN ÓMNIBUS" : "Selecciona una materia");
+}
+
+function startExam() {
+    const selected = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
+    const num = parseInt(document.getElementById('inNum').value) || 10;
+    exam = allQuestions.filter(q => selected.includes(q.materia)).sort(() => 0.5 - Math.random()).slice(0, num);
+    idx = 0; isReviewing = false;
+    userAnswers = new Array(exam.length).fill(null);
+    document.getElementById('btnBackRes').classList.add('hidden');
+    document.getElementById('btnFinishNow').classList.remove('hidden');
+    showQ();
+    showScreen('secQ');
+}
+
+function showQ() {
+    const q = exam[idx], ans = userAnswers[idx];
+    const isFeedbackMode = document.getElementById('inFeedback').value === "con";
+    
+    document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
+    document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
+    document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
+    document.getElementById('qTxt').textContent = q.pregunta;
+    document.getElementById('btnPrev').disabled = (idx === 0);
+    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
+
+    const wrap = document.getElementById('optsWrap');
+    wrap.innerHTML = "";
+    document.getElementById('fbWrap').innerHTML = "";
+
+    let raw = (q.opciones || "").toString();
+    let opts = raw.split('\n').map(o => o.trim()).filter(o => o.length > 0);
+    if(opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
+    opts = opts.map(o => o.replace(/^[a-d][\)\.]\s*/i, '').trim());
+
+    const letters = ['A', 'B', 'C', 'D'];
+    opts.forEach((txt, i) => {
+        const L = letters[i];
+        const div = document.createElement('div');
+        div.className = 'opt';
+        
+        if(ans !== null && (isReviewing || isFeedbackMode)) {
+            if(L === q.respuesta) div.classList.add('ok');
+            if(ans === L && ans !== q.respuesta) div.classList.add('ko');
+        } else if(ans !== null && !isFeedbackMode && !isReviewing) {
+            if(ans === L) div.classList.add('selected-no-fb');
+        }
+
+        div.innerHTML = `<div class="oltr">${L}</div><div style="flex:1">${txt}</div>`;
+        div.onclick = () => { if(!isReviewing && (userAnswers[idx] === null || !isFeedbackMode)) { userAnswers[idx] = (userAnswers[idx] === L) ? null : L; showQ(); } };
+        wrap.appendChild(div);
+    });
+
+    if(isReviewing || (ans !== null && isFeedbackMode)) {
+        const isOk = (ans === q.respuesta);
+        const isBlank = (ans === null);
+        let fbType = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
+        let fbTitle = isOk ? '✓ CORRECTO' : (isBlank ? '⚠ EN BLANCO' : '✗ INCORRECTO');
+        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${q.respuesta}</b><br><br>${q.saber}</div></div>`;
+    }
+}
+
+function nextQ() { (idx < exam.length - 1) ? (idx++, showQ()) : (!isReviewing ? finishExam() : showScreen('secRes')); }
+function prevQ() { if(idx > 0) { idx--; showQ(); } }
+
+function finishExam() {
+    let oks = 0, kos = 0, was = 0;
+    questionsWithMistakes = [];
+    userAnswers.forEach((ans, i) => {
+        if(ans === exam[i].respuesta) oks++;
+        else {
+            if(ans === null) was++; else kos++;
+            questionsWithMistakes.push({q: exam[i], a: ans});
+        }
+    });
+
+    document.getElementById('rOk').textContent = oks;
+    document.getElementById('rKo').textContent = kos;
+    document.getElementById('rWa').textContent = was;
+    document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
+    
+    const btnArea = document.getElementById('resButtons');
+    // AJUSTE: NUEVA EVALUACIÓN REGRESA A LA SELECCIÓN
+    btnArea.innerHTML = `<button class="btn" onclick="showScreen('secConfig')">Nueva Evaluación</button>
+                         <button class="
