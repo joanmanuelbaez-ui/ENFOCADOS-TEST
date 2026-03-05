@@ -26,14 +26,10 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 .btn-outline{border: 2px solid var(--D); color: var(--D); margin-top: 15px}
 .btn-danger{background:var(--Y); color:var(--D); border: 2px solid var(--D); box-shadow: 0 3px 8px rgba(0,0,0,0.1); margin-top: 10px}
 .btn-danger:hover{background:var(--Yd)}
-
 .ubar{background:linear-gradient(135deg,var(--Y),rgb(255,255,100));padding:.78rem 1.1rem;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;font-weight:600}
-
-/* CAMBIO 1: MATERIAS CON CHECK A LA IZQUIERDA */
 .multi-box{border:2px solid var(--B);border-radius:10px;padding:10px;max-height:200px;overflow-y:auto;background:#f8fafc}
 .m-item{display:flex;align-items:center;padding:8px;gap:12px;cursor:pointer;border-bottom:1px solid #edf2f7;font-size:0.95rem;text-align:left}
 .m-item input{width:18px;height:18px;cursor:pointer;margin:0;flex-shrink:0}
-
 .qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid var(--Y);padding-bottom:5px}
 .pbar-bg{background:var(--B);border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
 .pbar{background:var(--Y);height:100%;transition:width .4s ease}
@@ -55,32 +51,32 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 </style>
 </head>
 <body>
-
+ 
 <div class="wrap">
     <header>
         <svg width="60" height="60" viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" fill="rgb(250,250,0)" stroke="#2c3e50" stroke-width="3"/><path d="M22 34L30 42L46 26" stroke="#2c3e50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h1>ENFOCADOS</h1>
-        <div class="sub">Plataforma de Preparación Profesional</div>
+        <div class="sub">Plataforma de Preparacion Profesional</div>
     </header>
-
+ 
     <div id="secLogin" class="card">
       <h2 style="text-align:center;margin-bottom:1.5rem">Acceso</h2>
         <div class="field"><label>Email</label><input type="email" id="inEmail" placeholder="tu@email.com"></div>
         <button id="btnLogin" class="btn" style="width:100%" onclick="doLogin()">Entrar</button>
     </div>
-
+ 
     <div id="secConfig" class="card hidden">
         <div class="ubar"><span id="cfgUser"></span><span style="font-size:0.8rem;cursor:pointer" onclick="resetApp(true)">SALIR</span></div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px">
             <div class="field">
-                <label>Nº Preguntas (10-100)</label>
+                <label>N Preguntas (10-100)</label>
                 <input type="number" id="inNum" value="10" min="10" max="100">
             </div>
             <div class="field">
                 <label>Modo Feedback</label>
                 <select id="inFeedback">
-                    <option value="con">Con explicación</option>
-                    <option value="sin">Sin explicación</option>
+                    <option value="con">Con explicacion</option>
+                    <option value="sin">Sin explicacion</option>
                 </select>
             </div>
         </div>
@@ -93,7 +89,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
         </div>
         <button id="btnStart" class="btn" style="width:100%" onclick="startExam()" disabled>Selecciona una materia</button>
     </div>
-
+ 
     <div id="secQ" class="card hidden">
         <div class="qhdr"><span id="qNum" style="font-weight:800"></span><span id="qProg"></span></div>
         <div class="pbar-bg"><div id="pBar" class="pbar"></div></div>
@@ -105,33 +101,32 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
             <button id="btnNext" class="btn" style="flex:1" onclick="nextQ()">Siguiente</button>
         </div>
         <button id="btnFinishNow" class="btn btn-danger" style="width:100%" onclick="forceFinish()">Terminar Intento</button>
-        <button id="btnBackRes" class="btn btn-outline hidden" style="width:100%" onclick="showScreen('secRes')">← Volver a Resultados</button>
+        <button id="btnBackRes" class="btn btn-outline hidden" style="width:100%" onclick="showScreen('secRes')">Volver a Resultados</button>
     </div>
-
+ 
     <div id="secRes" class="card hidden" style="text-align:center">
         <h2>Resultado</h2>
         <div id="rPct" style="font-size:4rem;font-weight:800;margin:1rem 0"></div>
         <div style="margin-bottom:2rem">
-            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> | 
-            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> | 
+            Aciertos: <span id="rOk" style="color:var(--V);font-weight:700"></span> |
+            Fallos: <span id="rKo" style="color:var(--R);font-weight:700"></span> |
             Blancos: <span id="rWa" style="color:var(--W);font-weight:700"></span>
         </div>
         <div id="resButtons" style="display:flex; flex-direction:column; gap:10px"></div>
     </div>
 </div>
-
+ 
 <script>
-// USANDO LA URL DE PRODUCCIÓN QUE PASASTE
-const apiUrl = 'https://script.google.com/macros/s/AKfycbxTAER90Zz9hEsdXc1W86YZClONb09IrnrSbRb4K3vJ4nBVPKHlzfVPCnw7aDJF1ivW/exec';
-
+const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+ 
 let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
 let questionsWithMistakes = [], showInstantFeedback = true;
-
+ 
 function showScreen(id) {
     document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
 }
-
+ 
 function fetchJSONP(url, callback) {
     const name = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000);
     window[name] = (data) => { delete window[name]; callback(data); };
@@ -139,67 +134,79 @@ function fetchJSONP(url, callback) {
     s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
     document.body.appendChild(s);
 }
-
+ 
+// CORREGIDO: convierte siempre a String para evitar null/Date/Number
 function parseTable(res) {
     return res.rows.map(row => {
         let obj = {};
-        res.headers.forEach((h, i) => { if(h) obj[h.toLowerCase().trim()] = row[i]; });
+        res.headers.forEach((h, i) => {
+            if (h) {
+                const key = String(h).toLowerCase().trim();
+                obj[key] = (row[i] !== null && row[i] !== undefined)
+                    ? String(row[i]).trim()
+                    : '';
+            }
+        });
         return obj;
     });
 }
-
+ 
+// CORREGIDO: busca el email en TODOS los campos (inmune a nombre de cabecera)
 function doLogin() {
     const email = document.getElementById('inEmail').value.trim().toLowerCase();
-    const btn = document.getElementById('btnLogin');
-    if(!email) return;
-    btn.textContent = "Verificando...";
+    const btn   = document.getElementById('btnLogin');
+    if (!email) return;
+    btn.textContent = 'Verificando...';
     fetchJSONP(apiUrl + '?type=users', (res) => {
         const users = parseTable(res);
-        const user = users.find(u => u.correo && u.correo.toLowerCase().trim() === email);
-        if(user) {
+        const user  = users.find(u =>
+            Object.values(u).some(val => String(val).toLowerCase().trim() === email)
+        );
+        if (user) {
             fetchJSONP(apiUrl + '?type=questions', (qRes) => {
                 allQuestions = parseTable(qRes);
-                document.getElementById('cfgUser').textContent = user.usuario || "ALUMNO";
+                const nombre = user.usuario || user.nombre || user.name || 'ALUMNO';
+                document.getElementById('cfgUser').textContent = nombre;
                 setupMats();
                 showScreen('secConfig');
-                btn.textContent = "Entrar";
+                btn.textContent = 'Entrar';
             });
         } else {
-            alert("No autorizado");
-            btn.textContent = "Entrar";
+            alert('No autorizado');
+            btn.textContent = 'Entrar';
         }
     });
 }
-
+ 
 function setupMats() {
     const mats = [...new Set(allQuestions.map(q => q.materia).filter(m => m))].sort();
     const container = document.getElementById('multiMat');
-    container.innerHTML = "";
+    container.innerHTML = '';
     mats.forEach(m => {
         container.innerHTML += `<label class="m-item"><input type="checkbox" name="materia" value="${m}" onchange="updateStartButton()"><span>${m}</span></label>`;
     });
 }
-
+ 
 function toggleAll() {
     const cbs = document.querySelectorAll('input[name="materia"]');
     const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
     cbs.forEach(cb => cb.checked = anyUnchecked);
     updateStartButton();
 }
-
+ 
 function updateStartButton() {
     const sel = Array.from(document.querySelectorAll('input[name="materia"]:checked'));
     const btn = document.getElementById('btnStart');
     btn.disabled = sel.length === 0;
-    btn.textContent = sel.length === 1 ? "EXAMEN SINGULAR" : (sel.length > 1 ? "EXAMEN ÓMNIBUS" : "Selecciona una materia");
+    btn.textContent = sel.length === 1 ? 'EXAMEN SINGULAR' : (sel.length > 1 ? 'EXAMEN OMNIBUS' : 'Selecciona una materia');
 }
-
+ 
 function startExam() {
     let numInput = document.getElementById('inNum');
     let num = parseInt(numInput.value);
     if (isNaN(num) || num < 10) { num = 10; numInput.value = 10; }
     else if (num > 100) { num = 100; numInput.value = 100; }
-    showInstantFeedback = document.getElementById('inFeedback').value === "con";
+    showInstantFeedback = document.getElementById('inFeedback').value === 'con';
     const selectedMats = Array.from(document.querySelectorAll('input[name="materia"]:checked')).map(cb => cb.value);
     let pool = allQuestions.filter(q => selectedMats.includes(q.materia));
     exam = pool.sort(() => 0.5 - Math.random()).slice(0, num);
@@ -210,47 +217,45 @@ function startExam() {
     showQ();
     showScreen('secQ');
 }
-
+ 
 function showQ() {
     const q = exam[idx], savedAns = userAnswers[idx];
-    document.getElementById('qNum').textContent = "Pregunta " + (idx + 1);
-    document.getElementById('qProg').textContent = (idx + 1) + "/" + exam.length;
-    document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + "%";
+    document.getElementById('qNum').textContent = 'Pregunta ' + (idx + 1);
+    document.getElementById('qProg').textContent = (idx + 1) + '/' + exam.length;
+    document.getElementById('pBar').style.width = ((idx + 1) / exam.length * 100) + '%';
     document.getElementById('qTxt').textContent = q.pregunta;
     document.getElementById('btnPrev').disabled = (idx === 0);
-    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? "Finalizar" : "Siguiente";
+    document.getElementById('btnNext').textContent = (idx === exam.length - 1 && !isReviewing) ? 'Finalizar' : 'Siguiente';
     const wrap = document.getElementById('optsWrap');
-    wrap.innerHTML = "";
-    document.getElementById('fbWrap').innerHTML = "";
+    wrap.innerHTML = '';
+    document.getElementById('fbWrap').innerHTML = '';
     const letters = ['A', 'B', 'C', 'D'];
-    const correcta = (q.respuesta || "").toString().trim().toUpperCase();
-    let raw = (q.opciones || "").toString();
+    const correcta = (q.respuesta || '').toString().trim().toUpperCase();
+    let raw = (q.opciones || '').toString();
     let opts = raw.split('\n').map(o => o.trim()).filter(o => o.length > 0);
-    if(opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
+    if (opts.length < 2) opts = raw.split(/(?=[a-d]\))/i).map(o => o.trim()).filter(o => o.length > 0);
     opts = opts.map(o => o.replace(/^[a-d][\)\.]\s*/i, '').trim());
     opts.forEach((txt, i) => {
         const letter = letters[i];
         const div = document.createElement('div');
         div.className = 'opt';
-        if(savedAns !== null && (isReviewing || showInstantFeedback)) {
+        if (savedAns !== null && (isReviewing || showInstantFeedback)) {
             div.classList.add('dis');
-            if(letter === correcta) div.classList.add('ok');
-            if(letter === savedAns && letter !== correcta) div.classList.add('ko');
-        } 
-        else if(savedAns === null && isReviewing) {
+            if (letter === correcta) div.classList.add('ok');
+            if (letter === savedAns && letter !== correcta) div.classList.add('ko');
+        } else if (savedAns === null && isReviewing) {
             div.classList.add('dis');
-            if(letter === correcta) div.classList.add('ok');
-        }
-        else if (savedAns !== null && !showInstantFeedback && !isReviewing) {
+            if (letter === correcta) div.classList.add('ok');
+        } else if (savedAns !== null && !showInstantFeedback && !isReviewing) {
             if (letter === savedAns) div.classList.add('selected-no-fb');
         }
         div.innerHTML = `<div class="oltr">${letter}</div><div style="flex:1">${txt}</div>`;
-        div.onclick = () => { 
-            if(!isReviewing) {
-                if(!showInstantFeedback) {
+        div.onclick = () => {
+            if (!isReviewing) {
+                if (!showInstantFeedback) {
                     userAnswers[idx] = (userAnswers[idx] === letter) ? null : letter;
                     showQ();
-                } else if(savedAns === null || savedAns === letter) {
+                } else if (savedAns === null || savedAns === letter) {
                     userAnswers[idx] = (userAnswers[idx] === letter) ? null : letter;
                     showQ();
                 }
@@ -258,70 +263,69 @@ function showQ() {
         };
         wrap.appendChild(div);
     });
-    if(isReviewing || (savedAns !== null && showInstantFeedback)) {
-        const isOk = (savedAns === correcta);
+    if (isReviewing || (savedAns !== null && showInstantFeedback)) {
+        const isOk    = (savedAns === correcta);
         const isBlank = (savedAns === null);
-        let fbType = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
-        let fbTitle = isOk ? '✓ CORRECTO' : (isBlank ? '⚠ EN BLANCO' : '✗ INCORRECTO');
-        document.getElementById('fbWrap').innerHTML = `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${correcta}</b><br><br>${q.saber || q.motivacion || "Sin detalles."}</div></div>`;
+        const fbType  = isOk ? 'ok' : (isBlank ? 'wa' : 'ko');
+        const fbTitle = isOk ? 'CORRECTO' : (isBlank ? 'EN BLANCO' : 'INCORRECTO');
+        document.getElementById('fbWrap').innerHTML =
+            `<div class="fb ${fbType}"><div class="fb-t">${fbTitle}</div><div class="fb-body"><b>Respuesta: ${correcta}</b>\n\n${q.saber || q.motivacion || 'Sin detalles.'}</div></div>`;
     }
 }
-
-function nextQ() { 
-    if(idx < exam.length - 1) { idx++; showQ(); } 
-    else if(!isReviewing) finishExam();
+ 
+function nextQ() {
+    if (idx < exam.length - 1) { idx++; showQ(); }
+    else if (!isReviewing) finishExam();
     else showScreen('secRes');
 }
-
-function prevQ() { if(idx > 0) { idx--; showQ(); } }
-
-function forceFinish() {
-    finishExam();
-}
-
+ 
+function prevQ() { if (idx > 0) { idx--; showQ(); } }
+ 
+function forceFinish() { finishExam(); }
+ 
 function finishExam() {
     let oks = 0, kos = 0, was = 0;
     questionsWithMistakes = [];
     userAnswers.forEach((ans, i) => {
-        const cor = (exam[i].respuesta || "").toString().trim().toUpperCase();
-        if(ans === cor) { oks++; } 
-        else if (ans === null) { was++; questionsWithMistakes.push({ q: exam[i], a: ans }); } 
+        const cor = (exam[i].respuesta || '').toString().trim().toUpperCase();
+        if (ans === cor) { oks++; }
+        else if (ans === null) { was++; questionsWithMistakes.push({ q: exam[i], a: ans }); }
         else { kos++; questionsWithMistakes.push({ q: exam[i], a: ans }); }
     });
     document.getElementById('rOk').textContent = oks;
     document.getElementById('rKo').textContent = kos;
     document.getElementById('rWa').textContent = was;
-    document.getElementById('rPct').textContent = Math.round(oks/exam.length*100) + "%";
+    document.getElementById('rPct').textContent = Math.round(oks / exam.length * 100) + '%';
     document.getElementById('btnFinishNow').classList.add('hidden');
     const btnArea = document.getElementById('resButtons');
-    // CAMBIO 2: BOTÓN NUEVA EVALUACIÓN QUE NO RECARGA
-    btnArea.innerHTML = `<button class="btn" onclick="resetApp(false)">Nueva Evaluación</button><button class="btn btn-alt" onclick="reviewFull()">Revisar Todo (${exam.length})</button>`;
-    if(questionsWithMistakes.length > 0) { 
+    btnArea.innerHTML = `<button class="btn" onclick="resetApp(false)">Nueva Evaluacion</button><button class="btn btn-alt" onclick="reviewFull()">Revisar Todo (${exam.length})</button>`;
+    if (questionsWithMistakes.length > 0) {
         btnArea.innerHTML += `<button class="btn btn-outline" onclick="reviewOnlyMistakes()">Revisar errores/blancos (${questionsWithMistakes.length})</button>`;
     }
     showScreen('secRes');
 }
-
-function reviewFull() { isReviewing = true; idx = 0; document.getElementById('btnBackRes').classList.remove('hidden'); document.getElementById('btnFinishNow').classList.add('hidden'); showQ(); showScreen('secQ'); }
-
-function reviewOnlyMistakes() {
-    exam = questionsWithMistakes.map(m => m.q);
-    userAnswers = questionsWithMistakes.map(m => m.a);
-    isReviewing = true;
-    idx = 0;
+ 
+function reviewFull() {
+    isReviewing = true; idx = 0;
     document.getElementById('btnBackRes').classList.remove('hidden');
     document.getElementById('btnFinishNow').classList.add('hidden');
     showQ(); showScreen('secQ');
 }
-
+ 
+function reviewOnlyMistakes() {
+    exam = questionsWithMistakes.map(m => m.q);
+    userAnswers = questionsWithMistakes.map(m => m.a);
+    isReviewing = true; idx = 0;
+    document.getElementById('btnBackRes').classList.remove('hidden');
+    document.getElementById('btnFinishNow').classList.add('hidden');
+    showQ(); showScreen('secQ');
+}
+ 
 function resetApp(logout) {
-    if(logout) location.reload();
-    else { 
-        exam=[]; 
-        userAnswers=[]; 
-        isReviewing=false;
-        showScreen('secConfig'); 
-        updateStartButton(); 
+    if (logout) location.reload();
+    else {
+        exam = []; userAnswers = []; isReviewing = false;
+        showScreen('secConfig'); updateStartButton();
     }
 }
 </script>
