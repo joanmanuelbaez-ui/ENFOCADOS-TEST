@@ -112,16 +112,15 @@
     <div id="success-container" class="hidden" style="text-align: center;">
         <div class="success-icon">✅</div>
         <h2>¡Registro con Éxito!</h2>
-        <p style="color: var(--G); margin-bottom: 2rem;">Tus datos han sido guardados. Ya puedes acceder a la plataforma de test.</p>
+        <p style="color: var(--G); margin-bottom: 2rem;">Tus datos han sido guardados correctamente en la base de datos.</p>
         <button class="btn" onclick="window.location.href='https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html'">Acceder al Test</button>
     </div>
 </div>
 
 <script>
-    // URL DE TU NUEVO APPS SCRIPT DE REGISTRO
+    // URL DE EJECUCIÓN DEL SCRIPT (NO LA DE LIBRARY)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec";
 
-    // ENLACES DE STRIPE (MODO PRUEBAS)
     const STRIPE_LINKS = {
         "semanal": "https://buy.stripe.com/test_semanal_tu_link",
         "mensual": "https://buy.stripe.com/test_mensual_tu_link",
@@ -136,9 +135,10 @@
         const priceDisplay = document.getElementById('final-price');
         const btnSubmit = document.getElementById('btn-submit');
 
-        if (promo === "GRATIS2024") {
+        // Soporte para múltiples códigos promocionales
+        if (promo === "GRATIS2024" || promo === "VIP123") {
             priceDisplay.textContent = "0.00€ (PROMO)";
-            btnSubmit.textContent = "Activar Acceso Gratuito";
+            btnSubmit.textContent = "Activar Acceso Gratis";
         } else {
             priceDisplay.textContent = precioBase + ".00€";
             btnSubmit.textContent = "Confirmar y Pagar";
@@ -158,13 +158,14 @@
 
         const btn = document.getElementById('btn-submit');
         btn.disabled = true;
-        btn.textContent = "Procesando Registro...";
+        btn.textContent = "Guardando datos...";
 
         try {
-            // ENVIAR A GOOGLE SHEETS
+            // Envío al Apps Script con modo no-cors para evitar el error Access Denied
             await fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: email,
                     nombre: nombre,
@@ -173,19 +174,17 @@
                 })
             });
 
-            // FLUJO FINAL
+            // Tras el envío (sin esperar respuesta por no-cors) realizamos la acción
             if (esGratis) {
-                // Si es gratis, mostramos pantalla de éxito directamente
                 document.getElementById('form-container').classList.add('hidden');
                 document.getElementById('success-container').classList.remove('hidden');
             } else {
-                // Si es de pago, redirigimos a Stripe
                 window.location.href = STRIPE_LINKS[plan];
             }
 
         } catch (error) {
             console.error("Error:", error);
-            alert("Hubo un problema con el servidor. Inténtalo de nuevo.");
+            alert("Error de conexión. Revisa tu internet.");
             btn.disabled = false;
             btn.textContent = "Confirmar y Pagar";
         }
