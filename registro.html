@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENFOCADOS - Registro Directo</title>
     <script src="https://js.stripe.com/v3/"></script>
     <style>
@@ -16,7 +17,7 @@
         button { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #000; color: white; margin-top: 10px; }
         .btn-plan { background: #eee; color: #000; font-size: 0.8em; margin-bottom: 5px; text-align: left; border: 2px solid transparent; }
         .btn-plan.selected { border-color: black; background: #fffde7; }
-        #loading { display: none; text-align: center; margin: 10px; color: #666; font-weight: bold; }
+        #loading { display: none; text-align: center; margin: 10px; color: #d97706; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -37,107 +38,4 @@
             <div id="zona-pago">
                 <p>Elige tu suscripción:</p>
                 <button class="btn-plan" id="p_semanal" onclick="setPlan('semanal')">📅 Semanal - 7€</button>
-                <button class="btn-plan" id="p_mensual" onclick="setPlan('mensual')">📅 Mensual - 14€</button>
-                <button class="btn-plan" id="p_anual" onclick="setPlan('anual')">📅 Anual - 170€</button>
-                
-                <div style="margin-top:15px;">
-                    <label style="font-size:0.8em; font-weight:bold;">Tarjeta Bancaria</label>
-                    <div id="card-element" style="padding:10px; border:1px solid #ccc; border-radius:8px; margin-top:5px;"></div>
-                </div>
-            </div>
-
-            <div id="zona-gratis" style="display:none; background:#d4edda; padding:15px; border-radius:8px; border:1px solid #c3e6cb; margin-bottom:15px; text-align: center;">
-                ✅ <b>MODO PROMOCIONAL</b><br>Se validará tu código al finalizar.
-            </div>
-
-            <button type="button" onclick="procesarRegistroFinal()">FINALIZAR REGISTRO</button>
-            <div id="loading">CONECTANDO CON LA BASE DE DATOS...</div>
-        </div>
-
-        <div id="step3" class="step" style="text-align:center;">
-            <div style="font-size: 40px;">✅</div>
-            <h2>¡REGISTRO COMPLETADO!</h2>
-            <p>Bienvenido/a, <b id="userDisplay"></b></p>
-            <p>Ya puedes acceder a la plataforma con tu email.</p>
-            <a href="https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html" style="display:block; background:var(--enfocados); color:black; padding:15px; text-decoration:none; font-weight:bold; border-radius:8px; border:2px solid black; margin-top:10px;">IR AL TEST</a>
-        </div>
-
-    </div>
-</div>
-
-<script>
-    // URL DE TU SCRIPT DE GOOGLE
-    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec';
-    
-    let planFinal = 'semanal';
-    // Nota: Esta es una clave de test de Stripe. Para cobrar real, necesitas la 'pk_live_...'
-    const stripe = Stripe('pk_test_51T2tn60VeufI11bb'); 
-    const elements = stripe.elements();
-    const card = elements.create('card');
-
-    function saltarAlPaso2() {
-        const codigo = document.getElementById('codigoPromo').value.trim();
-        
-        document.getElementById('step1').classList.remove('active');
-        document.getElementById('step2').classList.add('active');
-
-        if (codigo !== "") {
-            planFinal = 'gratuito';
-            document.getElementById('zona-pago').style.display = 'none';
-            document.getElementById('zona-gratis').style.display = 'block';
-        } else {
-            document.getElementById('zona-pago').style.display = 'block';
-            document.getElementById('zona-gratis').style.display = 'none';
-            setPlan('semanal');
-            setTimeout(() => card.mount('#card-element'), 500);
-        }
-    }
-
-    function setPlan(p) {
-        planFinal = p;
-        document.querySelectorAll('.btn-plan').forEach(b => b.classList.remove('selected'));
-        if(document.getElementById('p_' + p)) {
-            document.getElementById('p_' + p).classList.add('selected');
-        }
-    }
-
-    async function procesarRegistroFinal() {
-        document.getElementById('loading').style.display = 'block';
-        
-        const apellidos = document.getElementById('apellidos').value.trim();
-        const apellidoMayus = apellidos.split(' ')[0].toUpperCase();
-        const email = document.getElementById('email').value.trim();
-        const codigo = document.getElementById('codigoPromo').value.trim();
-
-        const payload = {
-            action: 'register_user',
-            nombre: document.getElementById('nombre').value,
-            apellidos: apellidos,
-            email: email,
-            plan: planFinal,
-            codigo: codigo
-        };
-
-        try {
-            // Envío a Google Sheets
-            await fetch(URL_SCRIPT, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify(payload)
-            });
-
-            // Éxito visual
-            document.getElementById('userDisplay').textContent = apellidoMayus;
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
-        } catch (e) {
-            alert("Error de conexión.");
-        } finally {
-            document.getElementById('loading').style.display = 'none';
-        }
-    }
-</script>
-
-</body>
-</html>
+                <button class="btn-
