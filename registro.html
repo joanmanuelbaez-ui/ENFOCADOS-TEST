@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENFOCADOS - Alta de Alumno</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --Y: rgb(250,250,0); --D: #2c3e50; --B: #e2e8f0; }
         body { font-family: 'Inter', sans-serif; background: #fdfdf2; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .card { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 400px; border: 2px solid var(--Y); }
+        .card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 400px; border: 2px solid var(--Y); }
         h1 { text-align: center; color: var(--D); margin-bottom: 1.5rem; font-weight: 800; }
         .field { margin-bottom: 1rem; }
         label { display: block; margin-bottom: 0.4rem; font-weight: 700; font-size: 0.9rem; }
@@ -17,96 +17,32 @@
         .btn { width: 100%; padding: 1.1rem; background: var(--Y); color: var(--D); border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1rem; }
         .btn:hover { background: #eaea00; transform: translateY(-2px); }
         .hidden { display: none; }
+        .info-pago { font-size: 0.8rem; color: #64748b; text-align: center; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <div id="form-box">
-        <h1>Registro Nuevo</h1>
+        <h1>Alta Alumno</h1>
         <div class="field">
-            <label>Email (Usuario)</label>
+            <label>Email de acceso</label>
             <input type="email" id="email" placeholder="ejemplo@correo.com">
         </div>
         <div class="field">
             <label>Nombre Completo</label>
-            <input type="text" id="nombre" placeholder="Tu nombre">
+            <input type="text" id="nombre" placeholder="Tu nombre y apellidos">
         </div>
         <div class="field">
-            <label>Plan</label>
+            <label>Plan elegido</label>
             <select id="plan" onchange="actualizar()">
-                <option value="semanal" data-p="7">Semanal - 7€</option>
-                <option value="mensual" data-p="12">Mensual - 12€</option>
-                <option value="anual" data-p="177">Anual - 177€</option>
+                <option value="semanal" data-p="7">Suscripción Semanal - 7€</option>
+                <option value="mensual" data-p="12">Suscripción Mensual - 12€</option>
             </select>
         </div>
         <div class="field">
-            <label>Código VIP</label>
-            <input type="text" id="promo" placeholder="Introduce código" oninput="actualizar()">
+            <label>¿Tienes un Código VIP?</label>
+            <input type="text" id="promo" placeholder="Introduce el código aquí" oninput="actualizar()">
         </div>
         <div class="price-box" id="p-txt">7.00€</div>
-        <button class="btn" id="btn-envio" onclick="enviar()">Registrar y Acceder</button>
-    </div>
-
-    <div id="success-box" class="hidden" style="text-align: center;">
-        <div style="font-size: 4rem;">✅</div>
-        <h2>¡Listo!</h2>
-        <p>Tu usuario ha sido creado correctamente.</p>
-        <button class="btn" style="margin-top: 20px;" onclick="window.location.href='https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html'">Ir al Test</button>
-    </div>
-</div>
-
-<script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec";
-
-    function actualizar() {
-        const promo = document.getElementById('promo').value.trim().toUpperCase();
-        const plan = document.getElementById('plan');
-        let p = plan.options[plan.selectedIndex].getAttribute('data-p');
-        
-        if (promo === "VIP123" || promo === "GRATIS2024") {
-            document.getElementById('p-txt').textContent = "0.00€ (PROMO)";
-        } else {
-            document.getElementById('p-txt').textContent = p + ".00€";
-        }
-    }
-
-    async function enviar() {
-        const email = document.getElementById('email').value.trim();
-        const nombre = document.getElementById('nombre').value.trim();
-        const plan = document.getElementById('plan').value;
-        const precioTxt = document.getElementById('p-txt').textContent;
-        const esGratis = precioTxt.includes("0.00");
-
-        if (!email || !nombre || !email.includes('@')) return alert("Datos incompletos");
-
-        const btn = document.getElementById('btn-envio');
-        btn.disabled = true;
-        btn.textContent = "Conectando...";
-
-        try {
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify({
-                    email: email, nombre: nombre, plan: plan,
-                    precio: esGratis ? 0 : parseFloat(precioTxt)
-                })
-            });
-
-            // Al usar no-cors, el navegador no lee la respuesta pero los datos llegan al Excel.
-            if (esGratis) {
-                document.getElementById('form-box').classList.add('hidden');
-                document.getElementById('success-box').classList.remove('hidden');
-            } else {
-                alert("Redirigiendo a pasarela de pago...");
-                // Aquí iría el enlace a Stripe
-            }
-        } catch (e) {
-            alert("Error de red");
-            btn.disabled = false;
-        }
-    }
-</script>
-</body>
-</html>
+        <button class="btn" id="btn-envio" onclick="registrar()">Continuar</button>
