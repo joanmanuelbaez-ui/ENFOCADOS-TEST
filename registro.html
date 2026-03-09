@@ -1,115 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ENFOCADOS · Registro y Alta</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --Y: rgb(250,250,0);
-  --D: #2c3e50;
-  --V: #10b981;
-  --R: #ef4444;
-  --B: #e2e8f0;
-}
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: linear-gradient(160deg, #fffef0 0%, #fff9c4 60%, #f0f9ff 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-.reg-card {
-  background: white;
-  max-width: 500px;
-  width: 100%;
-  padding: 2.5rem;
-  border-radius: 24px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  border: 2px solid var(--Y);
-}
-h1 { font-family: 'Space Grotesk', sans-serif; text-align: center; margin-bottom: 2rem; color: var(--D); }
-.step { display: none; }
-.step.active { display: block; animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.field { margin-bottom: 1.2rem; }
-label { display: block; margin-bottom: 0.5rem; font-weight: 700; font-size: 0.9rem; }
-input { width: 100%; padding: 1rem; border: 2px solid var(--B); border-radius: 12px; font-size: 1rem; }
-input:focus { border-color: var(--Y); outline: none; }
-.btn { width: 100%; padding: 1rem; background: var(--Y); color: var(--D); border: none; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 1.1rem; margin-top: 1rem; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.price-tag { background: #f8fafc; padding: 1rem; border-radius: 12px; text-align: center; margin: 1rem 0; border: 1px dashed var(--D); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENFOCADOS - Registro de Nuevo Alumno</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --Y: rgb(250,250,0);
+            --D: #2c3e50;
+            --B: #e2e8f0;
+            --G: #64748b;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fdfdf2 0%, #fffde7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid var(--Y);
+        }
+        h1 { text-align: center; color: var(--D); font-weight: 800; margin-bottom: 1.5rem; font-size: 1.8rem; }
+        .field { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--D); font-size: 0.9rem; }
+        input, select { 
+            width: 100%; 
+            padding: 1rem; 
+            border: 2px solid var(--B); 
+            border-radius: 12px; 
+            font-size: 1rem; 
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus { border-color: var(--Y); outline: none; }
+        .price-tag { 
+            background: #f1f5f9; 
+            padding: 1.2rem; 
+            border-radius: 12px; 
+            text-align: center; 
+            margin: 1.5rem 0; 
+            border: 2px dashed var(--D);
+        }
+        #final-price { font-size: 1.8rem; font-weight: 800; color: var(--D); }
+        .btn { 
+            width: 100%; 
+            padding: 1.1rem; 
+            background: var(--Y); 
+            color: var(--D); 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            font-size: 1.1rem; 
+            transition: all 0.3s;
+        }
+        .btn:hover { background: #eaea00; transform: translateY(-2px); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .hidden { display: none; }
+        .success-icon { font-size: 4rem; margin-bottom: 1rem; color: #10b981; }
+    </style>
 </head>
 <body>
 
-<div class="reg-card">
-  <h1>Registro Alumno</h1>
-  
-  <div id="step-1" class="step active">
-    <div class="field">
-      <label>Introduce tu Email para comenzar</label>
-      <input type="email" id="reg-email" placeholder="ejemplo@correo.com">
-    </div>
-    <button class="btn" onclick="checkEmail()">Siguiente</button>
-  </div>
+<div class="card">
+    <div id="form-container">
+        <h1>Alta de Alumno</h1>
+        
+        <div class="field">
+            <label>Tu Email (será tu usuario)</label>
+            <input type="email" id="email" placeholder="ejemplo@correo.com">
+        </div>
 
-  <div id="step-2" class="step">
-    <div class="field">
-      <label>Nombre Completo</label>
-      <input type="text" id="reg-name" placeholder="Tu nombre">
-    </div>
-    <div class="field">
-      <label>¿Tienes un código promocional?</label>
-      <input type="text" id="reg-promo" placeholder="CÓDIGO (Opcional)">
-    </div>
-    <div class="price-tag">
-      <span style="font-size:0.9rem; color:var(--G)">Total a pagar:</span><br>
-      <strong id="final-price" style="font-size:1.5rem">29.90€</strong>
-    </div>
-    <button class="btn" onclick="goToPayment()">Confirmar y Pagar</button>
-  </div>
+        <div class="field">
+            <label>Nombre Completo</label>
+            <input type="text" id="nombre" placeholder="Nombre y Apellidos">
+        </div>
 
-  <div id="step-3" class="step">
-    <div style="text-align:center">
-      <div style="font-size:4rem; margin-bottom:1rem">✅</div>
-      <h2>¡Registro Completado!</h2>
-      <p style="margin:1rem 0; color:var(--G)">Se ha enviado el alta a la base de datos de Usuarios Activos.</p>
-      <button class="btn" onclick="window.location.href='index.html'">Ir al Panel de Test</button>
+        <div class="field">
+            <label>Plan de Acceso</label>
+            <select id="plan" onchange="calcularPrecio()">
+                <option value="semanal" data-p="7">Suscripción Semanal - 7,00€</option>
+                <option value="mensual" data-p="12">Suscripción Mensual - 12,00€</option>
+                <option value="anual" data-p="177">Suscripción Anual - 177,00€</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Código Promocional</label>
+            <input type="text" id="promo" placeholder="Introduce tu código" oninput="calcularPrecio()">
+        </div>
+
+        <div class="price-tag">
+            <span style="color: var(--G); font-size: 0.9rem;">Total a pagar:</span><br>
+            <span id="final-price">7.00€</span>
+        </div>
+
+        <button class="btn" id="btn-submit" onclick="ejecutarRegistro()">Confirmar y Pagar</button>
     </div>
-  </div>
+
+    <div id="success-container" class="hidden" style="text-align: center;">
+        <div class="success-icon">✅</div>
+        <h2>¡Registro con Éxito!</h2>
+        <p style="color: var(--G); margin-bottom: 2rem;">Tus datos han sido guardados. Ya puedes acceder a la plataforma de test.</p>
+        <button class="btn" onclick="window.location.href='https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html'">Acceder al Test</button>
+    </div>
 </div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+    // URL DE TU NUEVO APPS SCRIPT DE REGISTRO
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec";
 
-function checkEmail() {
-  const email = document.getElementById('reg-email').value;
-  if(!email.includes('@')) return alert("Email no válido");
-  
-  document.getElementById('step-1').classList.remove('active');
-  document.getElementById('step-2').classList.add('active');
-}
+    // ENLACES DE STRIPE (MODO PRUEBAS)
+    const STRIPE_LINKS = {
+        "semanal": "https://buy.stripe.com/test_semanal_tu_link",
+        "mensual": "https://buy.stripe.com/test_mensual_tu_link",
+        "anual": "https://buy.stripe.com/test_anual_tu_link"
+    };
 
-function goToPayment() {
-  const email = document.getElementById('reg-email').value;
-  const nombre = document.getElementById('reg-name').value;
-  
-  if(!nombre) return alert("Indica tu nombre");
+    function calcularPrecio() {
+        const selectPlan = document.getElementById('plan');
+        const promo = document.getElementById('promo').value.trim().toUpperCase();
+        let precioBase = selectPlan.options[selectPlan.selectedIndex].getAttribute('data-p');
+        
+        const priceDisplay = document.getElementById('final-price');
+        const btnSubmit = document.getElementById('btn-submit');
 
-  const btn = document.querySelector('#step-2 .btn');
-  btn.disabled = true;
-  btn.textContent = "Procesando...";
+        if (promo === "GRATIS2024") {
+            priceDisplay.textContent = "0.00€ (PROMO)";
+            btnSubmit.textContent = "Activar Acceso Gratuito";
+        } else {
+            priceDisplay.textContent = precioBase + ".00€";
+            btnSubmit.textContent = "Confirmar y Pagar";
+        }
+    }
 
-  // Simulamos el alta en USUARIOS_ACTIVOS y el pago
-  setTimeout(() => {
-    document.getElementById('step-2').classList.remove('active');
-    document.getElementById('step-3').classList.add('active');
-  }, 1500);
-}
+    async function ejecutarRegistro() {
+        const email = document.getElementById('email').value.trim();
+        const nombre = document.getElementById('nombre').value.trim();
+        const plan = document.getElementById('plan').value;
+        const precioTxt = document.getElementById('final-price').textContent;
+        const esGratis = precioTxt.includes("0.00");
+
+        if (!email || !nombre || !email.includes('@')) {
+            return alert("Por favor, introduce un nombre y un email válido.");
+        }
+
+        const btn = document.getElementById('btn-submit');
+        btn.disabled = true;
+        btn.textContent = "Procesando Registro...";
+
+        try {
+            // ENVIAR A GOOGLE SHEETS
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    email: email,
+                    nombre: nombre,
+                    plan: plan,
+                    precio: esGratis ? 0 : parseFloat(precioTxt)
+                })
+            });
+
+            // FLUJO FINAL
+            if (esGratis) {
+                // Si es gratis, mostramos pantalla de éxito directamente
+                document.getElementById('form-container').classList.add('hidden');
+                document.getElementById('success-container').classList.remove('hidden');
+            } else {
+                // Si es de pago, redirigimos a Stripe
+                window.location.href = STRIPE_LINKS[plan];
+            }
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Hubo un problema con el servidor. Inténtalo de nuevo.");
+            btn.disabled = false;
+            btn.textContent = "Confirmar y Pagar";
+        }
+    }
 </script>
 </body>
 </html>
