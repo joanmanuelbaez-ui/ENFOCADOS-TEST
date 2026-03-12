@@ -5,48 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ENFOCADOS - Registro</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --Y:#fafa00;
-  --Yd:#e0e000;
-  --D:#2c3e50;
-  --D2:#1a252f;
-  --V:#10b981;
-  --R:#ef4444;
-  --G:#64748b;
-  --B:#e2e8f0;
+  --Y:#fafa00;--Yd:#e0e000;--D:#2c3e50;--D2:#1a252f;
+  --V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;
 }
 body{
   font-family:'Inter',sans-serif;
   background:linear-gradient(160deg,#1a252f 0%,#2c3e50 100%);
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:1.5rem;
+  min-height:100vh;display:flex;align-items:center;
+  justify-content:center;padding:1.5rem;
 }
 .card{
-  background:#fff;
-  border-radius:20px;
-  padding:0;
+  background:#fff;border-radius:20px;
   box-shadow:0 20px 60px rgba(0,0,0,.4);
-  width:100%;
-  max-width:480px;
-  overflow:hidden;
+  width:100%;max-width:480px;overflow:hidden;
 }
 .card-header{
-  background:var(--Y);
-  padding:1.8rem 2rem 1.4rem;
-  text-align:center;
+  background:var(--Y);padding:1.8rem 2rem 1.4rem;text-align:center;
 }
 .card-header svg{display:block;margin:0 auto .5rem}
 .card-header h1{
-  font-family:'Montserrat',sans-serif;
-  font-size:1.9rem;font-weight:800;
-  color:var(--D);letter-spacing:-1px;
+  font-family:'Montserrat',sans-serif;font-size:1.9rem;
+  font-weight:800;color:var(--D);letter-spacing:-1px;
 }
-.card-header p{color:var(--D);font-size:.82rem;font-weight:600;margin-top:.2rem;opacity:.7;text-transform:uppercase;letter-spacing:.08em}
+.card-header p{color:var(--D);font-size:.82rem;font-weight:600;
+  margin-top:.2rem;opacity:.7;text-transform:uppercase;letter-spacing:.08em}
 .card-body{padding:2rem}
  
 /* STEPS */
@@ -56,8 +42,7 @@ body{
   width:30px;height:30px;border-radius:50%;
   border:2.5px solid var(--B);background:#fff;
   display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:.78rem;color:var(--G);
-  transition:all .3s;
+  font-weight:800;font-size:.78rem;color:var(--G);transition:all .3s;
 }
 .step-circle.active{border-color:var(--Y);background:var(--Y);color:var(--D)}
 .step-circle.done{border-color:var(--V);background:var(--V);color:#fff}
@@ -65,25 +50,23 @@ body{
 .step-line{flex:1;height:2px;background:var(--B);margin-bottom:1.2rem;transition:background .3s}
 .step-line.done{background:var(--V)}
  
-/* PANELS */
 .panel{display:none}
 .panel.active{display:block;animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
- 
-.panel-title{font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:700;color:var(--D);margin-bottom:.3rem}
+.panel-title{font-family:'Montserrat',sans-serif;font-size:1.05rem;
+  font-weight:700;color:var(--D);margin-bottom:.3rem}
 .panel-sub{font-size:.84rem;color:var(--G);margin-bottom:1.3rem;line-height:1.5}
  
 /* FIELDS */
 .field{margin-bottom:.95rem}
 .field label{display:block;margin-bottom:.35rem;font-weight:700;font-size:.84rem;color:var(--D)}
-.field input,.field select{
+.field input{
   width:100%;padding:.78rem .95rem;
   border:2px solid var(--B);border-radius:9px;
   font-size:.95rem;font-family:inherit;
-  outline:none;background:#fafafa;
-  transition:border-color .2s;
+  outline:none;background:#fafafa;transition:border-color .2s;
 }
-.field input:focus,.field select:focus{border-color:var(--Y);background:#fff}
+.field input:focus{border-color:var(--Y);background:#fff}
 .row-2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
  
 /* CODIGO BADGE */
@@ -93,33 +76,40 @@ body{
   display:flex;align-items:center;gap:.65rem;
   margin-bottom:1.2rem;font-size:.88rem;color:#065f46;font-weight:600;
 }
-.codigo-badge .icon{font-size:1.3rem}
+.codigo-badge .ico{font-size:1.4rem}
  
 /* PLANES */
-.planes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:1.2rem}
+.planes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:1.1rem}
 .plan-card{
   border:2px solid var(--B);border-radius:10px;
-  padding:.85rem .75rem;cursor:pointer;
-  text-align:center;transition:all .18s;
-  background:#fafafa;
+  padding:.9rem .75rem;cursor:pointer;
+  text-align:center;transition:all .18s;background:#fafafa;
 }
 .plan-card:hover{border-color:var(--Yd)}
 .plan-card.selected{border-color:var(--D);background:var(--Y)}
-.plan-name{font-weight:800;font-size:.88rem;color:var(--D)}
-.plan-price{font-family:'Montserrat',sans-serif;font-size:1.2rem;font-weight:800;color:var(--D);margin:.2rem 0}
+.plan-name{font-weight:800;font-size:.85rem;color:var(--D)}
+.plan-price{font-family:'Montserrat',sans-serif;font-size:1.25rem;
+  font-weight:800;color:var(--D);margin:.2rem 0}
 .plan-desc{font-size:.72rem;color:var(--G)}
 .plan-card.selected .plan-desc{color:var(--D)}
  
+/* STRIPE */
+.stripe-box{
+  background:#f8fafc;border:2px solid var(--B);
+  border-radius:10px;padding:1rem;margin-bottom:1rem;
+}
+.stripe-box label{display:block;font-weight:700;font-size:.84rem;color:var(--D);margin-bottom:.5rem}
+#card-element{padding:.72rem .9rem;background:#fff;border:2px solid var(--B);
+  border-radius:8px;transition:border-color .2s;}
+#card-element.StripeElement--focus{border-color:var(--Y)}
+#card-errors{color:var(--R);font-size:.82rem;font-weight:600;margin-top:.5rem;min-height:1.2rem}
+ 
 /* BUTTONS */
 .btn{
-  width:100%;padding:.88rem;
-  background:var(--Y);color:var(--D);
-  border:none;border-radius:10px;
-  font-size:.97rem;font-weight:800;
-  font-family:'Montserrat',sans-serif;
-  cursor:pointer;transition:all .2s;
-  box-shadow:0 3px 10px rgba(250,250,0,.35);
-  margin-top:.4rem;
+  width:100%;padding:.88rem;background:var(--Y);color:var(--D);
+  border:none;border-radius:10px;font-size:.97rem;font-weight:800;
+  font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .2s;
+  box-shadow:0 3px 10px rgba(250,250,0,.35);margin-top:.4rem;
 }
 .btn:hover:not(:disabled){background:var(--Yd);transform:translateY(-1px)}
 .btn:disabled{background:#cbd5e1;color:#94a3b8;cursor:not-allowed;box-shadow:none}
@@ -133,11 +123,12 @@ body{
  
 /* SUCCESS */
 .success-wrap{text-align:center;padding:1rem 0}
-.success-wrap .icon{font-size:3.8rem;margin-bottom:.8rem}
-.success-wrap h2{font-family:'Montserrat',sans-serif;font-size:1.3rem;font-weight:800;color:var(--D);margin-bottom:.4rem}
+.success-wrap .ico{font-size:3.8rem;margin-bottom:.8rem}
+.success-wrap h2{font-family:'Montserrat',sans-serif;font-size:1.3rem;
+  font-weight:800;color:var(--D);margin-bottom:.4rem}
 .success-wrap p{font-size:.87rem;color:var(--G);margin-bottom:1.5rem;line-height:1.6}
 .redirect-bar{height:4px;background:var(--B);border-radius:4px;overflow:hidden;margin-bottom:1rem}
-.redirect-fill{height:100%;background:var(--V);width:0;transition:width 1.5s linear}
+.redirect-fill{height:100%;background:var(--V);width:0;transition:width 2s linear}
  
 .back-link{text-align:center;margin-top:1.1rem;font-size:.82rem;color:var(--G)}
 .back-link a{color:var(--D);font-weight:700;text-decoration:none}
@@ -147,11 +138,11 @@ body{
 <body>
 <div class="card">
  
-  <!-- CABECERA AMARILLA -->
   <div class="card-header">
     <svg width="44" height="44" viewBox="0 0 68 68" fill="none">
       <circle cx="34" cy="34" r="32" fill="#2c3e50" stroke="#2c3e50" stroke-width="3"/>
-      <path d="M22 34L30 42L46 26" stroke="#fafa00" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M22 34L30 42L46 26" stroke="#fafa00" stroke-width="4.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <h1>ENFOCADOS</h1>
     <p>Alta de Alumno &mdash; Plataforma TEST</p>
@@ -159,8 +150,7 @@ body{
  
   <div class="card-body">
  
-    <!-- INDICADOR DE PASOS -->
-    <div class="steps" id="steps-bar">
+    <div class="steps">
       <div class="step-item">
         <div class="step-circle active" id="sc1">1</div>
         <div class="step-label">Datos</div>
@@ -177,11 +167,10 @@ body{
       </div>
     </div>
  
-    <!-- ══ PASO 1: DATOS ══ -->
+    <!-- PASO 1: DATOS -->
     <div class="panel active" id="panel1">
       <div class="panel-title">Tus datos personales</div>
-      <div class="panel-sub">Completa el formulario. Si tienes un c&oacute;digo VIP, int&oacute;ducelo al final.</div>
- 
+      <div class="panel-sub">Completa el formulario. Si tienes c&oacute;digo VIP, intr&oacute;ducelo al final.</div>
       <div class="row-2">
         <div class="field">
           <label>Nombre *</label>
@@ -199,66 +188,78 @@ body{
       <div class="field">
         <label>C&oacute;digo VIP <span style="font-weight:400;color:var(--G)">(opcional)</span></label>
         <input type="text" id="inp-codigo" placeholder="CODIGO2025"
-          style="text-transform:uppercase;letter-spacing:.06em">
+          style="text-transform:uppercase;letter-spacing:.06em"
+          onkeydown="if(event.key==='Enter')paso1Siguiente()">
       </div>
- 
       <button class="btn" id="btn1" onclick="paso1Siguiente()">Siguiente &rarr;</button>
       <div id="msg1" class="msg"></div>
       <div class="back-link"><a href="index.html">&larr; Ya tengo cuenta</a></div>
     </div>
  
-    <!-- ══ PASO 2: PLAN O CODIGO VIP ══ -->
+    <!-- PASO 2 RUTA A: CODIGO VIP -->
     <div class="panel" id="panel2">
- 
-      <!-- Ruta A: tiene codigo -->
       <div id="ruta-codigo" style="display:none">
         <div class="panel-title">C&oacute;digo VIP detectado</div>
-        <div class="panel-sub">Hemos detectado un c&oacute;digo de acceso. Al confirmar, verificaremos su validez y activaremos tu cuenta.</div>
+        <div class="panel-sub">Verificaremos el c&oacute;digo en la base de datos y activaremos tu cuenta.</div>
         <div class="codigo-badge">
-          <span class="icon">&#127775;</span>
+          <span class="ico">&#127775;</span>
           <div>
             <div>C&oacute;digo: <strong id="badge-codigo"></strong></div>
-            <div style="font-size:.78rem;font-weight:400;margin-top:.1rem">Acceso gratuito si el c&oacute;digo es correcto</div>
+            <div style="font-size:.78rem;font-weight:400;margin-top:.1rem">
+              Acceso gratuito si el c&oacute;digo es v&aacute;lido
+            </div>
           </div>
         </div>
-        <button class="btn" id="btn-vip" onclick="enviarRegistro('vip')">Validar y Acceder</button>
+        <button class="btn" id="btn-vip" onclick="enviarVIP()">Validar y Acceder</button>
         <div id="msg-vip" class="msg"></div>
       </div>
  
-      <!-- Ruta B: no tiene codigo -->
+      <!-- PASO 2 RUTA B: PAGO STRIPE -->
       <div id="ruta-pago" style="display:none">
         <div class="panel-title">Elige tu plan</div>
-        <div class="panel-sub">Selecciona la modalidad de acceso que mejor se adapte a ti.</div>
+        <div class="panel-sub">Selecciona la modalidad y paga con tarjeta. Tu acceso se activa al instante.</div>
+ 
         <div class="planes-grid">
-          <div class="plan-card selected" id="plan-mensual" onclick="selPlan('mensual','Mensual','9.90')">
+          <div class="plan-card selected" id="plan-mensual"
+            onclick="selPlan('mensual','Mensual','10.90')">
             <div class="plan-name">Mensual</div>
-            <div class="plan-price">9,90&euro;</div>
+            <div class="plan-price">10,90&euro;</div>
             <div class="plan-desc">Acceso 30 d&iacute;as</div>
           </div>
-          <div class="plan-card" id="plan-trimestral" onclick="selPlan('trimestral','Trimestral','24.90')">
+          <div class="plan-card" id="plan-trimestral"
+            onclick="selPlan('trimestral','Trimestral','25.90')">
             <div class="plan-name">Trimestral</div>
-            <div class="plan-price">24,90&euro;</div>
+            <div class="plan-price">25,90&euro;</div>
             <div class="plan-desc">Acceso 90 d&iacute;as</div>
           </div>
         </div>
-        <button class="btn btn-dark" id="btn-stripe" onclick="irAStripe()">
-          &#128274; Pagar con Stripe
+ 
+        <div class="stripe-box">
+          <label>Datos de tarjeta</label>
+          <div id="card-element"></div>
+          <div id="card-errors"></div>
+        </div>
+ 
+        <button class="btn btn-dark" id="btn-pagar" onclick="procesarPago()">
+          &#128274; Pagar y Acceder
         </button>
         <div style="text-align:center;font-size:.73rem;color:var(--G);margin-top:.5rem">
-          Pago seguro &mdash; Visa, Mastercard, Apple Pay
+          Pago seguro con Stripe &mdash; Visa, Mastercard, Apple Pay
         </div>
         <div id="msg-pago" class="msg"></div>
       </div>
- 
     </div>
  
-    <!-- ══ PASO 3: EXITO ══ -->
+    <!-- PASO 3: EXITO -->
     <div class="panel" id="panel3">
       <div class="success-wrap">
-        <div class="icon">&#9989;</div>
+        <div class="ico">&#9989;</div>
         <h2>&#161;Acceso Activado!</h2>
-        <p>Tu alta se ha registrado correctamente.<br>Redirigiendo al panel de tests en un momento&hellip;</p>
-        <div class="redirect-bar"><div class="redirect-fill" id="redirect-fill"></div></div>
+        <p>Tu alta se ha guardado correctamente en la base de datos.<br>
+           Redirigiendo al panel de tests en 2 segundos&hellip;</p>
+        <div class="redirect-bar">
+          <div class="redirect-fill" id="redirect-fill"></div>
+        </div>
         <button class="btn" onclick="redirigir()">Ir al Panel ahora &rarr;</button>
       </div>
     </div>
@@ -267,46 +268,104 @@ body{
 </div><!-- /card -->
  
 <script>
-// ─────────────────────────────────────────────────────────
-// CONFIGURACION — ajusta solo estas 2 variables si cambia algo
-// ─────────────────────────────────────────────────────────
-const URL_SCRIPT  = 'https://script.google.com/macros/s/AKfycbwzQPNahJxw8YTLln-O9WaAkXoH3Vd0h7sFgugRxHX8bIEfasezvzl6ZvEENiTJMWKF/exec';
+// ═══════════════════════════════════════════════════════════
+// CONFIGURACION
+// ═══════════════════════════════════════════════════════════
+const URL_SCRIPT  = 'https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec';
 const URL_SUCCESS = 'https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html';
+const STRIPE_PK   = 'pk_test_51T2tn60VeufI11bb';
  
-// URL de tu Stripe Payment Link — sustituyela por la tuya real
-const URL_STRIPE  = 'https://buy.stripe.com/INSERTA_TU_LINK_AQUI';
- 
-// ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
 // ESTADO
-// ─────────────────────────────────────────────────────────
-const st = {
-  nombre:    '',
-  apellidos: '',
-  email:     '',
-  codigo:    '',
-  plan:      'Mensual',
-  precio:    '9.90',
-};
+// ═══════════════════════════════════════════════════════════
+const st = { nombre:'', apellidos:'', email:'', codigo:'', plan:'Mensual', precio:'10.90' };
  
 // ─────────────────────────────────────────────────────────
-// PASO 1 — VALIDAR DATOS Y AVANZAR
+// Stripe: inicializar y montar card-element
 // ─────────────────────────────────────────────────────────
+const stripe   = Stripe(STRIPE_PK);
+const elements = stripe.elements();
+let   cardEl   = null;
+ 
+function montarStripe() {
+  if (cardEl) return;
+  cardEl = elements.create('card', {
+    style: {
+      base: {
+        fontSize: '15px', fontFamily: 'Inter, sans-serif',
+        color: '#2c3e50', '::placeholder': { color: '#94a3b8' },
+      },
+      invalid: { color: '#ef4444' },
+    },
+    hidePostalCode: true,
+  });
+  cardEl.mount('#card-element');
+  cardEl.on('change', ev => {
+    document.getElementById('card-errors').textContent = ev.error ? ev.error.message : '';
+  });
+}
+ 
+// ═══════════════════════════════════════════════════════════
+// TECNICA JSONP: envio Y lectura de respuesta sin problemas
+// de CORS desde GitHub Pages.
+// En lugar de fetch POST (que no deja leer la respuesta),
+// construimos una URL GET con todos los parametros y cargamos
+// un <script> dinamico. El Apps Script responde con
+// callback({ ok: true, msg: 'EXITO' }) que ejecuta nuestra funcion.
+// ═══════════════════════════════════════════════════════════
+function jsonpCall(params, onSuccess, onError) {
+  const cbName = 'enfcb_' + Date.now();
+  let   timer;
+ 
+  window[cbName] = function(data) {
+    clearTimeout(timer);
+    delete window[cbName];
+    document.getElementById('_jsonp_script_' + cbName)?.remove();
+    if (data && data.ok) { onSuccess(data); }
+    else { onError(data ? data.msg : 'Respuesta no reconocida'); }
+  };
+ 
+  // Timeout de 12 segundos
+  timer = setTimeout(function() {
+    delete window[cbName];
+    onError('Tiempo de espera agotado. Comprueba tu conexion.');
+  }, 12000);
+ 
+  // Construir URL con parametros
+  const qs = Object.keys(params)
+    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+    .join('&');
+  const url = URL_SCRIPT + '?' + qs + '&callback=' + cbName;
+ 
+  const s  = document.createElement('script');
+  s.id     = '_jsonp_script_' + cbName;
+  s.src    = url;
+  s.onerror = function() {
+    clearTimeout(timer);
+    delete window[cbName];
+    s.remove();
+    onError('Error de red al contactar con el servidor.');
+  };
+  document.head.appendChild(s);
+}
+ 
+// ═══════════════════════════════════════════════════════════
+// PASO 1: VALIDAR DATOS Y AVANZAR
+// ═══════════════════════════════════════════════════════════
 function paso1Siguiente() {
   st.nombre    = document.getElementById('inp-nombre').value.trim();
   st.apellidos = document.getElementById('inp-apellidos').value.trim();
   st.email     = document.getElementById('inp-email').value.trim().toLowerCase();
   st.codigo    = document.getElementById('inp-codigo').value.trim().toUpperCase();
  
-  if (!st.nombre)    { showMsg('msg1', 'El nombre es obligatorio.', 'err'); return; }
-  if (!st.apellidos) { showMsg('msg1', 'Los apellidos son obligatorios.', 'err'); return; }
-  if (!st.email || !st.email.includes('@')) {
-    showMsg('msg1', 'Introduce un email valido.', 'err'); return;
-  }
+  if (!st.nombre)    { showMsg('msg1','El nombre es obligatorio.','err'); return; }
+  if (!st.apellidos) { showMsg('msg1','Los apellidos son obligatorios.','err'); return; }
+  if (!st.email || !st.email.includes('@'))
+    { showMsg('msg1','Introduce un email valido.','err'); return; }
  
   hideMsg('msg1');
   goStep(2);
  
-  // Mostrar ruta segun si hay codigo o no
   if (st.codigo) {
     document.getElementById('ruta-codigo').style.display = 'block';
     document.getElementById('ruta-pago').style.display   = 'none';
@@ -314,79 +373,101 @@ function paso1Siguiente() {
   } else {
     document.getElementById('ruta-codigo').style.display = 'none';
     document.getElementById('ruta-pago').style.display   = 'block';
+    montarStripe();
   }
 }
  
-// ─────────────────────────────────────────────────────────
-// PASO 2A — ENVIAR REGISTRO (VIP)
-// ─────────────────────────────────────────────────────────
-function enviarRegistro(tipo) {
-  const btnId = tipo === 'vip' ? 'btn-vip' : 'btn-stripe';
-  const msgId = tipo === 'vip' ? 'msg-vip'  : 'msg-pago';
-  const btn   = document.getElementById(btnId);
+// ═══════════════════════════════════════════════════════════
+// CAMINO A: VALIDAR Y REGISTRAR CODIGO VIP via JSONP
+// El script valida el codigo Y registra en Sheets en un solo paso.
+// Leemos la respuesta: si ok=true => exito; si ok=false => mostramos error.
+// ═══════════════════════════════════════════════════════════
+function enviarVIP() {
+  const btn = document.getElementById('btn-vip');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  hideMsg('msg-vip');
  
-  btn.disabled    = true;
-  btn.textContent = 'Verificando...';
-  hideMsg(msgId);
- 
-  const payload = {
-    nombre:    st.nombre,
-    apellidos: st.apellidos,
-    email:     st.email,
-    plan:      tipo === 'vip' ? 'VIP' : st.plan,
-    precio:    tipo === 'vip' ? '0'   : st.precio,
-    codigo:    st.codigo,
-  };
- 
-  // mode: no-cors — evita errores CORS desde GitHub Pages
-  // El script devuelve "EXITO" como texto plano (sin JSON)
-  fetch(URL_SCRIPT, {
-    method:  'POST',
-    mode:    'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  })
-  .then(() => {
-    // Con no-cors la respuesta es opaca: si no hubo excepcion, el envio llego
-    goStep(3);
-    // Barra de progreso y redireccion automatica tras 1.5 s
-    setTimeout(() => {
-      document.getElementById('redirect-fill').style.width = '100%';
-    }, 50);
-    setTimeout(redirigir, 1500);
-  })
-  .catch(() => {
-    btn.disabled    = false;
-    btn.textContent = tipo === 'vip' ? 'Validar y Acceder' : 'Pagar con Stripe';
-    showMsg(msgId, 'Error de conexion. Comprueba tu red e intentalo de nuevo.', 'err');
-  });
+  jsonpCall(
+    { action:'validar_codigo', nombre:st.nombre, apellidos:st.apellidos,
+      email:st.email, codigo:st.codigo },
+    function(data) {
+      // Respuesta ok=true -> alumno registrado en Sheets -> mostrar exito
+      mostrarExito();
+    },
+    function(errMsg) {
+      btn.disabled = false; btn.textContent = 'Validar y Acceder';
+      // Muestra el error exacto del servidor (ej: "Codigo VIP no valido o expirado.")
+      showMsg('msg-vip', errMsg, 'err');
+    }
+  );
 }
  
-// ─────────────────────────────────────────────────────────
-// PASO 2B — IR A STRIPE (sin tocar BD)
-// ─────────────────────────────────────────────────────────
-function irAStripe() {
-  // Solo redirige. El registro en BD lo hara el Webhook de Stripe si lo configuras.
-  window.location.href = URL_STRIPE;
+// ═══════════════════════════════════════════════════════════
+// CAMINO B: PAGO STRIPE + REGISTRO EN SHEETS
+// 1. stripe.createPaymentMethod() confirma la tarjeta
+// 2. jsonpCall action=registrar_pago escribe en Sheets
+// ═══════════════════════════════════════════════════════════
+async function procesarPago() {
+  const btn = document.getElementById('btn-pagar');
+  btn.disabled = true; btn.textContent = 'Procesando pago...';
+  hideMsg('msg-pago');
+  document.getElementById('card-errors').textContent = '';
+ 
+  try {
+    // Paso 1: crear PaymentMethod con Stripe
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardEl,
+      billing_details: { name: st.nombre + ' ' + st.apellidos, email: st.email },
+    });
+ 
+    if (error) {
+      document.getElementById('card-errors').textContent = error.message;
+      btn.disabled = false; btn.textContent = 'Pagar y Acceder';
+      return;
+    }
+ 
+    // Paso 2: registrar en Sheets via JSONP
+    btn.textContent = 'Registrando...';
+    jsonpCall(
+      { action:'registrar_pago', nombre:st.nombre, apellidos:st.apellidos,
+        email:st.email, plan:st.plan, precio:st.precio,
+        stripe_pm: paymentMethod.id },
+      function(data) {
+        mostrarExito();
+      },
+      function(errMsg) {
+        btn.disabled = false; btn.textContent = 'Pagar y Acceder';
+        showMsg('msg-pago', 'Pago procesado pero error al registrar: ' + errMsg +
+          '. Contacta con soporte indicando tu email.', 'err');
+      }
+    );
+ 
+  } catch (err) {
+    btn.disabled = false; btn.textContent = 'Pagar y Acceder';
+    showMsg('msg-pago','Error inesperado: ' + err.message,'err');
+  }
 }
+ 
+// ═══════════════════════════════════════════════════════════
+// EXITO: barra 2s + redireccion automatica
+// ═══════════════════════════════════════════════════════════
+function mostrarExito() {
+  goStep(3);
+  setTimeout(() => { document.getElementById('redirect-fill').style.width = '100%'; }, 50);
+  setTimeout(redirigir, 2000);
+}
+ 
+function redirigir() { window.location.href = URL_SUCCESS; }
  
 // ─────────────────────────────────────────────────────────
 // PLANES
 // ─────────────────────────────────────────────────────────
 function selPlan(id, nombre, precio) {
-  ['plan-mensual','plan-trimestral'].forEach(p =>
-    document.getElementById(p).classList.remove('selected')
-  );
+  ['mensual','trimestral'].forEach(p =>
+    document.getElementById('plan-' + p).classList.remove('selected'));
   document.getElementById('plan-' + id).classList.add('selected');
-  st.plan   = nombre;
-  st.precio = precio;
-}
- 
-// ─────────────────────────────────────────────────────────
-// REDIRECCION FINAL
-// ─────────────────────────────────────────────────────────
-function redirigir() {
-  window.location.href = URL_SUCCESS;
+  st.plan = nombre; st.precio = precio;
 }
  
 // ─────────────────────────────────────────────────────────
@@ -396,20 +477,18 @@ function goStep(n) {
   [1,2,3].forEach(i => {
     document.getElementById('panel' + i).classList.remove('active');
     const dot = document.getElementById('sc' + i);
-    if (i < n)       { dot.className = 'step-circle done'; dot.textContent = '\u2713'; }
-    else if (i === n){ dot.className = 'step-circle active'; dot.textContent = i; }
-    else             { dot.className = 'step-circle'; dot.textContent = i; }
+    if      (i < n) { dot.className='step-circle done'; dot.textContent='\u2713'; }
+    else if (i===n) { dot.className='step-circle active'; dot.textContent=i; }
+    else            { dot.className='step-circle'; dot.textContent=i; }
     if (i < 3)
       document.getElementById('sl' + i).className = 'step-line' + (i < n ? ' done' : '');
   });
   document.getElementById('panel' + n).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
- 
 function showMsg(id, txt, tipo) {
   const el = document.getElementById(id);
-  el.textContent = txt;
-  el.className   = 'msg ' + tipo;
+  el.textContent = txt; el.className = 'msg ' + tipo;
 }
 function hideMsg(id) { document.getElementById(id).className = 'msg'; }
 </script>
