@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENFOCADOS - Diagnóstico</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#1a252f;min-height:100vh;padding:2rem;color:#e2e8f0}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-family:'Montserrat',sans-serif;color:#fafa00;font-size:1.8rem;margin-bottom:.3rem}
+.sub{color:#94a3b8;font-size:.85rem;margin-bottom:2rem}
+.card{background:#2c3e50;border-radius:14px;padding:1.5rem;margin-bottom:1.2rem;border:1px solid #34495e}
+.card h2{font-family:'Montserrat',sans-serif;font-size:1rem;color:#fafa00;margin-bottom:1rem}
+.field{margin-bottom:.8rem}
+.field label{display:block;font-size:.82rem;font-weight:600;color:#94a3b8;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.05em}
+.field input{width:100%;padding:.7rem .9rem;background:#1a252f;border:2px solid #34495e;border-radius:8px;color:#e2e8f0;font-family:inherit;font-size:.92rem}
+.field input:focus{border-color:#fafa00;outline:none}
+.btn{padding:.75rem 1.4rem;border:none;border-radius:8px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;font-size:.9rem;margin-right:.5rem;margin-bottom:.5rem}
+.btn-y{background:#fafa00;color:#2c3e50}
+.btn-y:hover{background:#e0e000}
+.btn-g{background:#10b981;color:#fff}
+.btn-r{background:#ef4444;color:#fff}
+ 
+/* RESULTADO */
+pre{background:#0f172a;padding:1rem;border-radius:8px;font-size:.8rem;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto;color:#a3e635;line-height:1.6;margin-top:.8rem}
+.badge{display:inline-block;padding:.25rem .65rem;border-radius:20px;font-size:.78rem;font-weight:700;margin:.2rem}
+.badge-ok{background:#f0fdf4;color:#065f46}
+.badge-ko{background:#fef2f2;color:#991b1b}
+.badge-warn{background:#fffbeb;color:#92400e}
+ 
+.status-bar{padding:.8rem 1rem;border-radius:8px;font-size:.88rem;font-weight:600;margin-top:.8rem;display:none}
+.status-bar.ok{background:#f0fdf4;color:#065f46;border-left:4px solid #10b981;display:block}
+.status-bar.ko{background:#fef2f2;color:#991b1b;border-left:4px solid #ef4444;display:block}
+.status-bar.warn{background:#fffbeb;color:#92400e;border-left:4px solid #f59e0b;display:block}
+ 
+table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.8rem}
+th{background:#1a252f;padding:.5rem .8rem;text-align:left;color:#94a3b8;font-weight:600}
+td{padding:.45rem .8rem;border-bottom:1px solid #34495e;color:#e2e8f0}
+tr:hover td{background:rgba(255,255,255,.03)}
+.email-match{background:#065f46;color:#fff;border-radius:4px;padding:.1rem .4rem}
+.email-no{background:#991b1b;color:#fff;border-radius:4px;padding:.1rem .4rem}
+ 
+.step{display:flex;gap:.75rem;margin-bottom:.6rem;font-size:.88rem}
+.step-num{background:#fafa00;color:#2c3e50;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+ 
+  <h1>&#128270; ENFOCADOS • Diagnóstico de Login</h1>
+  <div class="sub">Herramienta para identificar por qué falla el acceso a la plataforma de test</div>
+ 
+  <!-- TEST 1: Ping al Apps Script -->
+  <div class="card">
+    <h2>TEST 1 — ¿Responde el Apps Script?</h2>
+    <div class="field">
+      <label>URL del Apps Script</label>
+      <input type="text" id="t1-url" value="https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec">
+    </div>
+    <button class="btn btn-y" onclick="test1()">Probar conexión</button>
+    <div id="t1-status" class="status-bar"></div>
+    <pre id="t1-res" style="display:none"></pre>
+  </div>
+ 
+  <!-- TEST 2: Ver qué usuarios devuelve -->
+  <div class="card">
+    <h2>TEST 2 — ¿Qué usuarios devuelve el script?</h2>
+    <p style="font-size:.84rem;color:#94a3b8;margin-bottom:.8rem">
+      Carga la lista completa de usuarios que el Apps Script envía a index.html para el login.
+    </p>
+    <button class="btn btn-y" onclick="test2()">Cargar usuarios</button>
+    <div id="t2-status" class="status-bar"></div>
+    <div id="t2-table"></div>
+    <pre id="t2-raw" style="display:none"></pre>
+    <button class="btn btn-g" id="t2-raw-btn" style="display:none;margin-top:.5rem" onclick="toggleRaw('t2-raw')">Ver JSON raw</button>
+  </div>
+ 
+  <!-- TEST 3: Buscar email específico -->
+  <div class="card">
+    <h2>TEST 3 — ¿Está este email autorizado?</h2>
+    <p style="font-size:.84rem;color:#94a3b8;margin-bottom:.8rem">
+      Simula exactamente lo que hace doLogin() en index.html.
+    </p>
+    <div class="field">
+      <label>Email a buscar</label>
+      <input type="email" id="t3-email" placeholder="el@email.que.no.funciona.com">
+    </div>
+    <button class="btn btn-y" onclick="test3()">Buscar email</button>
+    <div id="t3-status" class="status-bar"></div>
+    <pre id="t3-detail" style="display:none"></pre>
+  </div>
+ 
+  <!-- TEST 4: Ver qué preguntas hay -->
+  <div class="card">
+    <h2>TEST 4 — ¿Carga las preguntas?</h2>
+    <button class="btn btn-y" onclick="test4()">Cargar preguntas</button>
+    <div id="t4-status" class="status-bar"></div>
+  </div>
+ 
+  <!-- RESUMEN DIAGNOSTICO -->
+  <div class="card" id="diag-card" style="display:none">
+    <h2>&#9989; Diagnóstico completo</h2>
+    <div id="diag-content"></div>
+  </div>
+ 
+</div>
+ 
+<script>
+const API = document.getElementById('t1-url');
+ 
+// ── JSONP helper ──
+function jsonpCall(url, cb, errCb) {
+  const name = 'diag_' + Date.now();
+  let timer = setTimeout(() => {
+    delete window[name];
+    errCb('Timeout (12s). El script no responde o no tiene acceso público.');
+  }, 12000);
+  window[name] = d => { clearTimeout(timer); delete window[name]; cb(d); };
+  const s = document.createElement('script');
+  s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + name;
+  s.onerror = () => { clearTimeout(timer); delete window[name]; errCb('Error de red (script tag falló).'); };
+  document.head.appendChild(s);
+}
+ 
+function setStatus(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'status-bar ' + type;
+}
+ 
+function toggleRaw(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+ 
+// ── TEST 1 ──
+function test1() {
+  setStatus('t1-status', 'Conectando…', 'warn');
+  document.getElementById('t1-res').style.display = 'none';
+  const url = API.value.trim() + '?type=ping';
+  jsonpCall(url,
+    d => {
+      setStatus('t1-status', '✅ El Apps Script RESPONDE correctamente.', 'ok');
+      const pre = document.getElementById('t1-res');
+      pre.textContent = JSON.stringify(d, null, 2);
+      pre.style.display = 'block';
+    },
+    err => setStatus('t1-status', '❌ ERROR: ' + err, 'ko')
+  );
+}
+ 
+// ── TEST 2 ──
+let usersData = null;
+function test2() {
+  setStatus('t2-status', 'Cargando lista de usuarios…', 'warn');
+  document.getElementById('t2-table').innerHTML = '';
+  const url = API.value.trim() + '?type=users';
+  jsonpCall(url,
+    d => {
+      usersData = d;
+      const pre = document.getElementById('t2-raw');
+      pre.textContent = JSON.stringify(d, null, 2);
+      document.getElementById('t2-raw-btn').style.display = 'inline-block';
+ 
+      if (!d.rows || d.rows.length === 0) {
+        setStatus('t2-status', '⚠️ El script responde pero NO hay usuarios. La hoja accesos está vacía o no existe.', 'warn');
+        return;
+      }
+ 
+      setStatus('t2-status',
+        `✅ Se han encontrado ${d.rows.length} usuarios. Cabeceras: [${d.headers.join(', ')}]`, 'ok');
+ 
+      // Render table
+      let html = '<table><tr>';
+      d.headers.forEach(h => { html += `<th>${h}</th>`; });
+      html += '</tr>';
+      d.rows.forEach(row => {
+        html += '<tr>';
+        row.forEach(cell => { html += `<td>${cell}</td>`; });
+        html += '</tr>';
+      });
+      html += '</table>';
+      document.getElementById('t2-table').innerHTML = html;
+    },
+    err => setStatus('t2-status', '❌ ' + err, 'ko')
+  );
+}
+ 
+// ── TEST 3 ──
+function test3() {
+  const email = document.getElementById('t3-email').value.trim().toLowerCase();
+  if (!email) { setStatus('t3-status', 'Introduce un email.', 'warn'); return; }
+ 
+  setStatus('t3-status', 'Buscando…', 'warn');
+  document.getElementById('t3-detail').style.display = 'none';
+ 
+  const url = API.value.trim() + '?type=users';
+  jsonpCall(url,
+    d => {
+      if (!d.rows || d.rows.length === 0) {
+        setStatus('t3-status', '❌ No hay usuarios en la hoja. Imposible validar.', 'ko');
+        return;
+      }
+ 
+      // Replica exacta del parseTable de index.html
+      const users = d.rows.map(row => {
+        let obj = {};
+        d.headers.forEach((h, i) => {
+          if (h) obj[String(h).toLowerCase().trim()] =
+            (row[i] !== null && row[i] !== undefined) ? String(row[i]).trim() : '';
+        });
+        return obj;
+      });
+ 
+      const found = users.find(u =>
+        Object.values(u).some(val => String(val).toLowerCase().trim() === email)
+      );
+ 
+      let detail = `Email buscado: "${email}"\n`;
+      detail += `Total usuarios en hoja: ${users.length}\n\n`;
+ 
+      if (found) {
+        setStatus('t3-status',
+          '✅ Email ENCONTRADO. El login debería funcionar. Nombre: ' +
+          (found.usuario || found.nombre || found.correo || JSON.stringify(found)), 'ok');
+        detail += 'COINCIDENCIA EN FILA:\n' + JSON.stringify(found, null, 2);
+      } else {
+        setStatus('t3-status',
+          '❌ Email NO encontrado. Causa: no está en la hoja accesos, o tiene espacios/mayúsculas distintas.', 'ko');
+        detail += 'PRIMERAS 5 FILAS (para comparar):\n';
+        users.slice(0, 5).forEach((u, i) => {
+          detail += `Fila ${i+1}: ${JSON.stringify(u)}\n`;
+          // Buscar campo más parecido
+          Object.entries(u).forEach(([k, v]) => {
+            if (v.toLowerCase().includes(email.split('@')[0].toLowerCase())) {
+              detail += `  → Posible coincidencia parcial en campo "${k}": "${v}"\n`;
+            }
+          });
+        });
+      }
+ 
+      const pre = document.getElementById('t3-detail');
+      pre.textContent = detail;
+      pre.style.display = 'block';
+    },
+    err => setStatus('t3-status', '❌ ' + err, 'ko')
+  );
+}
+ 
+// ── TEST 4 ──
+function test4() {
+  setStatus('t4-status', 'Cargando preguntas…', 'warn');
+  const url = API.value.trim() + '?type=questions';
+  jsonpCall(url,
+    d => {
+      if (!d.rows || d.rows.length === 0) {
+        setStatus('t4-status', '⚠️ El script responde pero NO hay preguntas. Revisar hoja de preguntas.', 'warn');
+      } else {
+        setStatus('t4-status',
+          `✅ ${d.rows.length} preguntas disponibles. Materias en cabeceras: [${d.headers.join(', ')}]`, 'ok');
+      }
+    },
+    err => setStatus('t4-status', '❌ ' + err, 'ko')
+  );
+}
+</script>
+</body>
+</html>
+ 
+ 
