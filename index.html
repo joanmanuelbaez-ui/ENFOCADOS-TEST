@@ -117,7 +117,7 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 </div>
  
 <script>
-const apiUrl = 'https://script.google.com/macros/s/AKfycbx9MkwwgFndE2uMvhzHM4zDUzfbGmqwuzc10wKqapfy2nIiOQwjLCdwDsX_Hubru-8S/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec';
  
 let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
 let questionsWithMistakes = [], showInstantFeedback = true;
@@ -135,7 +135,6 @@ function fetchJSONP(url, callback) {
     document.body.appendChild(s);
 }
  
-// CORREGIDO: convierte siempre a String para evitar null/Date/Number
 function parseTable(res) {
     return res.rows.map(row => {
         let obj = {};
@@ -151,7 +150,6 @@ function parseTable(res) {
     });
 }
  
-// CORREGIDO: busca el email en TODOS los campos (inmune a nombre de cabecera)
 function doLogin() {
     const email = document.getElementById('inEmail').value.trim().toLowerCase();
     const btn   = document.getElementById('btnLogin');
