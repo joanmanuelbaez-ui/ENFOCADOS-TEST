@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ENFOCADOS - Registro</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://js.stripe.com/v3/"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--Y:#fafa00;--Yd:#e0e000;--D:#2c3e50;--D2:#1a252f;--V:#10b981;--R:#ef4444;--G:#64748b;--B:#e2e8f0;}
@@ -128,13 +127,13 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#1a252f 0%
             <div class="plan-name">Trimestral</div><div class="plan-price">25,90&euro;</div><div class="plan-desc">90 d&iacute;as</div>
           </div>
         </div>
-        <div class="stripe-box">
-          <label>Datos de tarjeta</label>
-          <div id="card-element"></div>
-          <div id="card-errors"></div>
+        <div class="stripe-box" style="text-align:center;padding:1.2rem">
+          <div style="font-size:1.3rem;margin-bottom:.4rem">&#128274;</div>
+          <div style="font-weight:700;color:var(--D);font-size:.9rem">Pago 100% seguro con Stripe</div>
+          <div style="font-size:.78rem;color:var(--G);margin-top:.3rem">Visa • Mastercard • Apple Pay • Google Pay</div>
         </div>
-        <button class="btn btn-dark" id="btn-pagar" onclick="procesarPago()">&#128274; Pagar y Acceder</button>
-        <div style="text-align:center;font-size:.73rem;color:var(--G);margin-top:.5rem">Pago seguro con Stripe</div>
+        <button class="btn btn-dark" id="btn-pagar" onclick="procesarPago()">&#128274; Ir a Pagar con Stripe</button>
+        <div style="text-align:center;font-size:.73rem;color:var(--G);margin-top:.5rem">Ser&aacute;s redirigido a la p&aacute;gina segura de Stripe</div>
         <div id="msg-pago" class="msg"></div>
       </div>
     </div>
@@ -156,30 +155,17 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(160deg,#1a252f 0%
 // ═══════════════════════════════════════════════════════
 // CONFIGURACION
 // ═══════════════════════════════════════════════════════
-// URL del Apps Script desplegado (actualiza si reimplementas)
-const URL_SCRIPT  = 'https://script.google.com/macros/s/AKfycbyMsd9iF3HuuLJM62MsQEgrCgctfIvje8dJbN7CBKKCboMIOLriWaDEXQGu9icZ4Pr-wQ/exec';  // <-- ACTUALIZA TRAS DESPLEGAR
-const URL_SUCCESS = 'https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html';
-const STRIPE_PK   = 'pk_test_51T2tn60VeufI11bbQ0lZKG3pbYL3mSR8YxF2cKxVS9dNYvVtGafmLKrk4hhl3T0G5GJdwhwZrxaoe4Lwm4ILH83M00j5f9E5iv';
+const URL_SCRIPT     = 'https://script.google.com/macros/s/AKfycbyMsd9iF3HuuLJM62MsQEgrCgctfIvje8dJbN7CBKKCboMIOLriWaDEXQGu9icZ4Pr-wQ/exec';
+const URL_SUCCESS    = 'https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html';
+const STRIPE_MENSUAL    = 'https://buy.stripe.com/9B600bh1K0ip0YH3SScIE04';
+const STRIPE_TRIMESTRAL = 'https://buy.stripe.com/eVq4gr12Md5bgXFahgcIE05';
  
 // ═══════════════════════════════════════════════════════
 // ESTADO
 // ═══════════════════════════════════════════════════════
-const st = { nombre:'', apellidos:'', email:'', codigo:'', plan:'Mensual', precio:'10.90' };
+const st = { nombre:'', apellidos:'', email:'', codigo:'', plan:'mensual', precio:'10.90' };
  
-// Stripe
-const stripe = Stripe(STRIPE_PK);
-const elements = stripe.elements();
-let cardEl = null;
- 
-function montarStripe() {
-  if (cardEl) return;
-  cardEl = elements.create('card', {
-    style: { base: { fontSize:'15px', fontFamily:'Inter,sans-serif', color:'#2c3e50', '::placeholder':{ color:'#94a3b8' } }, invalid:{ color:'#ef4444' } },
-    hidePostalCode: true,
-  });
-  cardEl.mount('#card-element');
-  cardEl.on('change', ev => { document.getElementById('card-errors').textContent = ev.error ? ev.error.message : ''; });
-}
+function montarStripe() { /* Payment Links: no se necesita card-element */ }
  
 // ═══════════════════════════════════════════════════════
 // JSONP — envia parametros por GET y lee la respuesta
@@ -276,43 +262,28 @@ function enviarVIP() {
 // CAMINO B — PAGO STRIPE
 // 1. Stripe valida la tarjeta -> 2. JSONP registra en Sheets
 // ═══════════════════════════════════════════════════════
-async function procesarPago() {
+function procesarPago() {
   var btn = document.getElementById('btn-pagar');
-  btn.disabled = true; btn.textContent = 'Procesando...';
+  btn.disabled = true; btn.textContent = 'Redirigiendo a Stripe...';
   hideMsg('msg-pago');
-  document.getElementById('card-errors').textContent = '';
  
-  try {
-    var result = await stripe.createPaymentMethod({
-      type: 'card', card: cardEl,
-      billing_details: { name: st.nombre + ' ' + st.apellidos, email: st.email },
-    });
+  // Guardar datos en sessionStorage (para recuperar tras el pago si se necesita)
+  sessionStorage.setItem('enfocados_nombre',    st.nombre);
+  sessionStorage.setItem('enfocados_apellidos', st.apellidos);
+  sessionStorage.setItem('enfocados_email',     st.email);
+  sessionStorage.setItem('enfocados_plan',      st.plan);
  
-    if (result.error) {
-      document.getElementById('card-errors').textContent = result.error.message;
-      btn.disabled = false; btn.textContent = 'Pagar y Acceder';
-      return;
-    }
+  // Elegir el Payment Link segun el plan seleccionado
+  var linkBase = (st.plan === 'trimestral') ? STRIPE_TRIMESTRAL : STRIPE_MENSUAL;
  
-    btn.textContent = 'Registrando...';
-    jsonpCall(
-      { action:'registrar_pago', nombre:st.nombre, apellidos:st.apellidos,
-        email:st.email, plan:st.plan, precio:st.precio, stripe_pm:result.paymentMethod.id },
-      function(data) { mostrarExito(); },
-      function(err)  {
-        btn.disabled = false; btn.textContent = 'Pagar y Acceder';
-        showMsg('msg-pago', 'Pago OK pero error al registrar: ' + err + '. Contacta con soporte.', 'err');
-      }
-    );
-  } catch(e) {
-    btn.disabled = false; btn.textContent = 'Pagar y Acceder';
-    showMsg('msg-pago', 'Error: ' + e.message, 'err');
-  }
+  // Pre-rellenar el email en la pagina de Stripe
+  var url = linkBase + '?prefilled_email=' + encodeURIComponent(st.email);
+ 
+  // Redirigir a Stripe tras un breve instante
+  setTimeout(function() { window.location.href = url; }, 600);
 }
  
-// ═══════════════════════════════════════════════════════
-// EXITO — barra 2s + redireccion
-// ═══════════════════════════════════════════════════════
+ 
 function mostrarExito() {
   goStep(3);
   setTimeout(function() { document.getElementById('redirect-fill').style.width = '100%'; }, 50);
@@ -349,3 +320,4 @@ function hideMsg(id) { document.getElementById(id).className = 'msg'; }
 </script>
 </body>
 </html>
+ 
