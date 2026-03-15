@@ -117,10 +117,56 @@ h1{font-family:'Montserrat',sans-serif;font-size:2.8rem;font-weight:800;color:va
 </div>
  
 <script>
-const apiUrl = 'https://script.google.com/macros/s/AKfycbyzNS7LwGXvAEqf1BMD91feWB2dAm17ktnc2VxGh8HnKhiXHACLeLc6RycHHmp1tyzZ5A/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbyMsd9iF3HuuLJM62MsQEgrCgctfIvje8dJbN7CBKKCboMIOLriWaDEXQGu9icZ4Pr-wQ/exec';
  
 let allQuestions = [], exam = [], idx = 0, userAnswers = [], isReviewing = false;
 let questionsWithMistakes = [], showInstantFeedback = true;
+ 
+// ── REGISTRO AUTOMATICO TRAS PAGO STRIPE ──────────────────
+// Cuando Stripe redirige al alumno aqui, sessionStorage tiene
+// sus datos. Los enviamos al Apps Script para registrarlos.
+(function autoRegistrarTrasStripe() {
+  var nombre    = sessionStorage.getItem('enfocados_nombre');
+  var apellidos = sessionStorage.getItem('enfocados_apellidos');
+  var email     = sessionStorage.getItem('enfocados_email');
+  var plan      = sessionStorage.getItem('enfocados_plan');
+ 
+  if (!email || !nombre) return; // no viene de un pago, nada que hacer
+ 
+  // Limpiar sessionStorage para que no se repita
+  sessionStorage.removeItem('enfocados_nombre');
+  sessionStorage.removeItem('enfocados_apellidos');
+  sessionStorage.removeItem('enfocados_email');
+  sessionStorage.removeItem('enfocados_plan');
+ 
+  // Registrar en Google Sheets via JSONP (igual que el codigo VIP)
+  var cbName = 'reg_' + Date.now();
+  window[cbName] = function(data) {
+    delete window[cbName];
+    if (data && data.ok) {
+      console.log('ENFOCADOS: alumno registrado tras pago OK:', email);
+    } else {
+      console.warn('ENFOCADOS: error al registrar tras pago:', data);
+    }
+  };
+ 
+  var precioMap = { 'mensual':'10.90', 'trimestral':'25.90' };
+  var precio    = precioMap[plan] || '10.90';
+  var planNombre = plan === 'trimestral' ? 'Trimestral' : 'Mensual';
+ 
+  var qs = 'action=registrar_pago'
+    + '&nombre='    + encodeURIComponent(nombre)
+    + '&apellidos=' + encodeURIComponent(apellidos)
+    + '&email='     + encodeURIComponent(email)
+    + '&plan='      + encodeURIComponent(planNombre)
+    + '&precio='    + encodeURIComponent(precio)
+    + '&callback='  + cbName;
+ 
+  var s = document.createElement('script');
+  s.src = apiUrl + '?' + qs;
+  document.head.appendChild(s);
+})();
+// ──────────────────────────────────────────────────────────
  
 function showScreen(id) {
     document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
@@ -329,3 +375,5 @@ function resetApp(logout) {
 </script>
 </body>
 </html>
+ 
+ 
