@@ -274,7 +274,7 @@ function procesarPago() {
   sessionStorage.setItem('enfocados_plan',      st.plan);
  
   // Elegir el Payment Link segun el plan seleccionado
-  var linkBase = (st.plan === 'trimestral') ? STRIPE_TRIMESTRAL : STRIPE_MENSUAL;
+  var linkBase = (st.plan.toLowerCase() === 'trimestral') ? STRIPE_TRIMESTRAL : STRIPE_MENSUAL;
  
   // Pre-rellenar el email en la pagina de Stripe
   var url = linkBase + '?prefilled_email=' + encodeURIComponent(st.email);
