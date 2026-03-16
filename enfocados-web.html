@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENFOCADOS — Plataforma de Preparación Profesional</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --Y:    rgb(250,250,0);
+  --Yd:   rgb(215,215,0);
+  --D:    #0d1117;
+  --D2:   #161b22;
+  --D3:   #21262d;
+  --V:    #10b981;
+  --R:    #ef4444;
+  --G:    #8b949e;
+  --W:    #f59e0b;
+  --text: #e6edf3;
+  --muted:#8b949e;
+  --border:rgba(250,250,0,.15);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--D); color:var(--text);
+  line-height:1.6; overflow-x:hidden;
+}
+body::after{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(250,250,0,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(250,250,0,.025) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 100% 80% at 50% 0%,black 30%,transparent 100%);
+}
+ 
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 2.5rem;
+  background:rgba(13,17,23,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:border-color .3s;
+}
+.nav-logo{
+  font-family:'Montserrat',sans-serif;
+  font-size:1.35rem;font-weight:900;letter-spacing:.06em;color:var(--Y);
+  display:flex;align-items:center;gap:.6rem;
+}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:.87rem;font-weight:500;transition:color .2s;
+}
+.nav-links a:hover{color:var(--Y)}
+.nav-cta{
+  padding:.52rem 1.3rem;
+  background:var(--Y);color:#0d1117;
+  border-radius:7px;font-weight:800;
+  font-family:'Montserrat',sans-serif;
+  font-size:.87rem;letter-spacing:.04em;
+  text-decoration:none;transition:all .2s;
+}
+.nav-cta:hover{background:var(--Yd);transform:translateY(-1px)}
+ 
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;
+  padding:9rem 2rem 5rem;
+  position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;top:25%;left:50%;transform:translateX(-50%);
+  width:700px;height:350px;
+  background:radial-gradient(ellipse,rgba(250,250,0,.09) 0%,transparent 70%);
+  pointer-events:none;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.38rem 1rem;
+  background:rgba(250,250,0,.08);
+  border:1px solid rgba(250,250,0,.25);
+  border-radius:100px;
+  font-size:.74rem;font-weight:700;letter-spacing:.12em;
+  color:var(--Y);text-transform:uppercase;
+  margin-bottom:1.8rem;
+  position:relative;z-index:1;
+  font-family:'Montserrat',sans-serif;
+}
+.badge-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--Y);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.6)}}
+ 
+.hero-sub-title{
+  font-family:'Montserrat',sans-serif;
+  font-weight:600;font-size:clamp(.9rem,2vw,1.3rem);
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);position:relative;z-index:1;margin-bottom:.6rem;
+}
+.hero-title{
+  font-family:'Montserrat',sans-serif;font-weight:900;
+  font-size:clamp(4rem,12vw,9rem);
+  line-height:.9;letter-spacing:-.02em;
+  color:var(--Y);position:relative;z-index:1;
+  text-shadow:0 0 80px rgba(250,250,0,.15);
+  margin-bottom:1.8rem;
+}
+.hero-desc{
+  max-width:580px;
+  font-size:1.05rem;color:var(--muted);
+  margin:0 auto 2.5rem;
+  line-height:1.75;position:relative;z-index:1;font-weight:300;
+}
+.hero-desc strong{color:var(--text);font-weight:600}
+.hero-btns{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  justify-content:center;position:relative;z-index:1;
+}
+.btn-primary{
+  padding:.9rem 2.2rem;
+  background:var(--Y);color:#0d1117;
+  border-radius:8px;font-weight:800;
+  font-family:'Montserrat',sans-serif;
+  font-size:.97rem;letter-spacing:.04em;
+  text-decoration:none;transition:all .25s;
+  box-shadow:0 0 30px rgba(250,250,0,.2);
+}
+.btn-primary:hover{background:var(--Yd);transform:translateY(-2px);box-shadow:0 0 45px rgba(250,250,0,.35)}
+.btn-ghost{
+  padding:.9rem 2.2rem;
+  background:transparent;color:var(--text);
+  border:1.5px solid rgba(255,255,255,.15);
+  border-radius:8px;font-weight:600;
+  font-size:.95rem;text-decoration:none;transition:all .25s;
+}
+.btn-ghost:hover{border-color:var(--Y);color:var(--Y)}
+ 
+/* ACCESO EXCLUSIVO BADGE */
+.excl-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  margin-top:1.8rem;
+  padding:.5rem 1.2rem;
+  background:rgba(250,250,0,.06);
+  border:1px solid rgba(250,250,0,.2);
+  border-radius:8px;
+  font-size:.82rem;color:var(--Y);
+  font-weight:600;position:relative;z-index:1;
+}
+ 
+.hero-stats{
+  display:flex;gap:4rem;margin-top:4rem;
+  justify-content:center;flex-wrap:wrap;
+  position:relative;z-index:1;
+}
+.stat{text-align:center}
+.stat-num{
+  font-family:'Montserrat',sans-serif;
+  font-size:2.3rem;font-weight:900;color:var(--Y);line-height:1;
+  letter-spacing:-.02em;
+}
+.stat-label{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem;font-weight:600}
+ 
+/* ── SECTIONS ── */
+section{padding:6rem 2rem;position:relative;z-index:1}
+.container{max-width:1100px;margin:0 auto}
+.section-label{
+  font-size:.71rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--Y);
+  margin-bottom:.7rem;
+  display:flex;align-items:center;gap:.6rem;
+  font-family:'Montserrat',sans-serif;
+}
+.section-label::before{content:'';display:block;width:20px;height:2px;background:var(--Y)}
+.section-title{
+  font-family:'Montserrat',sans-serif;
+  font-size:clamp(2.2rem,4.5vw,3.4rem);
+  font-weight:900;line-height:1.05;letter-spacing:-.02em;
+  margin-bottom:1rem;
+}
+.section-desc{font-size:1rem;color:var(--muted);max-width:560px;line-height:1.75;font-weight:300}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+ 
+/* ── REGISTRO FLOW ── */
+#registro{background:var(--D2)}
+.flow{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1px;background:rgba(250,250,0,.08);
+  border:1px solid rgba(250,250,0,.12);
+  border-radius:18px;overflow:hidden;margin-top:3rem;
+}
+.flow-step{
+  background:var(--D2);padding:2rem 1.7rem;
+  position:relative;transition:background .25s;
+}
+.flow-step:hover{background:rgba(250,250,0,.04)}
+.flow-num{
+  font-family:'Montserrat',sans-serif;font-weight:900;
+  font-size:3.8rem;line-height:1;
+  color:rgba(250,250,0,.07);
+  position:absolute;top:.7rem;right:1.1rem;
+  transition:color .25s;
+}
+.flow-step:hover .flow-num{color:rgba(250,250,0,.14)}
+.flow-icon{
+  width:44px;height:44px;
+  background:rgba(250,250,0,.1);
+  border:1px solid rgba(250,250,0,.2);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:1rem;
+}
+.flow-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.97rem;color:var(--text);margin-bottom:.45rem}
+.flow-desc{font-size:.85rem;color:var(--muted);line-height:1.65}
+.flow-tag{
+  display:inline-block;margin-top:.8rem;
+  padding:.2rem .65rem;
+  background:rgba(250,250,0,.08);
+  border:1px solid rgba(250,250,0,.2);
+  border-radius:4px;
+  font-size:.69rem;color:var(--Y);font-weight:700;
+  font-family:'Montserrat',sans-serif;letter-spacing:.07em;text-transform:uppercase;
+}
+ 
+/* ── MODOS ── */
+#modos{background:var(--D)}
+.modos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:3rem}
+@media(max-width:680px){.modos-grid{grid-template-columns:1fr}}
+.modo-card{
+  background:var(--D2);
+  border:1.5px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:2rem;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.modo-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--Y);transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.modo-card:hover{border-color:rgba(250,250,0,.2);transform:translateY(-3px)}
+.modo-card:hover::after{transform:scaleX(1)}
+.modo-card.full{grid-column:1/-1;border-color:rgba(250,250,0,.1)}
+.modo-card.full::after{transform:scaleX(1);background:linear-gradient(90deg,var(--Y),transparent)}
+.modo-tipo{
+  font-size:.69rem;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--Y);
+  font-family:'Montserrat',sans-serif;margin-bottom:.3rem;
+}
+.modo-titulo{
+  font-family:'Montserrat',sans-serif;font-weight:800;
+  font-size:1.45rem;letter-spacing:-.01em;margin-bottom:.8rem;
+}
+.modo-desc{font-size:.87rem;color:var(--muted);line-height:1.72}
+.modo-desc strong{color:var(--text);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.1rem}
+.chip{
+  padding:.22rem .65rem;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;font-size:.73rem;color:var(--muted);
+}
+.chip.y{background:rgba(250,250,0,.08);border-color:rgba(250,250,0,.2);color:var(--Y)}
+.chip.g{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.2);color:var(--V)}
+ 
+/* ── FEEDBACK ── */
+#feedback{background:var(--D2)}
+.feedback-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;margin-top:3rem}
+@media(max-width:780px){.feedback-grid{grid-template-columns:1fr}}
+.feedback-visual{
+  background:var(--D3);border:1px solid var(--border);
+  border-radius:16px;padding:1.6rem;
+}
+.fv-bar{display:flex;gap:.35rem;margin-bottom:1.1rem}
+.fv-dot{width:10px;height:10px;border-radius:50%}
+.fv-meta{font-size:.69rem;color:var(--muted);margin-bottom:.5rem;letter-spacing:.05em;font-weight:600;text-transform:uppercase}
+.fv-q{font-size:.84rem;color:var(--text);margin-bottom:.9rem;line-height:1.55;font-weight:500}
+.fv-opts{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem}
+.fv-opt{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.5rem .7rem;border-radius:8px;
+  border:1.5px solid rgba(255,255,255,.07);
+  font-size:.78rem;
+}
+.fv-opt.correct{border-color:var(--V);background:rgba(16,185,129,.08)}
+.fv-opt.wrong{border-color:var(--R);background:rgba(239,68,68,.08)}
+.fv-letter{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;flex-shrink:0;
+  background:rgba(255,255,255,.06);
+  font-family:'Montserrat',sans-serif;
+}
+.fv-opt.correct .fv-letter{background:var(--V);color:#fff}
+.fv-opt.wrong .fv-letter{background:var(--R);color:#fff}
+.fv-explain{
+  background:rgba(250,250,0,.04);
+  border:1px solid rgba(250,250,0,.15);
+  border-radius:8px;padding:.85rem;
+  font-size:.77rem;line-height:1.65;color:var(--muted);
+}
+.fv-explain strong{color:var(--Y);font-weight:700}
+.feedback-pts{display:flex;flex-direction:column;gap:1.4rem}
+.fp{display:flex;gap:.9rem;align-items:flex-start}
+.fp-icon{
+  width:38px;height:38px;border-radius:9px;
+  background:rgba(250,250,0,.08);border:1px solid rgba(250,250,0,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.05rem;flex-shrink:0;margin-top:.1rem;
+}
+.fp-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.93rem;margin-bottom:.25rem}
+.fp-desc{font-size:.84rem;color:var(--muted);line-height:1.65}
+ 
+/* ── CALIFICACION ── */
+#calificacion{background:var(--D)}
+.score-wrap{max-width:460px;margin:3rem auto 0}
+.score-demo{
+  background:var(--D2);border:1.5px solid var(--border);
+  border-radius:20px;padding:2.5rem;text-align:center;
+}
+.score-circle{
+  width:138px;height:138px;border-radius:50%;
+  border:3px solid var(--Y);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  margin:0 auto 1.6rem;
+  background:rgba(250,250,0,.05);
+  box-shadow:0 0 40px rgba(250,250,0,.12);
+}
+.score-pct{font-family:'Montserrat',sans-serif;font-weight:900;font-size:3rem;line-height:1;color:var(--Y)}
+.score-lbl{font-size:.69rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.2rem;font-weight:600}
+.score-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,.06);
+  border-radius:10px;overflow:hidden;margin-bottom:1.5rem;
+}
+.ss{background:var(--D2);padding:.9rem}
+.ss-n{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.9rem}
+.ss-l{font-size:.67rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.ss.ok .ss-n{color:var(--V)}
+.ss.ko .ss-n{color:var(--R)}
+.ss.wa .ss-n{color:var(--W)}
+.score-btns{display:flex;gap:.55rem;flex-wrap:wrap;justify-content:center}
+.sbtn{
+  padding:.55rem 1rem;border-radius:7px;
+  font-size:.79rem;font-weight:700;cursor:pointer;border:none;
+  font-family:'Montserrat',sans-serif;letter-spacing:.03em;transition:all .2s;
+}
+.sbtn.y{background:var(--Y);color:#0d1117}
+.sbtn.y:hover{background:var(--Yd)}
+.sbtn.o{background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12)}
+.sbtn.r{background:rgba(239,68,68,.1);color:var(--R);border:1px solid rgba(239,68,68,.2)}
+ 
+/* ── ACCESO EXCLUSIVO ── */
+#acceso{background:var(--D2)}
+.acceso-card{
+  max-width:640px;margin:3rem auto 0;
+  background:var(--D3);
+  border:1.5px solid rgba(250,250,0,.25);
+  border-radius:20px;padding:2.5rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.acceso-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--Y),transparent);
+}
+.acceso-icon{font-size:3rem;margin-bottom:1rem}
+.acceso-title{
+  font-family:'Montserrat',sans-serif;font-weight:900;
+  font-size:1.6rem;letter-spacing:-.01em;
+  color:var(--Y);margin-bottom:.6rem;
+}
+.acceso-desc{
+  font-size:.95rem;color:var(--muted);
+  line-height:1.75;max-width:480px;margin:0 auto 2rem;font-weight:300;
+}
+.acceso-desc strong{color:var(--text);font-weight:600}
+.acceso-steps{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:1px;background:rgba(250,250,0,.08);
+  border-radius:12px;overflow:hidden;margin-bottom:2rem;
+}
+.acc-step{background:var(--D3);padding:1.1rem .8rem}
+.acc-step-n{
+  font-family:'Montserrat',sans-serif;font-weight:900;
+  font-size:1.6rem;color:var(--Y);line-height:1;margin-bottom:.3rem;
+}
+.acc-step-t{font-size:.78rem;color:var(--muted);font-weight:600}
+.acceso-nota{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.78rem;color:var(--muted);margin-top:1.2rem;
+}
+.acceso-nota::before{content:'ℹ️';font-size:.9rem}
+ 
+/* ── CTA ── */
+#cta{background:var(--D);text-align:center;padding:8rem 2rem}
+.cta-glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:500px;height:280px;
+  background:radial-gradient(ellipse,rgba(250,250,0,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+#cta .container{position:relative;z-index:1}
+.cta-title{
+  font-family:'Montserrat',sans-serif;font-weight:900;
+  font-size:clamp(2.8rem,6.5vw,5.5rem);
+  line-height:1;letter-spacing:-.02em;margin-bottom:1rem;
+}
+.cta-title .y{color:var(--Y)}
+.cta-sub{font-size:1.03rem;color:var(--muted);margin:0 auto 2.5rem;max-width:480px;font-weight:300;line-height:1.75}
+.cta-nota{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.82rem;color:var(--muted);
+  margin-top:1.5rem;padding:.55rem 1.2rem;
+  background:rgba(250,250,0,.05);
+  border:1px solid rgba(250,250,0,.15);
+  border-radius:8px;
+  font-family:'Montserrat',sans-serif;font-weight:600;
+}
+ 
+/* ── FOOTER ── */
+footer{
+  background:var(--D2);border-top:1px solid var(--border);
+  padding:2rem 2.5rem;display:flex;
+  justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.2rem;letter-spacing:.06em;color:var(--Y)}
+.footer-copy{font-size:.78rem;color:var(--muted)}
+ 
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+ 
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--D)}
+::-webkit-scrollbar-thumb{background:rgba(250,250,0,.25);border-radius:2px}
+</style>
+</head>
+<body>
+ 
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" fill="rgb(250,250,0)" stroke="#0d1117" stroke-width="3"/><path d="M22 34L30 42L46 26" stroke="#0d1117" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    ENFOCADOS
+  </div>
+  <div class="nav-links">
+    <a href="#registro">Acceso</a>
+    <a href="#modos">Modos</a>
+    <a href="#feedback">Feedback</a>
+    <a href="#acceso">Código VIP</a>
+    <a class="nav-cta" href="https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/registro.html" target="_blank">Acceder</a>
+  </div>
+</nav>
+ 
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="badge"><span class="badge-dot"></span>Uso exclusivo · Alumnos de la academia</div>
+  <p class="hero-sub-title">Plataforma de Preparación Profesional</p>
+  <h1 class="hero-title">ENFOCADOS</h1>
+  <p class="hero-desc">
+    El sistema inteligente de test que convierte tus <strong>errores en fortaleza</strong>.
+    Más de <strong>10.000 preguntas reales de examen</strong>, feedback explicado y seguimiento real de tu progreso.
+  </p>
+  <div class="hero-btns">
+    <a href="https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/registro.html" target="_blank" class="btn-primary">Acceder con mi código</a>
+    <a href="https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html" target="_blank" class="btn-ghost">Ya tengo cuenta → Entrar a ENFOCADOS</a>
+  </div>
+  <div class="excl-badge">
+    🔒 Acceso exclusivo para alumnos de la academia con código VIP
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">+10.000</div>
+      <div class="stat-label">Preguntas reales de examen</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Modos de examen</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">10–100</div>
+      <div class="stat-label">Preguntas por sesión</div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- REGISTRO -->
+<section id="registro">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Alta en la plataforma</div>
+      <h2 class="section-title">Accede en 3 pasos</h2>
+      <p class="section-desc">Con tu código VIP el alta es inmediata. Solo alumnos de la academia pueden acceder.</p>
+    </div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <div class="flow-num">01</div>
+        <div class="flow-icon">📋</div>
+        <div class="flow-title">Tus datos</div>
+        <div class="flow-desc">Introduce tu nombre, apellidos y email en el formulario de registro.</div>
+        <div class="flow-tag">Formulario</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">02</div>
+        <div class="flow-icon">🔑</div>
+        <div class="flow-title">Introduce tu código VIP</div>
+        <div class="flow-desc">Escribe el código promocional que te ha facilitado la academia. El acceso se valida de forma automática e instantánea.</div>
+        <div class="flow-tag">Código exclusivo</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">03</div>
+        <div class="flow-icon">✅</div>
+        <div class="flow-title">Acceso activado</div>
+        <div class="flow-desc">Tu email queda registrado. Entra a ENFOCADOS desde cualquier dispositivo con tu correo cuando quieras.</div>
+        <div class="flow-tag">Listo para estudiar</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- MODOS -->
+<section id="modos">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Modalidades de examen</div>
+      <h2 class="section-title">Dos modos.<br>Infinitas combinaciones.</h2>
+      <p class="section-desc">Diseña cada sesión exactamente como la necesitas. De 10 a 100 preguntas, con las materias que elijas.</p>
+    </div>
+    <div class="modos-grid reveal">
+      <div class="modo-card">
+        <div class="modo-tipo">Examen Singular</div>
+        <div class="modo-titulo">🎯 Una materia</div>
+        <p class="modo-desc">Concentra toda la sesión en una única materia. Ideal para reforzar los temas más débiles o preparar pruebas específicas con máxima profundidad.</p>
+        <div class="chips">
+          <span class="chip y">Materia única</span>
+          <span class="chip">10–100 preguntas</span>
+          <span class="chip g">Profundidad máxima</span>
+        </div>
+      </div>
+      <div class="modo-card">
+        <div class="modo-tipo">Examen Ómnibus</div>
+        <div class="modo-titulo">🌐 Varias materias</div>
+        <p class="modo-desc">Mezcla preguntas de varias materias en un mismo examen. Perfecto para simular el formato real de la oposición y entrenar la visión global.</p>
+        <div class="chips">
+          <span class="chip y">Multi-materia</span>
+          <span class="chip">Aleatorizado</span>
+          <span class="chip g">Formato real</span>
+        </div>
+      </div>
+      <div class="modo-card full">
+        <div class="modo-tipo">Configuración del examen</div>
+        <div class="modo-titulo">⚙️ Con o sin feedback inmediato</div>
+        <p class="modo-desc">
+          Elige entre <strong>modo con explicación</strong> — ves si acertaste o fallaste al responder, con la justificación de la respuesta correcta — o <strong>modo examen puro</strong>, donde los resultados aparecen únicamente al finalizar, replicando las condiciones reales.
+          En ambos modos puedes revisar todas las preguntas al terminar y acceder a la revisión exclusiva de errores y respuestas en blanco.
+        </p>
+        <div class="chips">
+          <span class="chip y">Feedback inmediato</span>
+          <span class="chip y">Modo examen puro</span>
+          <span class="chip g">Revisión de errores</span>
+          <span class="chip g">Revisión completa</span>
+          <span class="chip">Preguntas en blanco</span>
+          <span class="chip">Calificación al instante</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- FEEDBACK -->
+<section id="feedback">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Aprendizaje activo</div>
+      <h2 class="section-title">Los errores son el camino</h2>
+      <p class="section-desc">Cada fallo tiene una explicación. ENFOCADOS te muestra por qué te equivocaste y consolida el conocimiento correcto.</p>
+    </div>
+    <div class="feedback-grid reveal">
+      <div class="feedback-visual">
+        <div class="fv-bar">
+          <div class="fv-dot" style="background:#ef4444"></div>
+          <div class="fv-dot" style="background:#f59e0b"></div>
+          <div class="fv-dot" style="background:#10b981"></div>
+        </div>
+        <div class="fv-meta">Pregunta 7 / 20 · Derecho Administrativo</div>
+        <div class="fv-q">¿Cuál es el plazo general para resolver y notificar los procedimientos administrativos según la LPAC?</div>
+        <div class="fv-opts">
+          <div class="fv-opt"><div class="fv-letter">A</div><span>6 meses desde la solicitud</span></div>
+          <div class="fv-opt wrong"><div class="fv-letter">B</div><span style="color:#fca5a5">12 meses desde la incoación</span></div>
+          <div class="fv-opt correct"><div class="fv-letter">C</div><span style="color:#6ee7b7">3 meses salvo norma específica</span></div>
+          <div class="fv-opt"><div class="fv-letter">D</div><span>1 mes en todos los casos</span></div>
+        </div>
+        <div class="fv-explain">
+          <strong>INCORRECTO → Respuesta correcta: C</strong><br>
+          El art. 21 de la Ley 39/2015 (LPAC) establece un plazo máximo de 3 meses para resolver y notificar, salvo que una norma con rango de ley fije uno distinto.
+        </div>
+      </div>
+      <div class="feedback-pts">
+        <div class="fp">
+          <div class="fp-icon">🔍</div>
+          <div>
+            <div class="fp-title">Respuesta correcta siempre visible</div>
+            <div class="fp-desc">La opción correcta se marca en verde sin ambigüedades, tanto si acertaste como si fallaste.</div>
+          </div>
+        </div>
+        <div class="fp">
+          <div class="fp-icon">📖</div>
+          <div>
+            <div class="fp-title">Justificación del error</div>
+            <div class="fp-desc">Cada pregunta incluye una explicación con el fundamento legal o técnico aplicable. Aprendes, no solo memorizas.</div>
+          </div>
+        </div>
+        <div class="fp">
+          <div class="fp-icon">🔄</div>
+          <div>
+            <div class="fp-title">Revisión exclusiva de errores</div>
+            <div class="fp-desc">Al terminar el examen, accede únicamente a las preguntas falladas o dejadas en blanco. Tiempo de estudio optimizado.</div>
+          </div>
+        </div>
+        <div class="fp">
+          <div class="fp-icon">⬜</div>
+          <div>
+            <div class="fp-title">Preguntas en blanco</div>
+            <div class="fp-desc">Deja sin contestar las que no dominas. Se contabilizan por separado en la calificación final.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- CALIFICACION -->
+<section id="calificacion">
+  <div class="container" style="text-align:center">
+    <div class="reveal">
+      <div class="section-label" style="justify-content:center">Resultados</div>
+      <h2 class="section-title">Tu calificación en tiempo real</h2>
+      <p class="section-desc" style="margin:0 auto">Al terminar cada examen obtienes tu nota, el desglose completo y tres opciones de acción inmediata.</p>
+    </div>
+    <div class="score-wrap reveal">
+      <div class="score-demo">
+        <div class="score-circle">
+          <div class="score-pct">75%</div>
+          <div class="score-lbl">Calificación</div>
+        </div>
+        <div class="score-stats">
+          <div class="ss ok"><div class="ss-n">15</div><div class="ss-l">Aciertos</div></div>
+          <div class="ss ko"><div class="ss-n">3</div><div class="ss-l">Fallos</div></div>
+          <div class="ss wa"><div class="ss-n">2</div><div class="ss-l">Blancos</div></div>
+        </div>
+        <div class="score-btns">
+          <button class="sbtn y">Nueva evaluación</button>
+          <button class="sbtn o">Revisar todo (20)</button>
+          <button class="sbtn r">Solo errores (5)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- ACCESO EXCLUSIVO -->
+<section id="acceso">
+  <div class="container">
+    <div class="acceso-card reveal">
+      <div class="acceso-icon">🔒</div>
+      <div class="acceso-title">Acceso exclusivo para alumnos</div>
+      <p class="acceso-desc">
+        ENFOCADOS es una plataforma de <strong>uso exclusivo para alumnos de la academia</strong>.
+        El acceso se realiza únicamente mediante un <strong>código VIP personal</strong> facilitado por tu academia.
+        No existe registro abierto al público.
+      </p>
+      <div class="acceso-steps">
+        <div class="acc-step">
+          <div class="acc-step-n">01</div>
+          <div class="acc-step-t">Recibe tu código VIP de la academia</div>
+        </div>
+        <div class="acc-step">
+          <div class="acc-step-n">02</div>
+          <div class="acc-step-t">Regístrate con tu email y el código</div>
+        </div>
+        <div class="acc-step">
+          <div class="acc-step-n">03</div>
+          <div class="acc-step-t">Entra a ENFOCADOS con tu email</div>
+        </div>
+      </div>
+      <a href="https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/registro.html" target="_blank" class="btn-primary">Tengo mi código → Registrarme</a>
+      <div class="acceso-nota">¿No tienes código? Contacta con tu academia para obtenerlo.</div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="container reveal">
+    <h2 class="cta-title">
+      <span class="y">Prepárate</span><br>con método
+    </h2>
+    <p class="cta-sub">Más de 10.000 preguntas reales de examen te esperan. Convierte cada sesión de estudio en un avance real hacia tu plaza.</p>
+    <a href="https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/registro.html" target="_blank" class="btn-primary">Acceder con mi código VIP</a>
+    <br>
+    <div class="cta-nota">🔗 Ya tengo cuenta →
+      <a href="https://joanmanuelbaez-ui.github.io/ENFOCADOS-TEST/index.html" target="_blank" style="color:var(--Y);text-decoration:none">Entrar a ENFOCADOS</a>
+    </div>
+  </div>
+</section>
+ 
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ENFOCADOS</div>
+  <div class="footer-copy">Plataforma de preparación profesional · Acceso exclusivo para alumnos de la academia</div>
+</footer>
+ 
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e,i) => {
+    if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'), i*70);
+  });
+}, {threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+ 
+window.addEventListener('scroll', ()=>{
+  document.getElementById('navbar').style.borderBottomColor =
+    window.scrollY > 60 ? 'rgba(250,250,0,.28)' : 'rgba(250,250,0,.15)';
+});
+</script>
+</body>
+</html>
